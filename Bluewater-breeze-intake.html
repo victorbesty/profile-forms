@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Bluewater Breeze — Onboarding Intake</title>
+<title>Bluewater Breeze — Follow-Up Intake</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -19,6 +19,8 @@
     --line: #d9d0c0;
     --line-soft: #e8e1d3;
     --highlight: #f0c75e;
+    --confirm: #2d7a4f;
+    --confirm-soft: #e0efe5;
     --radius: 4px;
     --shadow: 0 1px 2px rgba(26,46,53,0.04), 0 8px 24px rgba(26,46,53,0.06);
   }
@@ -70,7 +72,7 @@
   .header .subtitle {
     font-size: 15px;
     color: rgba(255,255,255,0.78);
-    max-width: 640px;
+    max-width: 700px;
     margin: 0 0 28px;
   }
   .meta-row {
@@ -93,6 +95,66 @@
     color: #fff;
   }
   .container { max-width: 920px; margin: 0 auto; padding: 40px 32px 120px; }
+
+  /* Recap section */
+  .recap {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--confirm);
+    border-radius: var(--radius);
+    padding: 32px 36px;
+    margin-bottom: 32px;
+    box-shadow: var(--shadow);
+  }
+  .recap-header { display: flex; align-items: baseline; gap: 14px; margin-bottom: 8px; }
+  .recap-eyebrow {
+    font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--confirm); font-weight: 600;
+  }
+  .recap h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500; font-size: 26px;
+    letter-spacing: -0.01em; margin: 0 0 6px;
+  }
+  .recap-intro { color: var(--ink-soft); margin: 0 0 22px; font-size: 14.5px; }
+  .recap-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 28px;
+  }
+  .recap-item {
+    padding: 10px 0;
+    border-bottom: 1px dotted var(--line-soft);
+    font-size: 13.5px;
+    break-inside: avoid;
+  }
+  .recap-item:last-child { border-bottom: none; }
+  .recap-item .r-label {
+    font-family: 'Fraunces', serif;
+    font-size: 12px;
+    color: var(--accent);
+    font-style: italic;
+    display: block;
+    margin-bottom: 2px;
+  }
+  .recap-item .r-value { color: var(--ink); }
+  .recap-confirm {
+    margin-top: 24px;
+    padding: 18px 22px;
+    background: var(--confirm-soft);
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .recap-confirm .rc-text {
+    flex: 1; min-width: 220px;
+    font-size: 14px; color: var(--ink);
+  }
+  .recap-confirm .rc-text strong { font-weight: 600; }
+  .recap-confirm .options { margin: 0; }
+
   .toc {
     background: var(--bg-card);
     border: 1px solid var(--line);
@@ -131,6 +193,7 @@
   }
   .toc a { color: var(--ink); text-decoration: none; font-size: 13.5px; transition: color 0.15s; }
   .toc a:hover { color: var(--accent); }
+
   section.card {
     background: var(--bg-card);
     border: 1px solid var(--line);
@@ -156,10 +219,21 @@
     letter-spacing: -0.01em; margin: 0;
   }
   .section-blurb { color: var(--ink-muted); font-size: 13.5px; margin: 12px 0 24px; font-style: italic; }
-  .question { margin: 18px 0; }
+  .question { margin: 22px 0; }
   .question .q-label {
     display: block; font-weight: 500;
-    color: var(--ink); margin-bottom: 8px; font-size: 14.5px;
+    color: var(--ink); margin-bottom: 6px; font-size: 14.5px;
+  }
+  .question .q-context {
+    display: block;
+    font-size: 12.5px;
+    color: var(--accent);
+    font-style: italic;
+    margin-bottom: 8px;
+    padding: 6px 10px;
+    background: var(--accent-soft);
+    border-radius: 3px;
+    border-left: 2px solid var(--accent);
   }
   .question .q-hint {
     display: block; font-size: 12.5px;
@@ -190,38 +264,6 @@
   }
   .options label:hover { border-color: var(--accent); background: var(--accent-soft); color: var(--ink); }
   .options input { accent-color: var(--accent); cursor: pointer; margin: 0; }
-  .tool-block {
-    margin-bottom: 22px; padding: 20px 22px;
-    background: #fbf8f1; border: 1px solid var(--line);
-    border-radius: var(--radius);
-  }
-  .tool-block .tool-q {
-    font-family: 'Fraunces', serif; font-weight: 500;
-    font-size: 15.5px; color: var(--ink); margin: 0 0 10px;
-  }
-  .tool-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-    gap: 3px 12px; margin-bottom: 8px;
-  }
-  .tool-grid label {
-    display: flex; align-items: center; gap: 7px;
-    font-size: 13px; color: var(--ink-soft);
-    padding: 3px 0; cursor: pointer;
-  }
-  .tool-grid label:hover { color: var(--accent); }
-  .tool-grid input { accent-color: var(--accent); }
-  .other-input { margin-top: 8px; display: flex; align-items: center; gap: 8px; }
-  .other-input label { font-size: 12.5px; color: var(--ink-soft); white-space: nowrap; }
-  .followup {
-    margin-top: 10px; padding: 14px 16px;
-    background: #fff;
-    border: 1px dashed var(--line);
-    border-left: 3px solid var(--highlight);
-    border-radius: var(--radius);
-  }
-  .followup-title { font-family: 'Fraunces', serif; font-style: italic; font-size: 12.5px; color: var(--ink-soft); margin: 0 0 8px; }
-  .followup textarea { min-height: 50px; }
   .submit-bar {
     margin-top: 36px; padding: 30px;
     background: var(--ink); color: #fff;
@@ -250,30 +292,21 @@
     transition: all 0.2s; pointer-events: none; z-index: 100;
   }
   .back-to-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
-  .listing-card {
-    display: flex; gap: 16px; align-items: center;
-    margin-top: 8px; padding: 14px;
-    background: rgba(255,255,255,0.08);
-    border-radius: var(--radius);
-    border: 1px solid rgba(255,255,255,0.12);
-  }
-  .listing-card img { width: 80px; height: 80px; object-fit: cover; border-radius: 3px; flex-shrink: 0; }
-  .listing-card .l-title { font-family: 'Fraunces', serif; font-size: 15px; color: #fff; margin-bottom: 4px; }
-  .listing-card .l-meta { font-size: 12px; color: rgba(255,255,255,0.65); line-height: 1.5; }
   @media (max-width: 700px) {
     .header { padding: 40px 22px 36px; }
     .container { padding: 28px 18px 80px; }
     section.card { padding: 26px 22px; }
+    .recap { padding: 24px 22px; }
+    .recap-grid { grid-template-columns: 1fr; }
     .toc ol { columns: 1; }
     .section-header { flex-direction: column; gap: 4px; align-items: flex-start; }
     .section-number { font-size: 26px; }
     .section-title { font-size: 20px; }
-    .listing-card { flex-direction: column; text-align: center; }
   }
   @media print {
     body { background: #fff; }
     .back-to-top, .toc, .submit-bar { display: none; }
-    section.card { box-shadow: none; page-break-inside: avoid; }
+    section.card, .recap { box-shadow: none; page-break-inside: avoid; }
   }
 </style>
 </head>
@@ -281,23 +314,16 @@
 
 <header class="header">
   <div class="header-inner">
-    <div class="eyebrow">Property Onboarding</div>
-    <h1>Bluewater Breeze<br><em>Onboarding Intake</em></h1>
-    <p class="subtitle">A focused intake for a 3BR oceanfront condo in Daytona Beach Shores. Skip anything that doesn't apply.</p>
+    <div class="eyebrow">Property Onboarding · Round 2</div>
+    <h1>Bluewater Breeze<br><em>Follow-Up Intake</em></h1>
+    <p class="subtitle">MSA signed — now we close the operational gaps before go-live on June 1. Recap below, then the open items. Skip anything that doesn't apply.</p>
 
-    <div class="listing-card">
-      <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1673896579649911205/original/99a45f86-90b6-4bb9-ac6c-e786adeac96f.jpeg?im_w=240" alt="Property" />
-      <div>
-        <div class="l-title">Upscale 3BR Condo · Ocean Views &amp; Steps to Beach</div>
-        <div class="l-meta">Daytona Beach Shores, FL · 6 guests · 3 BR · 3 beds · 2 baths<br>King + 2 Queens · Oceanfront pool &amp; hot tub · Fitness center · 2 parking spots</div>
-      </div>
-    </div>
-
-    <div class="meta-row" style="margin-top: 22px;">
-      <div class="meta-item"><div class="meta-label">Host</div><div class="meta-value">Michael</div></div>
-      <div class="meta-item"><div class="meta-label">Contact</div><div class="meta-value">mdiglio@csgsvcs.com</div></div>
+    <div class="meta-row">
+      <div class="meta-item"><div class="meta-label">Host</div><div class="meta-value">Michael Diglio</div></div>
+      <div class="meta-item"><div class="meta-label">Entity</div><div class="meta-value">Blue Water Breeze Daytona Beach Shores LLC</div></div>
+      <div class="meta-item"><div class="meta-label">Closing</div><div class="meta-value">May 29, 2026</div></div>
       <div class="meta-item"><div class="meta-label">Go-Live</div><div class="meta-value">June 1, 2026</div></div>
-      <div class="meta-item"><div class="meta-label">Check-In / Out</div><div class="meta-value">4:00 PM / 11:00 AM</div></div>
+      <div class="meta-item"><div class="meta-label">First Guest Bookings</div><div class="meta-value">August 1, 2026</div></div>
     </div>
   </div>
 </header>
@@ -305,587 +331,720 @@
 <form id="intakeForm">
 <div class="container">
 
+  <!-- RECAP -->
+  <div class="recap">
+    <div class="recap-header"><span class="recap-eyebrow">What we heard</span></div>
+    <h2>Recap from our last call</h2>
+    <p class="recap-intro">Before we dive into the open questions, here's everything we captured last time. Take a quick look and flag anything that doesn't match how you remember it.</p>
+
+    <div class="recap-grid">
+      <div class="recap-item">
+        <span class="r-label">Property</span>
+        <span class="r-value">3BR oceanfront condo, Daytona Beach Shores, FL. Themed as "Bluewater Breeze." Held under Blue Water Breeze Daytona Beach Shores LLC for asset protection.</span>
+      </div>
+      <div class="recap-item">
+        <span class="r-label">Second property (future)</span>
+        <span class="r-value">North Carolina house under construction — onboard once finished.</span>
+      </div>
+      <div class="recap-item">
+        <span class="r-label">Minimum stay</span>
+        <span class="r-value">4 nights. Ideal is 7+ nights to avoid the gap rule.</span>
+      </div>
+      <div class="recap-item">
+        <span class="r-label">7-night HOA rule</span>
+        <span class="r-value">Every guest stays at least 7 nights, OR there must be a gap that brings total occupied nights + gap to a 7-night cycle. We'll upsell gap nights aggressively.</span>
+      </div>
+      <div class="recap-item">
+        <span class="r-label">Personal-use blackout</span>
+        <span class="r-value">Family using the unit all of June and July 2026. Listings stay live; bookings start Aug 1.</span>
+      </div>
+      <div class="recap-item">
+        <span class="r-label">Minimum guest age</span>
+        <span class="r-value">25.</span>
+      </div>
+      <div class="recap-item">
+        <span class="r-label">Guest screening posture</span>
+        <span class="r-value">Strict. Escalate any guest with sub-4-star history to you for approval. Premium pricing should self-filter most of the rest.</span>
+      </div>
+      <div class="recap-item">
+        <span class="r-label">Pricing positioning</span>
+        <span class="r-value">Top ~10% of the market. Not the cheapest. Big event weeks (Bike Week, Daytona 500, Spring Break) priced at premium per PriceLabs.</span>
+      </div>
+      <div class="recap-item">
+        <span class="r-label">Pets</span>
+        <span class="r-value">No pets for now. Open to revisiting at ~$300 pet fee. Building itself is pet-friendly; this is your call.</span>
+      </div>
+      <div class="recap-item">
+        <span class="r-label">Access</span>
+        <span class="r-value">Smart lock (brand TBD — Besty to recommend models). Codes rotate per guest, generated automatically.</span>
+      </div>
+      <div class="recap-item">
+        <span class="r-label">Parking</span>
+        <span class="r-value">1 assigned garage spot + 1 outdoor parking pass (first-come basis).</span>
+      </div>
+      <div class="recap-item">
+        <span class="r-label">Building access codes</span>
+        <span class="r-value">Building entry + pool/beach door codes rotate monthly. HOA supplies them; you'll forward to us. Guests get codes 24h before arrival.</span>
+      </div>
+      <div class="recap-item">
+        <span class="r-label">Guest pre-registration</span>
+        <span class="r-value">Besty notifies the HOA at least 7 days before arrival so they prep the parking pass. Guest doesn't have to do anything; you don't have to do anything.</span>
+      </div>
+      <div class="recap-item">
+        <span class="r-label">Cleaning</span>
+        <span class="r-value">A friend's company in the building has capacity. You'll want backup cleaners set up as well. Photo proof required after every clean (before + after).</span>
+      </div>
+      <div class="recap-item">
+        <span class="r-label">Channels</span>
+        <span class="r-value">Airbnb + Vrbo already live. Adding Booking.com and a direct booking site via Besty.</span>
+      </div>
+      <div class="recap-item">
+        <span class="r-label">Payments</span>
+        <span class="r-value">You collect guest payouts. Besty bills monthly via card on file. We're not in the middle of the payment flow.</span>
+      </div>
+      <div class="recap-item">
+        <span class="r-label">Upsells in play</span>
+        <span class="r-value">Gap nights, early check-in, late checkout. Pet fee on hold pending your decision.</span>
+      </div>
+      <div class="recap-item">
+        <span class="r-label">Guidebook</span>
+        <span class="r-value">Yes — Besty drafts, you approve. Will include nearby restaurants, things to do, in-unit instructions, and (delivered closer to arrival) access codes.</span>
+      </div>
+      <div class="recap-item">
+        <span class="r-label">Photos</span>
+        <span class="r-value">Professional photos already done. Logo applied to bottom-right of images.</span>
+      </div>
+      <div class="recap-item">
+        <span class="r-label">Communication preference</span>
+        <span class="r-value">Email everything to <strong>ddiglio@csgsvcs.com</strong> going forward.</span>
+      </div>
+      <div class="recap-item">
+        <span class="r-label">Open idea</span>
+        <span class="r-value">Golf cart amenity (allowed by HOA, held under LLC for liability). Aarlo to ask around if other hosts have done this.</span>
+      </div>
+    </div>
+
+    <div class="recap-confirm">
+      <div class="rc-text"><strong>Does this all match how you remember the call?</strong> If anything's off, jot a note below.</div>
+      <div class="options">
+        <label><input type="radio" name="recap_confirm"> Looks right</label>
+        <label><input type="radio" name="recap_confirm"> Needs edits (below)</label>
+      </div>
+    </div>
+    <textarea style="margin-top: 12px;" placeholder="Corrections or things we missed..."></textarea>
+  </div>
+
+  <!-- TOC -->
   <nav class="toc">
-    <h2>Sections</h2>
+    <h2>Open Items — What we still need from you</h2>
     <ol>
-      <li><a href="#s1">Guest Screening</a></li>
-      <li><a href="#s2">Building &amp; HOA Requirements</a></li>
-      <li><a href="#s3">Bookings, Cancellations &amp; Pricing</a></li>
-      <li><a href="#s4">Check-In / Check-Out</a></li>
-      <li><a href="#s5">The Condo &amp; Amenities</a></li>
-      <li><a href="#s6">Beach &amp; Pool</a></li>
-      <li><a href="#s7">Pets, Parties &amp; House Rules</a></li>
-      <li><a href="#s8">Weather &amp; Outages</a></li>
-      <li><a href="#s9">Cleaning &amp; Maintenance</a></li>
-      <li><a href="#s10">Guest Journey &amp; Messaging</a></li>
-      <li><a href="#s11">Systems &amp; Sign-Ins</a></li>
+      <li><a href="#s1">HOA Details (your wife's call list)</a></li>
+      <li><a href="#s2">Pricing, Cancellations &amp; Deposits</a></li>
+      <li><a href="#s3">Check-In / Check-Out Specifics</a></li>
+      <li><a href="#s4">In-Unit Details</a></li>
+      <li><a href="#s5">Pool, Beach &amp; Amenities</a></li>
+      <li><a href="#s6">House Rules &amp; Event Weeks</a></li>
+      <li><a href="#s7">Hurricanes &amp; Outages</a></li>
+      <li><a href="#s8">Compensation &amp; Escalation Thresholds</a></li>
+      <li><a href="#s9">Guest Journey Messaging</a></li>
+      <li><a href="#s10">Common Guest Questions</a></li>
+      <li><a href="#s11">Cameras &amp; Monitoring</a></li>
+      <li><a href="#s12">Systems &amp; Open Items</a></li>
     </ol>
   </nav>
 
+  <!-- Section 1: HOA -->
   <section class="card" id="s1">
-    <div class="section-header"><div class="section-number">01</div><h2 class="section-title">Guest Screening</h2></div>
-    <div class="question">
-      <label class="q-label">Do you screen guests before confirming?</label>
-      <div class="options"><label><input type="radio" name="q1_screen"> Yes</label><label><input type="radio" name="q1_screen"> No</label></div>
-    </div>
-    <div class="question">
-      <label class="q-label">What info do you collect from guests, and when?</label>
-      <span class="q-hint">e.g., names, ages, vehicle plates, purpose of stay, photo ID</span>
-      <textarea></textarea>
-    </div>
-    <div class="question">
-      <label class="q-label">Should check-in details be blocked until screening info is received?</label>
-      <div class="options"><label><input type="radio" name="q1_block"> Yes</label><label><input type="radio" name="q1_block"> No</label></div>
-    </div>
-    <div class="question">
-      <label class="q-label">What flags a guest as "risky"? (select all)</label>
-      <div class="options">
-        <label><input type="checkbox"> Local guests</label>
-        <label><input type="checkbox"> Last-minute booking</label>
-        <label><input type="checkbox"> Vague answers</label>
-        <label><input type="checkbox"> No prior reviews</label>
-        <label><input type="checkbox"> Max occupancy</label>
-        <label><input type="checkbox"> Bike Week / Speedweek</label>
-        <label><input type="checkbox"> Prom-aged group</label>
-      </div>
-      <textarea placeholder="Other..."></textarea>
-    </div>
-    <div class="question">
-      <label class="q-label">What do you do with a risky booking?</label>
-      <div class="options">
-        <label><input type="checkbox"> Ask more questions</label>
-        <label><input type="checkbox"> Decline</label>
-        <label><input type="checkbox"> Approve with extra deposit</label>
-        <label><input type="checkbox"> Monitor only</label>
-      </div>
-    </div>
-  </section>
+    <div class="section-header"><div class="section-number">01</div><h2 class="section-title">HOA Details</h2></div>
+    <p class="section-blurb">You mentioned your wife is calling the on-site management company for these. Pasting them here keeps them in one place.</p>
 
-  <section class="card" id="s2">
-    <div class="section-header"><div class="section-number">02</div><h2 class="section-title">Building &amp; HOA Requirements</h2></div>
-    <p class="section-blurb">The building-specific rules that wrap around every stay.</p>
     <div class="question">
-      <label class="q-label">Building name &amp; HOA / front-desk contact</label>
-      <textarea placeholder="Building name, HOA management company, phone, email..."></textarea>
-    </div>
-    <div class="question">
-      <label class="q-label">Does the building require guests to pre-register before arrival?</label>
-      <div class="options"><label><input type="radio" name="q2_reg"> Yes</label><label><input type="radio" name="q2_reg"> No</label></div>
-      <textarea placeholder="If yes: what data is required, deadline, who submits..."></textarea>
-    </div>
-    <div class="question">
-      <label class="q-label">Front desk hours and after-hours arrival process</label>
+      <label class="q-label">Building name, HOA management company, and on-site office contact (phone + email)</label>
+      <span class="q-context">Given we'll be coordinating with them on pre-registration, parking passes, and monthly door codes, we need direct contacts.</span>
       <textarea></textarea>
     </div>
+
     <div class="question">
-      <label class="q-label">Fobs, wristbands, parking passes — who issues them, when, and how are they returned?</label>
+      <label class="q-label">For pre-registration, what exactly does the HOA need beyond the guest's name?</label>
+      <span class="q-context">Given you confirmed you notify the HOA at least 7 days out — we want to know whether they also want guest count, ID, vehicle make/model, license plate, ages, length of stay, etc.</span>
       <textarea></textarea>
     </div>
+
     <div class="question">
-      <label class="q-label">Listing says 2 vehicles — is that the building cap? Oversize/trailer/boat allowed?</label>
+      <label class="q-label">Front desk / management office hours, and the after-hours arrival process</label>
+      <span class="q-hint">Where do guests go if they arrive at 10 PM? Lockbox for the parking pass? Number to call?</span>
       <textarea></textarea>
     </div>
+
     <div class="question">
-      <label class="q-label">Elevator reservation required for arrivals/departures?</label>
-      <div class="options"><label><input type="radio" name="q2_elev"> Yes</label><label><input type="radio" name="q2_elev"> No</label></div>
-      <textarea placeholder="If yes: who books, how far in advance..."></textarea>
-    </div>
-    <div class="question">
-      <label class="q-label">Listing max is 6 — does the building enforce a lower number, and how are children/infants counted?</label>
+      <label class="q-label">Are oversized vehicles, trailers, RVs, or boats allowed in the lot?</label>
+      <span class="q-context">Given you flagged you didn't know — this comes up often with Daytona guests (race fans tow trailers, beach families bring jet skis).</span>
       <textarea></textarea>
     </div>
+
     <div class="question">
       <label class="q-label">Building quiet hours</label>
-      <input type="text" placeholder="e.g., 10pm – 8am" />
+      <input type="text" placeholder="e.g., 10 PM – 8 AM" />
     </div>
+
     <div class="question">
-      <label class="q-label">How are HOA fines (noise, trash, parking, smoking, pets) handled? Passed to guest via deposit / Resolution Center / Stripe?</label>
+      <label class="q-label">How does the HOA handle fines (noise, trash, parking, smoking)? Who pays — you, or do they bill the unit owner who then passes it to the guest?</label>
+      <span class="q-context">Given you mentioned premium positioning and strict screening, this is mostly a "just in case" — but we want to know the mechanism (Resolution Center via Airbnb, Stripe charge, deduct from deposit).</span>
+      <textarea></textarea>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Maximum occupancy per building rules — does the HOA cap below the listing's 6? How are infants/children counted?</label>
+      <textarea></textarea>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Golf cart on property — any HOA registration, insurance proof, or storage requirement we should know about?</label>
+      <span class="q-context">Given you're exploring this as a premium amenity under the LLC. Worth nailing down before you buy one.</span>
       <textarea></textarea>
     </div>
   </section>
 
-  <section class="card" id="s3">
-    <div class="section-header"><div class="section-number">03</div><h2 class="section-title">Bookings, Cancellations &amp; Pricing</h2></div>
-    <div class="question"><label class="q-label">Minimum night stays (weekday / weekend / season)?</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Cancellation policies by platform &amp; when exceptions are made</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Date or property changes — how handled, who approves?</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Do you push OTA guests to direct booking? If yes, what triggers it and what's off-limits?</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Discounts offered (promo codes, military, returning guest, weekly/monthly)?</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Rate negotiation requests — firm or flexible?</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Security deposit / damage waiver — how handled?</label><textarea></textarea></div>
+  <!-- Section 2: Pricing / Cancellations -->
+  <section class="card" id="s2">
+    <div class="section-header"><div class="section-number">02</div><h2 class="section-title">Pricing, Cancellations &amp; Deposits</h2></div>
+    <p class="section-blurb">We confirmed 4-night minimum and top-10% pricing. These are the policy levers we still need pinned down.</p>
+
+    <div class="question">
+      <label class="q-label">Cancellation policy preference by channel</label>
+      <span class="q-hint">Airbnb has Flexible / Moderate / Strict / Firm. Vrbo has its own tiers. Booking.com is your call. Most premium hosts run Strict or Firm.</span>
+      <textarea></textarea>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Date-change requests — automatic approve within X days, or always run by you?</label>
+      <textarea></textarea>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Security deposit or damage waiver — preferred approach?</label>
+      <span class="q-hint">Options: refundable hold (e.g., $500 pre-auth on card), non-refundable damage waiver fee (e.g., $79 buys $1,500 coverage via Waivo/Safely), or platform-default only.</span>
+      <textarea></textarea>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Early check-in / late checkout — pricing</label>
+      <span class="q-context">Given you said you're not currently monetizing these and want to, we suggest tiers like $50 for 2 hours early, $75 for late by 1 PM, etc. Confirm a number or let us draft and you approve.</span>
+      <textarea></textarea>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Gap-night discount you're willing to offer</label>
+      <span class="q-context">Given gap nights are the biggest upsell lever — Besty typically suggests 30% off the gap nights to entice the guest to extend. Your floor?</span>
+      <input type="text" placeholder="e.g., 30% off, no lower than 25%" />
+    </div>
+
+    <div class="question">
+      <label class="q-label">Promos or discounts you want to offer (returning guest, military, weekly/monthly)</label>
+      <textarea></textarea>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Rate negotiation requests — auto-decline, or counter?</label>
+      <textarea></textarea>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Decision on pet policy</label>
+      <span class="q-context">Given you said "probably no for now but maybe at $300 fee" — give us the final word so we can lock the listing copy.</span>
+      <div class="options">
+        <label><input type="radio" name="pets_final"> No pets, period</label>
+        <label><input type="radio" name="pets_final"> Yes, with $300 fee</label>
+        <label><input type="radio" name="pets_final"> Yes, case-by-case (escalate to me)</label>
+      </div>
+    </div>
   </section>
 
-  <section class="card" id="s4">
-    <div class="section-header"><div class="section-number">04</div><h2 class="section-title">Check-In / Check-Out</h2></div>
+  <!-- Section 3: Check-In / Check-Out -->
+  <section class="card" id="s3">
+    <div class="section-header"><div class="section-number">03</div><h2 class="section-title">Check-In / Check-Out Specifics</h2></div>
+
     <div class="question">
-      <label class="q-label">Standard times (listing shows 4:00 PM / 11:00 AM) — confirm or update</label>
+      <label class="q-label">Confirm or update the standard check-in / checkout times</label>
+      <span class="q-context">Listing currently shows 4:00 PM in / 11:00 AM out.</span>
       <input type="text" placeholder="Check-in / Checkout" />
     </div>
-    <div class="question"><label class="q-label">Early check-in / late checkout — allowed? Paid? Rules?</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Access method — smart lock code, fob, key pickup at front desk?</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Can guests drop off luggage / pets before check-in?</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Checkout tasks for guests (trash, linens, dishwasher, thermostat, fob return)</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Fee if access items (fob, wristband, parking pass) aren't returned</label><input type="text" /></div>
-  </section>
 
-  <section class="card" id="s5">
-    <div class="section-header"><div class="section-number">05</div><h2 class="section-title">The Condo &amp; Amenities</h2></div>
-    <p class="section-blurb">In-unit details so we can answer questions without bothering you.</p>
-    <div class="question"><label class="q-label">Floor / unit number / building wing</label><input type="text" /></div>
-    <div class="question"><label class="q-label">WiFi network name &amp; password</label><input type="text" /></div>
-    <div class="question"><label class="q-label">TV setup — provider, streaming apps, where remotes/instructions live</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Thermostat preferences (idle temp, guest range, brand)</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Where guests put trash at end of stay (chute? dumpster? hours?)</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Is there a safe in the unit? Beach towels included? Outdoor shower/foot wash?</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Sliding-door / balcony lock quirks worth flagging</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Balcony rules — items, smoking, hanging towels, kids</label><textarea></textarea></div>
-  </section>
-
-  <section class="card" id="s6">
-    <div class="section-header"><div class="section-number">06</div><h2 class="section-title">Beach &amp; Pool</h2></div>
-    <div class="question"><label class="q-label">Pool / hot tub — heated? Seasonal? Building-set hours?</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Fitness center hours &amp; rules</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">How guests reach the beach from the unit (walkway, crossover, code)</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Beach driving / tolls — what should guests know about Daytona's drive-on beach?</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Are beach chairs, umbrellas, or toys included? Rental partners you recommend?</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Pool / hot tub rules — kids unsupervised? Glass? Food?</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Grills — bring one, use the building's, or not allowed?</label><textarea></textarea></div>
-  </section>
-
-  <section class="card" id="s7">
-    <div class="section-header"><div class="section-number">07</div><h2 class="section-title">Pets, Parties &amp; House Rules</h2></div>
     <div class="question">
-      <label class="q-label">Pets allowed?</label>
-      <div class="options"><label><input type="radio" name="q7_pets"> Yes</label><label><input type="radio" name="q7_pets"> No</label></div>
-      <textarea placeholder="If yes: number, size, breed limits, pet fee, building's pet rules in common areas..."></textarea>
+      <label class="q-label">Smart lock brand preference</label>
+      <span class="q-context">Given we said we'd send recommendations — we lean toward Schlage Encode Plus or Yale Assure 2 for coastal durability. Any preference, or want us to choose?</span>
+      <div class="options">
+        <label><input type="radio" name="lock_brand"> Pick for me</label>
+        <label><input type="radio" name="lock_brand"> I have one in mind (below)</label>
+      </div>
+      <input type="text" placeholder="Brand/model if you've picked one..." />
     </div>
-    <div class="question"><label class="q-label">Smoking / vaping — inside? Balcony? Anywhere on the property?</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Parties / gatherings / day guests — allowed, capped, banned?</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Prom / youth groups / Spring Break / Bike Week — your stance</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">First-warning vs. eviction threshold for noise / occupancy / pet violations</label><textarea></textarea></div>
+
+    <div class="question">
+      <label class="q-label">Checkout task list for guests</label>
+      <span class="q-hint">Common items: take out trash, start dishwasher, strip linens, set thermostat to X, lock balcony slider, return parking pass to front desk. What's your list?</span>
+      <textarea></textarea>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Fee if the guest doesn't return the parking pass (or other access items)</label>
+      <input type="text" placeholder="e.g., $50" />
+    </div>
+
+    <div class="question">
+      <label class="q-label">Can guests drop off luggage early (before 4 PM) at the front desk?</label>
+      <textarea></textarea>
+    </div>
   </section>
 
+  <!-- Section 4: In-Unit -->
+  <section class="card" id="s4">
+    <div class="section-header"><div class="section-number">04</div><h2 class="section-title">In-Unit Details</h2></div>
+    <p class="section-blurb">Most of these you'll fill in once you're physically in the unit in June — drop notes here as you go.</p>
+
+    <div class="question">
+      <label class="q-label">Floor / unit number / building wing</label>
+      <input type="text" />
+    </div>
+    <div class="question">
+      <label class="q-label">WiFi network name &amp; password</label>
+      <span class="q-hint">If still using the old owner's setup, we'd recommend a fresh router (eero or UniFi) before going live.</span>
+      <input type="text" />
+    </div>
+    <div class="question">
+      <label class="q-label">TV setup — provider, streaming apps preloaded, where remotes/instructions live</label>
+      <textarea></textarea>
+    </div>
+    <div class="question">
+      <label class="q-label">Thermostat — brand, idle setting between guests, range guests can adjust</label>
+      <textarea></textarea>
+    </div>
+    <div class="question">
+      <label class="q-label">Beach towels stocked? Outdoor shower / foot wash available?</label>
+      <textarea></textarea>
+    </div>
+    <div class="question">
+      <label class="q-label">Balcony rules — items allowed, hanging towels, smoking, kids unsupervised</label>
+      <textarea></textarea>
+    </div>
+  </section>
+
+  <!-- Section 5: Pool / Beach -->
+  <section class="card" id="s5">
+    <div class="section-header"><div class="section-number">05</div><h2 class="section-title">Pool, Beach &amp; Amenities</h2></div>
+
+    <div class="question">
+      <label class="q-label">Pool / hot tub — heated? Seasonal? Building-set hours?</label>
+      <textarea></textarea>
+    </div>
+    <div class="question">
+      <label class="q-label">Fitness center hours &amp; access (fob required? wristband?)</label>
+      <textarea></textarea>
+    </div>
+    <div class="question">
+      <label class="q-label">Path from the unit to the beach — walkway, crossover, gate code?</label>
+      <textarea></textarea>
+    </div>
+    <div class="question">
+      <label class="q-label">Daytona drive-on-beach — anything guests should know (tolls, hours, where to enter)?</label>
+      <textarea></textarea>
+    </div>
+    <div class="question">
+      <label class="q-label">Beach chairs, umbrellas, or toys included in the unit? Any local rental partners you'd recommend?</label>
+      <textarea></textarea>
+    </div>
+    <div class="question">
+      <label class="q-label">Grills — bring one, building grills available, or not allowed?</label>
+      <textarea></textarea>
+    </div>
+  </section>
+
+  <!-- Section 6: House Rules -->
+  <section class="card" id="s6">
+    <div class="section-header"><div class="section-number">06</div><h2 class="section-title">House Rules &amp; Event Weeks</h2></div>
+
+    <div class="question">
+      <label class="q-label">Smoking / vaping — your rule</label>
+      <span class="q-hint">Inside? Balcony? Anywhere on property? What's the fine if violated?</span>
+      <textarea></textarea>
+    </div>
+    <div class="question">
+      <label class="q-label">Parties / day guests / extra visitors — allowed, capped, banned?</label>
+      <textarea></textarea>
+    </div>
+    <div class="question">
+      <label class="q-label">Spring Break / prom-aged groups — your stance</label>
+      <span class="q-context">Given you flagged 25-and-up minimum and strict screening, we'd treat this as an auto-decline for group bookings under 25. Confirm?</span>
+      <textarea></textarea>
+    </div>
+    <div class="question">
+      <label class="q-label">Bike Week, Daytona 500, Speedweek bookings — anything to flag beyond premium pricing?</label>
+      <span class="q-hint">e.g., extra deposit, no big groups, no trailers if parking can't fit.</span>
+      <textarea></textarea>
+    </div>
+    <div class="question">
+      <label class="q-label">First-warning vs. eviction threshold for noise, occupancy, or rule violations</label>
+      <textarea></textarea>
+    </div>
+  </section>
+
+  <!-- Section 7: Hurricanes -->
+  <section class="card" id="s7">
+    <div class="section-header"><div class="section-number">07</div><h2 class="section-title">Hurricanes &amp; Outages</h2></div>
+    <p class="section-blurb">You're oceanfront in Florida going live just as hurricane season starts (June–Nov). This needs a clear policy before the first storm.</p>
+
+    <div class="question">
+      <label class="q-label">Hurricane / tropical storm policy — at what NHC trigger do you act, and what do you offer?</label>
+      <span class="q-hint">Common policies: full refund at named-storm watch within 72h, or future credit only, or stick to platform default. Your call.</span>
+      <textarea></textarea>
+    </div>
+    <div class="question">
+      <label class="q-label">Pre-storm prep checklist for guests already in the unit</label>
+      <span class="q-hint">Balcony furniture inside, shutters, unplug electronics, fill bathtub, etc.</span>
+      <textarea></textarea>
+    </div>
+    <div class="question">
+      <label class="q-label">Red tide / beach closures / bacteria advisories — how do you want this communicated, and is there any compensation?</label>
+      <textarea></textarea>
+    </div>
+    <div class="question">
+      <label class="q-label">Building amenity outage (pool, hot tub, elevator, gym) — comp policy?</label>
+      <textarea></textarea>
+    </div>
+    <div class="question">
+      <label class="q-label">Trip insurance — required, recommended, or no mention?</label>
+      <textarea></textarea>
+    </div>
+  </section>
+
+  <!-- Section 8: Compensation & Escalation Thresholds -->
   <section class="card" id="s8">
-    <div class="section-header"><div class="section-number">08</div><h2 class="section-title">Weather &amp; Outages</h2></div>
-    <div class="question"><label class="q-label">Hurricane / tropical storm policy (refund, credit, reschedule)? At what NHC level do you act?</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Pre-storm prep guests should do (balcony furniture, shutters, power-down)</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Red tide / beach closures / bacteria advisories — how you communicate and whether compensation applies</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Building amenity outage (pool, hot tub, elevator, gym) — how guests are notified, what compensation if any</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Power / water / internet outage — who guests contact, what's tracked</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Trip insurance — offered? Required? Recommended?</label><textarea></textarea></div>
+    <div class="section-header"><div class="section-number">08</div><h2 class="section-title">Compensation &amp; Escalation Thresholds</h2></div>
+    <p class="section-blurb">We run the day-to-day playbooks (injury reports, A/C troubleshooting, pest complaints, lost &amp; found, refund requests). These questions set the guardrails so we know when to act vs. when to escalate to you.</p>
+
+    <div class="question">
+      <label class="q-label">When can we offer compensation without checking with you?</label>
+      <span class="q-hint">Most premium hosts set a ceiling — e.g., we can comp up to $100 or 10% of nightly rate for things like a brief A/C issue, missing towels, late cleaner. Above that, we ask first.</span>
+      <textarea placeholder="e.g., 'Up to $150 without asking. Anything above, call me first.'"></textarea>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Compensation menu preference</label>
+      <span class="q-hint">When something goes wrong and a partial refund isn't the right answer, what do you want us to offer?</span>
+      <div class="options">
+        <label><input type="checkbox"> Partial refund</label>
+        <label><input type="checkbox"> Future-stay credit</label>
+        <label><input type="checkbox"> Free late checkout</label>
+        <label><input type="checkbox"> Grocery / restaurant gift card</label>
+        <label><input type="checkbox"> Whatever feels right within ceiling</label>
+      </div>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Post-stay refund requests — your default posture</label>
+      <span class="q-context">Given strict screening + premium positioning, most post-stay refund asks should be denied. We'll still escalate clear-cut ones (e.g., major outage we documented). Confirm posture.</span>
+      <div class="options">
+        <label><input type="radio" name="refund_posture"> Deny unless documented failure on our end</label>
+        <label><input type="radio" name="refund_posture"> Escalate everything to me</label>
+        <label><input type="radio" name="refund_posture"> Use your judgment within the ceiling above</label>
+      </div>
+    </div>
+
+    <div class="question">
+      <label class="q-label">When a guest reports an injury on property — how involved do you want to be?</label>
+      <div class="options">
+        <label><input type="radio" name="injury_protocol"> Notify me immediately, every time</label>
+        <label><input type="radio" name="injury_protocol"> Notify me only if 911 was called or property liability is involved</label>
+        <label><input type="radio" name="injury_protocol"> Document and handle; weekly summary is fine</label>
+      </div>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Lost &amp; found — return shipping</label>
+      <span class="q-hint">Most hosts charge guest for return shipping + a small handling fee. Confirm your approach.</span>
+      <textarea placeholder="e.g., 'Guest pays shipping + $15 handling. Items held 30 days then donated.'"></textarea>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Damage workflow — when do you want to be looped in?</label>
+      <div class="options">
+        <label><input type="radio" name="damage_loop"> Anything over $X — tell me first</label>
+        <label><input type="radio" name="damage_loop"> File Resolution Center / Vrbo claim and notify me</label>
+        <label><input type="radio" name="damage_loop"> Always loop me before filing</label>
+      </div>
+      <input type="text" placeholder="$ threshold if applicable" />
+    </div>
+
+    <div class="question">
+      <label class="q-label">Maintenance vendor contacts — A/C, plumbing, appliances, locksmith</label>
+      <span class="q-context">Given we troubleshoot guest-reported issues and dispatch when needed — we need the actual numbers to call. If you don't have these yet, "TBD" is fine.</span>
+      <textarea></textarea>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Pest control — building-provided or your own vendor?</label>
+      <textarea></textarea>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Long-term rentals (30+ nights) — open to them?</label>
+      <span class="q-hint">Common ask, especially in shoulder season. Yes can unlock monthly snowbird bookings; no keeps things simple.</span>
+      <div class="options">
+        <label><input type="radio" name="long_term"> Yes, at a monthly discount</label>
+        <label><input type="radio" name="long_term"> Yes, full rate</label>
+        <label><input type="radio" name="long_term"> No</label>
+      </div>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Pre-booking property tours — allow them?</label>
+      <span class="q-hint">Guests occasionally ask to walk through before booking. Most premium hosts politely decline.</span>
+      <div class="options">
+        <label><input type="radio" name="pre_tour"> No tours</label>
+        <label><input type="radio" name="pre_tour"> Case-by-case (escalate to me)</label>
+      </div>
+    </div>
   </section>
 
+  <!-- Section 9: Guest Journey Messaging -->
   <section class="card" id="s9">
-    <div class="section-header"><div class="section-number">09</div><h2 class="section-title">Cleaning &amp; Maintenance</h2></div>
-    <div class="question"><label class="q-label">Cleaning company / lead cleaner contact</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Turnover window between guests &amp; standard checklist highlights</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Cleaning fee — what's it cover, mandatory?</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Maintenance vendor contacts (A/C, plumbing, appliances, locks)</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Pest control — how complaints (cockroaches, ants, sand fleas) are handled</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Lost &amp; found process</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">A/C drain backups, sticky locks, rusted hardware — anything coastal-specific to flag</label><textarea></textarea></div>
+    <div class="section-header"><div class="section-number">09</div><h2 class="section-title">Guest Journey Messaging</h2></div>
+    <p class="section-blurb">We draft every guest-facing message; you give a thumbs-up. These choices shape the templates we build. Defaults shown — flip anything you want different.</p>
+
+    <div class="question">
+      <label class="q-label">Information we collect after booking</label>
+      <span class="q-hint">We always collect what the HOA needs (guest name for parking pass). Anything else you want?</span>
+      <div class="options">
+        <label><input type="checkbox"> All guest names &amp; ages</label>
+        <label><input type="checkbox"> Number of adults / children</label>
+        <label><input type="checkbox"> Vehicle make/model + plate</label>
+        <label><input type="checkbox"> Photo ID of booker</label>
+        <label><input type="checkbox"> Purpose of stay</label>
+        <label><input type="checkbox"> Email + phone (always)</label>
+      </div>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Signed rental agreement — required?</label>
+      <div class="options">
+        <label><input type="radio" name="rental_agreement"> Yes, every booking</label>
+        <label><input type="radio" name="rental_agreement"> Only direct bookings</label>
+        <label><input type="radio" name="rental_agreement"> No</label>
+      </div>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Block access codes until guest completes required steps?</label>
+      <span class="q-hint">e.g., access details only release after rental agreement signed + ID submitted + balance paid.</span>
+      <div class="options">
+        <label><input type="radio" name="block_access"> Yes, block until complete</label>
+        <label><input type="radio" name="block_access"> Send reminders but don't block</label>
+      </div>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Booking confirmation message — anything specific you want it to say beyond standard welcome?</label>
+      <textarea placeholder="Leave blank to use Besty's standard premium-host template..."></textarea>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Pre-arrival check-in instructions — how far in advance?</label>
+      <div class="options">
+        <label><input type="radio" name="prearrival_timing"> 7 days before</label>
+        <label><input type="radio" name="prearrival_timing"> 3 days before</label>
+        <label><input type="radio" name="prearrival_timing"> 24 hours before (most secure)</label>
+      </div>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Check-in day SMS — what to include</label>
+      <div class="options">
+        <label><input type="checkbox"> Welcome message</label>
+        <label><input type="checkbox"> Property address</label>
+        <label><input type="checkbox"> Smart lock code</label>
+        <label><input type="checkbox"> Building entry code</label>
+        <label><input type="checkbox"> WiFi name + password</label>
+        <label><input type="checkbox"> Parking instructions</label>
+        <label><input type="checkbox"> 24/7 contact number</label>
+      </div>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Post-arrival "rate the home" message — send one?</label>
+      <span class="q-hint">A short message ~2 hours after check-in asking the guest to rate the home 1–5. Surfaces issues early so we can fix mid-stay.</span>
+      <div class="options">
+        <label><input type="radio" name="rate_message"> Yes</label>
+        <label><input type="radio" name="rate_message"> No</label>
+      </div>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Mid-stay check-in message — send one?</label>
+      <div class="options">
+        <label><input type="radio" name="midstay"> Yes — day 3 or midpoint</label>
+        <label><input type="radio" name="midstay"> No</label>
+      </div>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Hurricane-season acknowledgment for June–Nov bookings</label>
+      <span class="q-context">Given you're oceanfront in FL — recommended. Short checkbox at booking confirming guest understands policy.</span>
+      <div class="options">
+        <label><input type="radio" name="hurricane_ack"> Yes, require it</label>
+        <label><input type="radio" name="hurricane_ack"> No</label>
+      </div>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Trip insurance / partner offers — promote in messages?</label>
+      <div class="options">
+        <label><input type="checkbox"> Trip insurance</label>
+        <label><input type="checkbox"> Beach chair / umbrella rental partner</label>
+        <label><input type="checkbox"> Local restaurant promos</label>
+        <label><input type="checkbox"> None — keep messages clean</label>
+      </div>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Tone for guest messaging</label>
+      <div class="options">
+        <label><input type="radio" name="tone"> Warm but professional (default)</label>
+        <label><input type="radio" name="tone"> Crisp / hotel-style</label>
+        <label><input type="radio" name="tone"> Casual / friendly</label>
+      </div>
+      <textarea placeholder="Phrases you always use or want avoided..."></textarea>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Property address sharing — when do we share it?</label>
+      <div class="options">
+        <label><input type="radio" name="address_share"> After booking confirmed</label>
+        <label><input type="radio" name="address_share"> Only with pre-arrival instructions (24h before)</label>
+        <label><input type="radio" name="address_share"> Never share publicly — only direct/confirmed guests</label>
+      </div>
+    </div>
   </section>
 
+  <!-- Section 10: Common Guest Questions -->
   <section class="card" id="s10">
-    <div class="section-header"><div class="section-number">10</div><h2 class="section-title">Guest Journey &amp; Messaging</h2></div>
-    <p class="section-blurb">Automated touches across the stay.</p>
-    <div class="question"><label class="q-label">Booking confirmation message — what should it say?</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Pre-arrival check-in instructions — how many days before, what's included?</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Do you require a signed rental agreement / verified ID / full payment before releasing access details?</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Hurricane-season acknowledgment (June–Nov) — needed? What does it include?</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Check-in day SMS — welcome, contact #, address, access code, WiFi, parking?</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Mid-stay check-in — when, what does it ask?</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Checkout reminder — how far ahead, what's in it?</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Post-stay review request — timing &amp; template</label><textarea></textarea></div>
-    <div class="question"><label class="q-label">Rules around sharing the exact property address (pre-booking, post-booking, OTAs)</label><textarea></textarea></div>
+    <div class="section-header"><div class="section-number">10</div><h2 class="section-title">Common Guest Questions</h2></div>
+    <p class="section-blurb">These come up constantly. Quick yes/no's now save the guest a wait and us a phone call.</p>
+
+    <div class="question">
+      <label class="q-label">Safe in the home for valuables?</label>
+      <div class="options">
+        <label><input type="radio" name="safe"> Yes</label>
+        <label><input type="radio" name="safe"> No</label>
+      </div>
+      <input type="text" placeholder="If yes — location &amp; code reset process" />
+    </div>
+
+    <div class="question">
+      <label class="q-label">Military discount — offer one?</label>
+      <div class="options">
+        <label><input type="radio" name="military"> Yes — % off</label>
+        <label><input type="radio" name="military"> No</label>
+      </div>
+      <input type="text" placeholder="% if yes" />
+    </div>
+
+    <div class="question">
+      <label class="q-label">Day guests / visitors not on the booking — allowed?</label>
+      <span class="q-hint">e.g., friend stops by for the afternoon, family for a beach day. Building may have rules; this is your overlay.</span>
+      <div class="options">
+        <label><input type="radio" name="day_guests"> Yes, no limit (within max occupancy)</label>
+        <label><input type="radio" name="day_guests"> Yes, but notify us</label>
+        <label><input type="radio" name="day_guests"> No</label>
+      </div>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Where do guests put stripped sheets at checkout?</label>
+      <input type="text" placeholder="e.g., 'pile on bedroom floor' or 'leave on beds'" />
+    </div>
+
+    <div class="question">
+      <label class="q-label">Trash location at end of stay</label>
+      <span class="q-hint">Trash chute on each floor? Dumpster outside? Hours restrictions?</span>
+      <textarea></textarea>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Storing guest vehicle while they go on a cruise (Port Canaveral is ~1.5 hrs south)</label>
+      <span class="q-hint">Comes up surprisingly often in coastal FL. Yes can be a paid upsell; no avoids parking-pass complications.</span>
+      <div class="options">
+        <label><input type="radio" name="cruise_park"> Yes — paid add-on</label>
+        <label><input type="radio" name="cruise_park"> Yes — included if it fits the parking spot</label>
+        <label><input type="radio" name="cruise_park"> No</label>
+      </div>
+    </div>
+
+    <div class="question">
+      <label class="q-label">In-home services (extra cleans, fridge stocking, in-home massage) — offer or refer out?</label>
+      <textarea></textarea>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Liability insurance certificate — do you have one available to share if a guest or building asks?</label>
+      <div class="options">
+        <label><input type="radio" name="liability_doc"> Yes — can share on request</label>
+        <label><input type="radio" name="liability_doc"> Not yet — getting it</label>
+      </div>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Nearest airport guests should use — your preference</label>
+      <span class="q-hint">DAB (Daytona Beach) is closest; MCO (Orlando) has more flights; SFB (Sanford) is the budget option. Most hosts recommend MCO + DAB.</span>
+      <input type="text" />
+    </div>
   </section>
 
+  <!-- Section 11: Cameras -->
   <section class="card" id="s11">
-    <div class="section-header"><div class="section-number">11</div><h2 class="section-title">Systems &amp; Sign-Ins</h2></div>
-    <p class="section-blurb">Check what you use. Credentials &amp; 2FA can be shared separately via a password manager.</p>
+    <div class="section-header"><div class="section-number">11</div><h2 class="section-title">Cameras &amp; Monitoring</h2></div>
 
-    <div class="tool-block">
-      <h4 class="tool-q">PMS</h4>
-      <div class="tool-grid">
-        <label><input type="checkbox"> Hostfully</label><label><input type="checkbox"> Guesty</label>
-        <label><input type="checkbox"> Hostaway</label><label><input type="checkbox"> OwnerRez</label>
-        <label><input type="checkbox"> Lodgify</label><label><input type="checkbox"> Hospitable</label>
-        <label><input type="checkbox"> iGMS</label><label><input type="checkbox"> Smoobu</label>
-        <label><input type="checkbox"> Uplisting</label><label><input type="checkbox"> Streamline</label>
-        <label><input type="checkbox"> Track</label><label><input type="checkbox"> Escapia</label>
-        <label><input type="checkbox"> Barefoot</label><label><input type="checkbox"> LiveRez</label>
-        <label><input type="checkbox"> BookingSync</label><label><input type="checkbox"> None</label>
-      </div>
-      <div class="other-input"><label>Other:</label><input type="text" /></div>
-      <div class="followup">
-        <p class="followup-title">Access</p>
-        <div class="options">
-          <label><input type="checkbox"> Login URL</label><label><input type="checkbox"> Username</label>
-          <label><input type="checkbox"> Password</label><label><input type="checkbox"> 2FA enabled</label>
-          <label><input type="checkbox"> Recovery codes</label><label><input type="checkbox"> SSO</label>
-        </div>
-        <textarea placeholder="URL, username, 2FA method, notes..."></textarea>
-      </div>
-    </div>
-
-    <div class="tool-block">
-      <h4 class="tool-q">OTAs / Booking Channels</h4>
-      <div class="tool-grid">
-        <label><input type="checkbox"> Direct site</label><label><input type="checkbox"> Airbnb</label>
-        <label><input type="checkbox"> Vrbo</label><label><input type="checkbox"> Booking.com</label>
-        <label><input type="checkbox"> Expedia</label><label><input type="checkbox"> Google VR</label>
-        <label><input type="checkbox"> Tripadvisor</label><label><input type="checkbox"> Marriott H&amp;V</label>
-        <label><input type="checkbox"> Hopper</label><label><input type="checkbox"> Whimstay</label>
-        <label><input type="checkbox"> Furnished Finder</label><label><input type="checkbox"> None</label>
-      </div>
-      <div class="other-input"><label>Other:</label><input type="text" /></div>
-      <div class="followup">
-        <p class="followup-title">Access</p>
-        <div class="options">
-          <label><input type="checkbox"> Login URL</label><label><input type="checkbox"> Username</label>
-          <label><input type="checkbox"> Password</label><label><input type="checkbox"> 2FA enabled</label>
-          <label><input type="checkbox"> Recovery codes</label><label><input type="checkbox"> SSO</label>
-        </div>
-        <textarea></textarea>
-      </div>
-    </div>
-
-    <div class="tool-block">
-      <h4 class="tool-q">Guidebook Tool</h4>
-      <div class="tool-grid">
-        <label><input type="checkbox"> Besty</label><label><input type="checkbox"> Hostfully Guidebooks</label>
-        <label><input type="checkbox"> Touch Stay</label><label><input type="checkbox"> RueBaRue</label>
-        <label><input type="checkbox"> Enso Connect</label><label><input type="checkbox"> DACK</label>
-        <label><input type="checkbox"> Duve</label><label><input type="checkbox"> Breezeway Guide</label>
-        <label><input type="checkbox"> Custom / PDF</label><label><input type="checkbox"> PMS-built</label>
+    <div class="question">
+      <label class="q-label">Do you plan to install any cameras or noise monitors?</label>
+      <span class="q-hint">Exterior doorbell cam is common &amp; allowed. Indoor cameras are not (Airbnb prohibits them). Noise monitors (NoiseAware, Minut) are legal and very useful in condos.</span>
+      <div class="options">
+        <label><input type="checkbox"> Doorbell / front door exterior cam</label>
+        <label><input type="checkbox"> Noise monitor (recommend NoiseAware or Minut)</label>
+        <label><input type="checkbox"> Building cameras only (already in place)</label>
         <label><input type="checkbox"> None</label>
       </div>
-      <div class="other-input"><label>Other:</label><input type="text" /></div>
-      <div class="followup">
-        <p class="followup-title">Access</p>
-        <div class="options">
-          <label><input type="checkbox"> Login URL</label><label><input type="checkbox"> Username</label>
-          <label><input type="checkbox"> Password</label><label><input type="checkbox"> 2FA enabled</label>
-          <label><input type="checkbox"> SSO</label>
-        </div>
-        <textarea></textarea>
-      </div>
     </div>
 
-    <div class="tool-block">
-      <h4 class="tool-q">Phone System</h4>
-      <div class="tool-grid">
-        <label><input type="checkbox"> Besty</label><label><input type="checkbox"> OpenPhone</label>
-        <label><input type="checkbox"> Grasshopper</label><label><input type="checkbox"> Aircall</label>
-        <label><input type="checkbox"> RingCentral</label><label><input type="checkbox"> Dialpad</label>
-        <label><input type="checkbox"> Google Voice</label><label><input type="checkbox"> Zoom Phone</label>
-        <label><input type="checkbox"> JustCall</label><label><input type="checkbox"> Twilio</label>
-        <label><input type="checkbox"> Personal cell</label><label><input type="checkbox"> PMS inbox only</label>
-        <label><input type="checkbox"> None</label>
-      </div>
-      <div class="other-input"><label>Other:</label><input type="text" /></div>
-      <div class="followup">
-        <p class="followup-title">Access</p>
-        <div class="options">
-          <label><input type="checkbox"> Login URL</label><label><input type="checkbox"> Username</label>
-          <label><input type="checkbox"> Password</label><label><input type="checkbox"> 2FA enabled</label>
-          <label><input type="checkbox"> SSO</label>
-        </div>
-        <textarea></textarea>
-      </div>
+    <div class="question">
+      <label class="q-label">If yes to cameras — how often will you check them, and what's the disclosure language you want in the listing?</label>
+      <span class="q-context">Airbnb / Vrbo require disclosure of any exterior camera in the listing. We'll draft language; this confirms your stance.</span>
+      <textarea></textarea>
     </div>
+  </section>
 
-    <div class="tool-block">
-      <h4 class="tool-q">Customer Service Email</h4>
-      <div class="tool-grid">
-        <label><input type="checkbox"> Gmail</label><label><input type="checkbox"> Google Workspace</label>
-        <label><input type="checkbox"> Outlook</label><label><input type="checkbox"> Front</label>
-        <label><input type="checkbox"> Zendesk</label><label><input type="checkbox"> Help Scout</label>
-        <label><input type="checkbox"> Freshdesk</label><label><input type="checkbox"> Intercom</label>
-        <label><input type="checkbox"> HubSpot</label><label><input type="checkbox"> PMS inbox</label>
-        <label><input type="checkbox"> None</label>
-      </div>
-      <div class="other-input"><label>Other:</label><input type="text" /></div>
-      <div class="followup">
-        <p class="followup-title">Access</p>
-        <div class="options">
-          <label><input type="checkbox"> Login URL</label><label><input type="checkbox"> Username</label>
-          <label><input type="checkbox"> Password</label><label><input type="checkbox"> 2FA enabled</label>
-          <label><input type="checkbox"> SSO</label>
-        </div>
-        <textarea></textarea>
-      </div>
+  <!-- Section 12: Systems & Open Items -->
+  <section class="card" id="s12">
+    <div class="section-header"><div class="section-number">12</div><h2 class="section-title">Systems &amp; Open Items</h2></div>
+    <p class="section-blurb">MSA is signed — we'll walk through Airbnb/Vrbo authentication and the rest of the logins on Monday's call. A couple of advance items below.</p>
+
+    <div class="question">
+      <label class="q-label">Anything outside Airbnb / Vrbo we should know about?</label>
+      <span class="q-hint">PriceLabs login if you've started one, existing Stripe account, accounting software, etc.</span>
+      <textarea></textarea>
     </div>
-
-    <div class="tool-block">
-      <h4 class="tool-q">Cleaner Coordination &amp; Scheduling</h4>
-      <div class="tool-grid">
-        <label><input type="checkbox"> Turno</label><label><input type="checkbox"> Breezeway</label>
-        <label><input type="checkbox"> Properly</label><label><input type="checkbox"> ResortCleaning</label>
-        <label><input type="checkbox"> Operto Teams</label><label><input type="checkbox"> Doinn</label>
-        <label><input type="checkbox"> Asana</label><label><input type="checkbox"> Slack</label>
-        <label><input type="checkbox"> WhatsApp</label><label><input type="checkbox"> Google Sheets</label>
-        <label><input type="checkbox"> PMS task system</label><label><input type="checkbox"> Text / calls</label>
-        <label><input type="checkbox"> None</label>
-      </div>
-      <div class="other-input"><label>Other:</label><input type="text" /></div>
-      <div class="followup">
-        <p class="followup-title">Access</p>
-        <div class="options">
-          <label><input type="checkbox"> Login URL</label><label><input type="checkbox"> Username</label>
-          <label><input type="checkbox"> Password</label><label><input type="checkbox"> 2FA enabled</label>
-          <label><input type="checkbox"> SSO</label>
-        </div>
-        <textarea></textarea>
-      </div>
+    <div class="question">
+      <label class="q-label">Tax registration status — DBPR, Volusia County TDT, Florida DOR sales tax</label>
+      <span class="q-context">Given the LLC is set up, we want to confirm the tax registrations are in flight before bookings start collecting tax.</span>
+      <textarea></textarea>
     </div>
-
-    <div class="tool-block">
-      <h4 class="tool-q">Maintenance / Work Orders</h4>
-      <div class="tool-grid">
-        <label><input type="checkbox"> Breezeway</label><label><input type="checkbox"> Property Meld</label>
-        <label><input type="checkbox"> Latchel</label><label><input type="checkbox"> Asana</label>
-        <label><input type="checkbox"> Monday.com</label><label><input type="checkbox"> ClickUp</label>
-        <label><input type="checkbox"> Trello</label><label><input type="checkbox"> Google Sheets</label>
-        <label><input type="checkbox"> PMS task system</label><label><input type="checkbox"> WhatsApp / Email</label>
-        <label><input type="checkbox"> None</label>
-      </div>
-      <div class="other-input"><label>Other:</label><input type="text" /></div>
-      <div class="followup">
-        <p class="followup-title">Access</p>
-        <div class="options">
-          <label><input type="checkbox"> Login URL</label><label><input type="checkbox"> Username</label>
-          <label><input type="checkbox"> Password</label><label><input type="checkbox"> 2FA enabled</label>
-          <label><input type="checkbox"> SSO</label>
-        </div>
-        <textarea></textarea>
-      </div>
-    </div>
-
-    <div class="tool-block">
-      <h4 class="tool-q">Smart Lock / Access</h4>
-      <div class="tool-grid">
-        <label><input type="checkbox"> Schlage</label><label><input type="checkbox"> Yale</label>
-        <label><input type="checkbox"> August</label><label><input type="checkbox"> Kwikset</label>
-        <label><input type="checkbox"> RemoteLock</label><label><input type="checkbox"> Lynx</label>
-        <label><input type="checkbox"> Operto</label><label><input type="checkbox"> Jervis</label>
-        <label><input type="checkbox"> Brivo</label><label><input type="checkbox"> IglooHome</label>
-        <label><input type="checkbox"> Lockly</label><label><input type="checkbox"> ResortLock</label>
-        <label><input type="checkbox"> Physical keys</label><label><input type="checkbox"> Front desk / keycards</label>
-        <label><input type="checkbox"> None</label>
-      </div>
-      <div class="other-input"><label>Other:</label><input type="text" /></div>
-      <div class="followup">
-        <p class="followup-title">Access</p>
-        <div class="options">
-          <label><input type="checkbox"> Login URL</label><label><input type="checkbox"> Username</label>
-          <label><input type="checkbox"> Password</label><label><input type="checkbox"> 2FA enabled</label>
-          <label><input type="checkbox"> SSO</label>
-        </div>
-        <textarea></textarea>
-      </div>
-    </div>
-
-    <div class="tool-block">
-      <h4 class="tool-q">Cameras</h4>
-      <div class="tool-grid">
-        <label><input type="checkbox"> Arlo</label><label><input type="checkbox"> Ring</label>
-        <label><input type="checkbox"> Nest</label><label><input type="checkbox"> Blink</label>
-        <label><input type="checkbox"> Wyze</label><label><input type="checkbox"> Reolink</label>
-        <label><input type="checkbox"> Eufy</label><label><input type="checkbox"> UniFi Protect</label>
-        <label><input type="checkbox"> Building only</label><label><input type="checkbox"> None</label>
-      </div>
-      <div class="other-input"><label>Other:</label><input type="text" /></div>
-      <div class="followup">
-        <p class="followup-title">Access &amp; disclosure</p>
-        <div class="options">
-          <label><input type="checkbox"> Login URL</label><label><input type="checkbox"> Username</label>
-          <label><input type="checkbox"> Password</label><label><input type="checkbox"> 2FA enabled</label>
-          <label><input type="checkbox"> Disclosure in listing</label>
-        </div>
-        <textarea placeholder="Camera locations &amp; your written disclosure to guests..."></textarea>
-      </div>
-    </div>
-
-    <div class="tool-block">
-      <h4 class="tool-q">Noise Monitoring</h4>
-      <div class="tool-grid">
-        <label><input type="checkbox"> NoiseAware</label><label><input type="checkbox"> Minut</label>
-        <label><input type="checkbox"> Roomonitor</label><label><input type="checkbox"> Alertify</label>
-        <label><input type="checkbox"> Wynd Sentry</label><label><input type="checkbox"> None</label>
-      </div>
-      <div class="other-input"><label>Other:</label><input type="text" /></div>
-      <div class="followup">
-        <p class="followup-title">Access</p>
-        <div class="options">
-          <label><input type="checkbox"> Login URL</label><label><input type="checkbox"> Username</label>
-          <label><input type="checkbox"> Password</label><label><input type="checkbox"> 2FA enabled</label>
-        </div>
-        <textarea></textarea>
-      </div>
-    </div>
-
-    <div class="tool-block">
-      <h4 class="tool-q">Dynamic Pricing</h4>
-      <div class="tool-grid">
-        <label><input type="checkbox"> PriceLabs</label><label><input type="checkbox"> Beyond</label>
-        <label><input type="checkbox"> Wheelhouse</label><label><input type="checkbox"> Rented</label>
-        <label><input type="checkbox"> KeyData</label><label><input type="checkbox"> AirDNA</label>
-        <label><input type="checkbox"> PMS-built</label><label><input type="checkbox"> Manual</label>
-        <label><input type="checkbox"> None</label>
-      </div>
-      <div class="other-input"><label>Other:</label><input type="text" /></div>
-      <div class="followup">
-        <p class="followup-title">Access</p>
-        <div class="options">
-          <label><input type="checkbox"> Login URL</label><label><input type="checkbox"> Username</label>
-          <label><input type="checkbox"> Password</label><label><input type="checkbox"> 2FA enabled</label>
-          <label><input type="checkbox"> SSO</label>
-        </div>
-        <textarea></textarea>
-      </div>
-    </div>
-
-    <div class="tool-block">
-      <h4 class="tool-q">Deposits, Damage Waivers &amp; Guest Screening</h4>
-      <div class="tool-grid">
-        <label><input type="checkbox"> Stripe</label><label><input type="checkbox"> Waivo</label>
-        <label><input type="checkbox"> Safely</label><label><input type="checkbox"> Superhog / KYG</label>
-        <label><input type="checkbox"> Autohost</label><label><input type="checkbox"> Truvi</label>
-        <label><input type="checkbox"> Chekin</label><label><input type="checkbox"> Airbnb Resolution Center</label>
-        <label><input type="checkbox"> Vrbo deposits</label><label><input type="checkbox"> PMS-built</label>
-        <label><input type="checkbox"> None</label>
-      </div>
-      <div class="other-input"><label>Other:</label><input type="text" /></div>
-      <div class="followup">
-        <p class="followup-title">Access</p>
-        <div class="options">
-          <label><input type="checkbox"> Login URL</label><label><input type="checkbox"> Username</label>
-          <label><input type="checkbox"> Password</label><label><input type="checkbox"> 2FA enabled</label>
-          <label><input type="checkbox"> SSO</label>
-        </div>
-        <textarea></textarea>
-      </div>
-    </div>
-
-    <div class="tool-block">
-      <h4 class="tool-q">WiFi / Network Management</h4>
-      <div class="tool-grid">
-        <label><input type="checkbox"> StayFi</label><label><input type="checkbox"> UniFi</label>
-        <label><input type="checkbox"> Eero</label><label><input type="checkbox"> Google Nest Wifi</label>
-        <label><input type="checkbox"> TP-Link Deco</label><label><input type="checkbox"> Meraki</label>
-        <label><input type="checkbox"> Plume</label><label><input type="checkbox"> ISP router only</label>
-        <label><input type="checkbox"> None</label>
-      </div>
-      <div class="other-input"><label>Other:</label><input type="text" /></div>
-      <div class="followup">
-        <p class="followup-title">Access</p>
-        <div class="options">
-          <label><input type="checkbox"> Login URL</label><label><input type="checkbox"> Username</label>
-          <label><input type="checkbox"> Password</label><label><input type="checkbox"> 2FA enabled</label>
-        </div>
-        <textarea></textarea>
-      </div>
-    </div>
-
-    <div class="tool-block">
-      <h4 class="tool-q">Thermostat / Energy</h4>
-      <div class="tool-grid">
-        <label><input type="checkbox"> Ecobee</label><label><input type="checkbox"> Nest</label>
-        <label><input type="checkbox"> Honeywell</label><label><input type="checkbox"> Sensi</label>
-        <label><input type="checkbox"> Minut</label><label><input type="checkbox"> Operto</label>
-        <label><input type="checkbox"> PointCentral</label><label><input type="checkbox"> None</label>
-      </div>
-      <div class="other-input"><label>Other:</label><input type="text" /></div>
-      <div class="followup">
-        <p class="followup-title">Access</p>
-        <div class="options">
-          <label><input type="checkbox"> Login URL</label><label><input type="checkbox"> Username</label>
-          <label><input type="checkbox"> Password</label><label><input type="checkbox"> 2FA enabled</label>
-        </div>
-        <textarea></textarea>
-      </div>
-    </div>
-
-    <div class="tool-block">
-      <h4 class="tool-q">Accounting &amp; Owner Reporting</h4>
-      <div class="tool-grid">
-        <label><input type="checkbox"> QuickBooks Online</label><label><input type="checkbox"> Xero</label>
-        <label><input type="checkbox"> Stessa</label><label><input type="checkbox"> Baselane</label>
-        <label><input type="checkbox"> Wave</label><label><input type="checkbox"> PMS owner statements</label>
-        <label><input type="checkbox"> External bookkeeper</label><label><input type="checkbox"> None</label>
-      </div>
-      <div class="other-input"><label>Other:</label><input type="text" /></div>
-      <div class="followup">
-        <p class="followup-title">Access</p>
-        <div class="options">
-          <label><input type="checkbox"> Login URL</label><label><input type="checkbox"> Username</label>
-          <label><input type="checkbox"> Password</label><label><input type="checkbox"> 2FA enabled</label>
-          <label><input type="checkbox"> SSO</label>
-        </div>
-        <textarea></textarea>
-      </div>
-    </div>
-
-    <div class="tool-block">
-      <h4 class="tool-q">HOA / Building Portals</h4>
-      <div class="tool-grid">
-        <label><input type="checkbox"> HOA owner portal</label><label><input type="checkbox"> Building management app</label>
-        <label><input type="checkbox"> Guest registration portal</label><label><input type="checkbox"> Parking pass portal</label>
-        <label><input type="checkbox"> None</label>
-      </div>
-      <div class="other-input"><label>Other:</label><input type="text" /></div>
-      <div class="followup">
-        <p class="followup-title">Access</p>
-        <div class="options">
-          <label><input type="checkbox"> Login URL</label><label><input type="checkbox"> Username</label>
-          <label><input type="checkbox"> Password</label><label><input type="checkbox"> 2FA enabled</label>
-        </div>
-        <textarea placeholder="One row per portal — URL + what it's used for..."></textarea>
-      </div>
-    </div>
-
-    <div class="tool-block">
-      <h4 class="tool-q">STR Compliance &amp; Tax Portals</h4>
-      <div class="tool-grid">
-        <label><input type="checkbox"> Florida DBPR</label><label><input type="checkbox"> Volusia County TDT</label>
-        <label><input type="checkbox"> Florida DOR (sales tax)</label><label><input type="checkbox"> Daytona Beach Shores city</label>
-        <label><input type="checkbox"> Avalara MyLodgeTax</label><label><input type="checkbox"> Hostfully tax module</label>
-        <label><input type="checkbox"> None</label>
-      </div>
-      <div class="other-input"><label>Other:</label><input type="text" /></div>
-      <div class="followup">
-        <p class="followup-title">Access</p>
-        <div class="options">
-          <label><input type="checkbox"> Login URL</label><label><input type="checkbox"> Username</label>
-          <label><input type="checkbox"> Password</label><label><input type="checkbox"> 2FA enabled</label>
-        </div>
-        <textarea></textarea>
-      </div>
-    </div>
-
-    <div class="tool-block">
-      <h4 class="tool-q">Utility Portals</h4>
-      <div class="tool-grid">
-        <label><input type="checkbox"> Florida Power &amp; Light (FPL)</label><label><input type="checkbox"> Daytona Beach Shores water</label>
-        <label><input type="checkbox"> Internet provider</label><label><input type="checkbox"> TV / streaming</label>
-        <label><input type="checkbox"> None</label>
-      </div>
-      <div class="other-input"><label>Other:</label><input type="text" /></div>
-      <div class="followup">
-        <p class="followup-title">Access</p>
-        <div class="options">
-          <label><input type="checkbox"> Login URL</label><label><input type="checkbox"> Username</label>
-          <label><input type="checkbox"> Password</label><label><input type="checkbox"> 2FA enabled</label>
-        </div>
-        <textarea></textarea>
-      </div>
+    <div class="question">
+      <label class="q-label">Anything else on your mind before our Monday 10:30 call?</label>
+      <textarea></textarea>
     </div>
   </section>
 
   <div class="submit-bar">
-    <h3>Done?</h3>
-    <p>Download your answers as a JSON file, or print the page to PDF and send it over.</p>
+    <h3>That's it.</h3>
+    <p>Download your answers as a JSON file, or print to PDF and email it back.</p>
     <button type="button" class="btn" onclick="downloadResponses()">Download Responses</button>
     <button type="button" class="btn secondary" onclick="window.print()">Print to PDF</button>
   </div>
@@ -905,13 +1064,13 @@
   function downloadResponses() {
     const form = document.getElementById('intakeForm');
     const responses = [];
-    const sections = form.querySelectorAll('section.card');
+    const sections = form.querySelectorAll('section.card, .recap');
     sections.forEach(section => {
-      const sectionTitle = section.querySelector('.section-title')?.textContent || 'Untitled';
+      const sectionTitle = section.querySelector('.section-title, h2')?.textContent || 'Untitled';
       const sectionData = { section: sectionTitle, items: [] };
-      const items = section.querySelectorAll('.question, .tool-block');
+      const items = section.querySelectorAll('.question, .recap-confirm');
       items.forEach(q => {
-        const label = q.querySelector('.q-label, .tool-q')?.textContent.trim() || '';
+        const label = q.querySelector('.q-label, .rc-text')?.textContent.trim() || '';
         const checkboxes = [...q.querySelectorAll('input[type="checkbox"]:checked')].map(c => c.parentElement.textContent.trim());
         const radios = [...q.querySelectorAll('input[type="radio"]:checked')].map(c => c.parentElement.textContent.trim());
         const texts = [...q.querySelectorAll('input[type="text"], textarea')].map(t => t.value).filter(v => v.trim());
@@ -919,13 +1078,16 @@
           sectionData.items.push({ q: label, selected: [...checkboxes, ...radios], notes: texts });
         }
       });
+      // also grab the top-level textarea after recap-confirm
+      const extraTexts = [...section.querySelectorAll(':scope > textarea')].map(t => t.value).filter(v => v.trim());
+      if (extraTexts.length) sectionData.items.push({ q: 'Additional notes', selected: [], notes: extraTexts });
       if (sectionData.items.length) responses.push(sectionData);
     });
     const blob = new Blob([JSON.stringify(responses, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'bluewater_breeze_intake.json';
+    a.download = 'bluewater_breeze_followup.json';
     a.click();
     URL.revokeObjectURL(url);
   }
