@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Property Operations · Discovery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter+Tight:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sand: #f4ede1;
+    --sand-deep: #e8dcc7;
+    --paper: #fbf7ef;
+    --ink: #0e2a37;
+    --ink-soft: #2b4757;
+    --muted: #7a8a93;
+    --ocean: #1a5878;
+    --ocean-light: #3a7a9a;
+    --sun: #d97a3c;
+    --sun-soft: #e8a878;
+    --seafoam: #9cc4c4;
+    --line: #d7cdb9;
+    --line-soft: #e5dcc8;
+    --highlight: #fde8b8;
+    --shadow: 0 1px 0 rgba(14,42,55,0.04), 0 8px 24px -12px rgba(14,42,55,0.12);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--sand);
+    color: var(--ink);
+    font-family: "Inter Tight", -apple-system, sans-serif;
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+
+  body {
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(26, 88, 120, 0.08), transparent 70%),
+      radial-gradient(ellipse 60% 40% at 100% 100%, rgba(217, 122, 60, 0.06), transparent 70%);
+    min-height: 100vh;
+  }
+
+  .grain {
+    position: fixed; inset: 0; pointer-events: none; opacity: 0.4; z-index: 1;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.05 0 0 0 0 0.16 0 0 0 0 0.21 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 56px 32px 120px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Header */
+  header { margin-bottom: 40px; padding-bottom: 32px; border-bottom: 1px solid var(--line); position: relative; }
+
+  .eyebrow {
+    font-family: "Inter Tight", sans-serif;
+    font-size: 11px; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--ocean); display: flex; align-items: center; gap: 12px; margin-bottom: 24px;
+  }
+  .eyebrow::before { content: ""; width: 32px; height: 1px; background: var(--ocean); }
+
+  h1 {
+    font-family: "Fraunces", serif; font-weight: 400;
+    font-size: clamp(40px, 5vw, 64px);
+    line-height: 1.02; letter-spacing: -0.02em;
+    margin: 0 0 20px; color: var(--ink);
+    font-variation-settings: "opsz" 144;
+  }
+  h1 em { font-style: italic; color: var(--ocean); font-weight: 300; }
+
+  .lede { font-size: 17px; color: var(--ink-soft); max-width: 640px; line-height: 1.55; }
+
+  /* Sticky control bar */
+  .control-bar {
+    position: sticky;
+    top: 12px;
+    z-index: 10;
+    margin: 32px 0 40px;
+    background: rgba(251, 247, 239, 0.92);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .search-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--sand);
+    border: 1px solid transparent;
+    border-radius: 100px;
+    padding: 10px 18px;
+    transition: all 0.15s ease;
+  }
+  .search-wrap:focus-within {
+    background: white;
+    border-color: var(--ocean);
+    box-shadow: 0 0 0 3px rgba(26, 88, 120, 0.12);
+  }
+  .search-wrap svg { width: 16px; height: 16px; color: var(--muted); flex-shrink: 0; }
+  .search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: "Inter Tight", sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+  }
+  .search-input::placeholder { color: var(--muted); }
+
+  .search-clear {
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--line); color: var(--ink-soft);
+    border: none; cursor: pointer; font-size: 12px;
+    display: none; align-items: center; justify-content: center;
+    line-height: 1; padding: 0;
+  }
+  .search-wrap.has-value .search-clear { display: flex; }
+  .search-clear:hover { background: var(--ink); color: white; }
+
+  .progress-block {
+    display: flex; align-items: center; gap: 12px;
+    padding-right: 4px;
+    flex-shrink: 0;
+  }
+  .progress-text { font-size: 13px; color: var(--ink-soft); font-weight: 500; white-space: nowrap; }
+  .progress-text strong { color: var(--ink); font-weight: 600; }
+  .progress-bar {
+    width: 100px; height: 6px; background: var(--sand-deep);
+    border-radius: 100px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--ocean), var(--seafoam));
+    border-radius: 100px; width: 0%;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .control-actions { display: flex; gap: 4px; flex-shrink: 0; }
+
+  .btn {
+    font-family: "Inter Tight", sans-serif;
+    font-size: 13px; font-weight: 500;
+    padding: 9px 16px; border-radius: 100px;
+    border: none; cursor: pointer;
+    transition: all 0.15s ease;
+    display: inline-flex; align-items: center; gap: 6px;
+    white-space: nowrap;
+  }
+  .btn-primary { background: var(--ink); color: var(--paper); }
+  .btn-primary:hover { background: var(--ocean); transform: translateY(-1px); }
+  .btn-ghost { background: transparent; color: var(--ink-soft); }
+  .btn-ghost:hover { background: var(--sand-deep); color: var(--ink); }
+
+  /* Section card */
+  .section-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    transition: box-shadow 0.2s ease, opacity 0.2s ease;
+  }
+  .section-card:hover { box-shadow: var(--shadow); }
+  .section-card.hidden { display: none; }
+
+  .section-header {
+    padding: 24px 28px;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    user-select: none;
+    transition: background 0.15s ease;
+  }
+  .section-header:hover { background: rgba(232, 220, 199, 0.3); }
+
+  .section-marker {
+    flex-shrink: 0;
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: var(--sand-deep);
+    display: flex; align-items: center; justify-content: center;
+    font-family: "Fraunces", serif;
+    font-size: 16px; font-weight: 500;
+    color: var(--ocean); font-style: italic;
+  }
+  .section-card.theme-property .section-marker { background: var(--sand-deep); }
+  .section-card.theme-cross .section-marker { background: var(--ink); color: var(--sun-soft); }
+  .section-card.theme-ops .section-marker { background: #d8e4eb; color: var(--ocean); }
+  .section-card.theme-systems .section-marker { background: #e0e9d8; color: #4a6b3a; }
+  .section-card.theme-stay .section-marker { background: #f0d9c4; color: #8a4a1f; }
+  .section-card.theme-protocol .section-marker { background: #e4d4e0; color: #6b3a5a; }
+  .section-card.theme-standard .section-marker { background: var(--seafoam); color: var(--ink); }
+  .section-card.theme-cameras .section-marker { background: #2b4757; color: var(--sun-soft); }
+  .section-card.theme-logins .section-marker { background: #f0e4b4; color: #6b5a1a; }
+  .section-card.theme-journeys .section-marker { background: #d9c4e4; color: #4a3a6b; }
+  .section-card.theme-compliance .section-marker { background: #e4c4c4; color: #8a3a3a; }
+
+  .section-info { flex: 1; min-width: 0; }
+
+  .section-tag {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 6px;
+  }
+
+  .section-title {
+    font-family: "Fraunces", serif;
+    font-size: 22px; font-weight: 400; line-height: 1.2;
+    color: var(--ink); margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .section-meta {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 13px; color: var(--muted);
+  }
+  .meta-pill { display: inline-flex; align-items: center; gap: 6px; }
+  .meta-pill .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--seafoam);
+    transition: background 0.2s ease;
+  }
+  .meta-pill.complete .dot { background: var(--sun); }
+
+  .toggle-icon {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: all 0.2s ease;
+    margin-top: 8px;
+  }
+  .section-card.expanded .toggle-icon {
+    background: var(--ink); border-color: var(--ink); transform: rotate(180deg);
+  }
+  .toggle-icon svg { width: 12px; height: 12px; color: var(--ink); transition: color 0.2s ease; }
+  .section-card.expanded .toggle-icon svg { color: var(--paper); }
+
+  .section-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .section-card.expanded .section-body { max-height: 20000px; }
+
+  .section-body-inner {
+    padding: 0 28px 24px;
+    border-top: 1px solid var(--line-soft);
+  }
+
+  /* Question rows */
+  .question-row {
+    display: flex;
+    gap: 18px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--line-soft);
+    transition: opacity 0.2s ease;
+  }
+  .question-row:last-child { border-bottom: none; }
+  .question-row.answered .question-text { color: var(--muted); }
+  .question-row.hidden { display: none; }
+
+  .checkbox-wrap { flex-shrink: 0; padding-top: 2px; }
+  .checkbox {
+    width: 22px; height: 22px;
+    border: 1.5px solid var(--line);
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s ease;
+    background: var(--paper);
+  }
+  .checkbox:hover { border-color: var(--ocean); }
+  .checkbox.checked { background: var(--ocean); border-color: var(--ocean); }
+  .checkbox svg {
+    width: 14px; height: 14px; color: white;
+    opacity: 0; transform: scale(0.5);
+    transition: all 0.15s ease;
+  }
+  .checkbox.checked svg { opacity: 1; transform: scale(1); }
+
+  .question-content { flex: 1; min-width: 0; }
+  .question-id {
+    font-family: "Fraunces", serif;
+    font-size: 12px; font-weight: 500;
+    color: var(--ocean); font-style: italic;
+    letter-spacing: 0.04em; margin-bottom: 4px;
+  }
+  .question-text {
+    font-size: 15px; line-height: 1.5;
+    color: var(--ink); margin-bottom: 8px;
+    transition: color 0.2s ease;
+  }
+  .question-text mark {
+    background: var(--highlight);
+    color: var(--ink);
+    padding: 1px 2px;
+    border-radius: 2px;
+  }
+
+  .answer-input {
+    width: 100%; min-height: 0;
+    padding: 0; border: none;
+    background: transparent;
+    font-family: "Inter Tight", sans-serif;
+    font-size: 14px; line-height: 1.55;
+    color: var(--ink-soft);
+    resize: none; overflow: hidden;
+    transition: all 0.2s ease;
+    max-height: 0; opacity: 0;
+  }
+  .question-row.show-input .answer-input {
+    max-height: 400px; opacity: 1;
+    padding: 12px 14px;
+    background: var(--sand);
+    border-radius: 8px; margin-top: 6px;
+    border: 1px solid var(--line-soft);
+  }
+  .answer-input:focus {
+    outline: none;
+    border-color: var(--ocean);
+    background: white;
+  }
+  .answer-input::placeholder { color: var(--muted); font-style: italic; }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--muted);
+    display: none;
+  }
+  .empty-state.show { display: block; }
+  .empty-state h3 {
+    font-family: "Fraunces", serif;
+    font-weight: 400; font-style: italic;
+    font-size: 24px;
+    color: var(--ink); margin: 0 0 8px;
+  }
+
+  /* Summary card */
+  .summary-card {
+    margin-top: 48px;
+    padding: 40px;
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 16px;
+    background-image:
+      radial-gradient(ellipse 60% 40% at 0% 0%, rgba(26, 88, 120, 0.6), transparent 70%),
+      radial-gradient(ellipse 60% 40% at 100% 100%, rgba(217, 122, 60, 0.2), transparent 70%);
+  }
+  .summary-card h2 {
+    font-family: "Fraunces", serif; font-weight: 300;
+    font-size: 28px; margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+  .summary-card h2 em { font-style: italic; color: var(--sun-soft); }
+  .summary-card p { color: rgba(251, 247, 239, 0.7); margin: 0 0 24px; font-size: 14px; }
+
+  .summary-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .stat {
+    padding: 16px 20px;
+    background: rgba(251, 247, 239, 0.06);
+    border-radius: 10px;
+    border: 1px solid rgba(251, 247, 239, 0.08);
+  }
+  .stat-num {
+    font-family: "Fraunces", serif; font-size: 32px; font-weight: 300;
+    line-height: 1; color: var(--sun-soft);
+  }
+  .stat-label {
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(251, 247, 239, 0.5); margin-top: 6px;
+  }
+
+  .summary-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn-light { background: var(--paper); color: var(--ink); }
+  .btn-light:hover { background: var(--sand); transform: translateY(-1px); }
+  .btn-outline {
+    background: transparent; color: var(--paper);
+    border: 1px solid rgba(251, 247, 239, 0.25);
+  }
+  .btn-outline:hover {
+    border-color: var(--paper); background: rgba(251, 247, 239, 0.05);
+  }
+
+  .wave-divider {
+    text-align: center; margin: 40px 0 32px;
+    color: var(--line);
+    font-family: "Fraunces", serif;
+    font-size: 20px; letter-spacing: 1.5em;
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%) translateY(140%);
+    background: var(--ink);
+    color: var(--paper);
+    padding: 12px 20px;
+    border-radius: 100px;
+    font-size: 13px; font-weight: 500;
+    box-shadow: 0 20px 40px -10px rgba(14,42,55,0.4);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 100;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* Mobile */
+  @media (max-width: 720px) {
+    .container { padding: 32px 20px 80px; }
+    .control-bar { flex-wrap: wrap; padding: 12px; }
+    .search-wrap { width: 100%; order: -1; }
+    .progress-block { flex: 1; }
+    .section-header { padding: 18px 18px; gap: 14px; }
+    .section-body-inner { padding: 0 18px 20px; }
+    .section-marker { width: 40px; height: 40px; font-size: 14px; }
+    .section-title { font-size: 18px; }
+    .summary-card { padding: 28px 20px; }
+    h1 { font-size: 38px; }
+  }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<div class="container">
+  <header>
+    <div class="eyebrow">Operations Discovery · 30A Portfolio</div>
+    <h1>The <em>complete</em><br>operations workbook.</h1>
+    <p class="lede">A single working document covering property-level questions, operational controls, guest issue protocols, journey messaging, and compliance. Search to filter on the fly, check off each item as it's resolved, and capture decisions inline.</p>
+  </header>
+
+  <div class="control-bar">
+    <div class="search-wrap" id="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input type="text" id="search" class="search-input" placeholder="Filter questions, IDs, or sections…" />
+      <button class="search-clear" id="search-clear" aria-label="Clear search">✕</button>
+    </div>
+    <div class="progress-block">
+      <div class="progress-text"><strong id="answered-count">0</strong> / <span id="total-count">0</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+    <div class="control-actions">
+      <button class="btn btn-ghost" onclick="expandAll()">Expand</button>
+      <button class="btn btn-ghost" onclick="collapseAll()">Collapse</button>
+    </div>
+  </div>
+
+  <div id="sections"></div>
+
+  <div class="empty-state" id="empty-state">
+    <h3>No matches.</h3>
+    <p>Try a different keyword or clear the filter.</p>
+  </div>
+
+  <div class="wave-divider">~ ~ ~</div>
+
+  <div class="summary-card">
+    <h2>Export your <em>workbook</em></h2>
+    <p>All decisions are tagged by section and question ID for clean hand-off to ops, cleaning teams, and guest comms.</p>
+    <div class="summary-stats">
+      <div class="stat">
+        <div class="stat-num" id="stat-answered">0</div>
+        <div class="stat-label">Resolved</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" id="stat-total">0</div>
+        <div class="stat-label">Total Questions</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" id="stat-sections">0</div>
+        <div class="stat-label">Sections</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" id="stat-percent">0%</div>
+        <div class="stat-label">Complete</div>
+      </div>
+    </div>
+    <div class="summary-actions">
+      <button class="btn btn-light" onclick="exportMarkdown()">↓ Markdown</button>
+      <button class="btn btn-light" onclick="exportJSON()">↓ JSON</button>
+      <button class="btn btn-outline" onclick="copyToClipboard()">⎘ Copy all</button>
+      <button class="btn btn-outline" onclick="resetAll()">↻ Reset</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const sections = [
+  // ========== PROPERTY-SPECIFIC ==========
+  {
+    tag: "Property 01 · Sunnyside", theme: "property", marker: "I",
+    title: "Beachfront Escape — Quiet Retreat On The Beach",
+    questions: [
+      { id: "P1.1", text: "Confirm max occupancy enforcement for this unit (8 guests): what happens if booking requests exceed this?" },
+      { id: "P1.2", text: "How many vehicles/parking spots are allowed at this specific property?" },
+      { id: "P1.3", text: "Are early check-in or late check-out ever allowed at this property despite posted rules?" },
+      { id: "P1.4", text: "Are complimentary beach chairs/umbrella guaranteed here, and who sets them up?" },
+      { id: "P1.5", text: "What should be communicated about private beach access and stair/steep-step expectations?" },
+      { id: "P1.6", text: "What is the process if nearby construction impacts beach access during a stay?" },
+      { id: "P1.7", text: "What property-specific cleaning QA checks should be completed before check-in (e.g., floor mop verification)?" },
+      { id: "P1.8", text: "What are this property's smoking/vaping enforcement steps and fee amounts?" }
+    ]
+  },
+  {
+    tag: "Property 02 · Mistral", theme: "property", marker: "II",
+    title: "Mistral 7 — Beachfront Condo with Ocean Views",
+    questions: [
+      { id: "P2.1", text: "Amenity lists '24-hour checkin' but house rules show fixed check-in: what is the official guest-facing policy?" },
+      { id: "P2.2", text: "Sleeping setup says 5 guests / 1 bed: what exact sleeping layout should agents disclose?" },
+      { id: "P2.3", text: "Is travel insurance recommendation mandatory in pre-stay messaging for this property?" },
+      { id: "P2.4", text: "What are this property's exact parking limits and overflow guidance?" },
+      { id: "P2.5", text: "What should be disclosed about steep stairs/private beach access for mobility-limited guests?" },
+      { id: "P2.6", text: "Which nearby area recommendations should be auto-sent (Alys, Rosemary, Seaside, Big Chill)?" },
+      { id: "P2.7", text: "What is the escalation path if guests report beach access obstruction (construction, erosion, closures)?" }
+    ]
+  },
+  {
+    tag: "Property 03 · Mistral Breeze", theme: "property", marker: "III",
+    title: "Mistral Breeze 19 — Bohemian Beachfront Elegance",
+    questions: [
+      { id: "P3.1", text: "This is top-floor with lofted ceilings: what safety messaging is required for families with children?" },
+      { id: "P3.2", text: "Sleeping setup says 8 guests / 2 beds: what exact bed + sleeper configuration should be communicated?" },
+      { id: "P3.3", text: "Confirm no early check-in / no late check-out policy and any exception workflow." },
+      { id: "P3.4", text: "What are this property's beach access/stair warnings and accessibility disclaimers?" },
+      { id: "P3.5", text: "What property-specific quiet hours / HOA / noise expectations apply?" },
+      { id: "P3.6", text: "What property-specific amenity replacement SLA applies if items are missing at check-in?" }
+    ]
+  },
+  {
+    tag: "Property 04 · Seamist", theme: "property", marker: "IV",
+    title: "Seamist 7 — Beachfront on 30A",
+    questions: [
+      { id: "P4.1", text: "House rules mention a $150 check-in/out timing charge: who approves/assesses it and how is it documented?" },
+      { id: "P4.2", text: "No smoking/vaping is explicit: what fee and evidence standard are required for enforcement?" },
+      { id: "P4.3", text: "Address is shown publicly here: what are pre-booking vs post-booking address-sharing rules for this property?" },
+      { id: "P4.4", text: "What are this property's specific checkout instructions beyond standard checklist?" },
+      { id: "P4.5", text: "What are this property's exact parking limits and pre/post-stay parking rules?" },
+      { id: "P4.6", text: "What specific communication is required when guests request early check-in at this property?" }
+    ]
+  },
+  {
+    tag: "Portfolio · Cross-Property", theme: "cross", marker: "★",
+    title: "Cross-Property Standards & Additions",
+    questions: [
+      { id: "PX.1", text: "Should website reviews shown on each listing be property-specific only or portfolio-wide pooled testimonials?" },
+      { id: "PX.2", text: "Do all four properties guarantee private beach access year-round, or are there seasonal/maintenance exceptions?" },
+      { id: "PX.3", text: "Do all properties include beach chairs, umbrellas, and beach towels by default?" },
+      { id: "PX.4", text: "Which properties have steep stairs that require proactive accessibility warning before booking?" },
+      { id: "PX.5", text: "What is the standard guest message when beach/HOA/construction conditions temporarily change access?" },
+      { id: "PX.6", text: "Do all properties share the same check-in/out policy, or are there property-level overrides?" },
+      { id: "PX.7", text: "Which properties support same-day early check-in if cleaning + inspection finish early?" },
+      { id: "PX.8", text: "What property-level differences exist for parking, quiet hours, smoking enforcement, and penalties?" }
+    ]
+  },
+  // ========== DISCOUNTS ==========
+  {
+    tag: "Discounts", theme: "standard", marker: "66",
+    title: "Continue from Discounts",
+    questions: [
+      { id: "66", text: "Do you offer a military discount?" }
+    ]
+  },
+  // ========== OPERATIONAL CONTROLS ==========
+  {
+    tag: "Section 08", theme: "ops", marker: "08",
+    title: "Operational Controls",
+    questions: [
+      { id: "8.1a", text: "When should properties be blocked from booking?" },
+      { id: "8.1b", text: "Who can approve blocks?" },
+      { id: "8.1c", text: "How are blocks recorded and communicated?" },
+      { id: "8.2a", text: "How should bookings be handled during external disruptions (e.g., storms)?" },
+      { id: "8.2b", text: "What communication should be sent to guests?" },
+      { id: "8.2c", text: "What actions may be required (rescheduling, refunds, relocation, etc.)?" },
+      { id: "8.3a", text: "Do you offer or recommend trip insurance? (Yes/No)" },
+      { id: "8.3b", text: "If yes, when should it be mentioned to guests?" },
+      { id: "8.3c", text: "If yes, how is it provided?" }
+    ]
+  },
+  // ========== SYSTEMS ==========
+  {
+    tag: "Section 09", theme: "systems", marker: "09",
+    title: "Systems & Monitoring",
+    questions: [
+      { id: "9.1", text: "What systems or platforms do you actively use to run your operations?" },
+      { id: "9.2", text: "For each system, what is it used for?" },
+      { id: "9.3", text: "For each system, what events or changes should trigger you to check it?" },
+      { id: "9.4", text: "For each system, what types of issues require immediate action when noticed?" },
+      { id: "9.5", text: "Are there any systems that should be continuously monitored or checked frequently? (Yes/No)" },
+      { id: "9.6", text: "If yes, which systems and why?" }
+    ]
+  },
+  // ========== MRG CURRENT STAY ==========
+  {
+    tag: "MRG · Current Stay", theme: "stay", marker: "CS",
+    title: "MRG Current Stay",
+    questions: [
+      { id: "10", text: "When a guest reports an injury on the property, how do you assess severity, determine if emergency services are required, and handle communication and documentation?" },
+      { id: "11", text: "When cleaners are delayed or a property has not been cleaned before arrival, how do you manage guest communication, coordinate cleaning, and determine appropriate compensation or relocation options?" },
+      { id: "12", text: "How do you verify and resolve housekeeping-related issues such as insufficient towels or missing items?" },
+      { id: "13", text: "When a guest reports A/C issues, what are the full troubleshooting steps and criteria for escalating to maintenance?" },
+      { id: "14", text: "When a guest reports appliance issues (e.g., fridge, garbage disposal), how do you troubleshoot and determine next steps?" },
+      { id: "15", text: "How should pest or critter complaints be handled, including guest guidance and escalation criteria?" },
+      { id: "16", text: "How do you handle general maintenance issues (e.g., elevator, power outage, water outage) from troubleshooting through escalation?" },
+      { id: "17", text: "When access-related issues occur (e.g., missing or non-working keys, lockbox issues), how do you troubleshoot and restore access?" },
+      { id: "18", text: "How should structural or operational issues (e.g., doors, reported damages) be handled and documented?" },
+      { id: "19", text: "How do you verify and resolve missing or broken amenities when a guest complains during their stay?" },
+      { id: "20", text: "How should pool-related issues be assessed, routed, and escalated to the correct personnel?" },
+      { id: "21", text: "How should trash-related issues be handled based on property-specific rules and verification steps?" },
+      { id: "22", text: "How do you troubleshoot and resolve TV-related issues, including remotes, streaming access, and PIN restrictions?" },
+      { id: "23", text: "How should Wi-Fi connectivity issues be diagnosed and escalated if unresolved?" }
+    ]
+  },
+  // ========== MRG POST STAY ==========
+  {
+    tag: "MRG · Post Stay", theme: "stay", marker: "PS",
+    title: "MRG Post Stay",
+    questions: [
+      { id: "24", text: "How should post-stay issues be handled, including distinguishing between general feedback and refund requests, and determining appropriate responses?" },
+      { id: "25", text: "What is the correct process for handling lost and found inquiries, including referencing internal procedures and coordinating item recovery?" },
+      { id: "26", text: "When a guest asks for a discount on a future stay, how should you respond?" }
+    ]
+  },
+  // ========== MRG PRE STAY ==========
+  {
+    tag: "MRG · Pre Stay", theme: "stay", marker: "PR",
+    title: "MRG Pre Stay",
+    questions: [
+      { id: "27", text: "How should rate negotiation requests be handled, including when to escalate and how to communicate firm pricing policies?" },
+      { id: "28", text: "What are the rules around sharing property addresses before and after booking across different platforms?" },
+      { id: "29", text: "How should early check-in requests be handled based on timing (before, morning of, and day of arrival) and operational readiness?" },
+      { id: "30", text: "How should late check-out requests be evaluated and communicated when same-day turnover constraints exist?" },
+      { id: "31", text: "What are the policies regarding guests accessing the property or dropping off items (including pets) before check-in?" },
+      { id: "32", text: "How should parking-related inquiries be handled, including capacity limits, vehicle type conversions, and pre/post-stay parking rules?" },
+      { id: "33", text: "How should paid parking details be communicated for applicable locations?" },
+      { id: "34", text: "How should requests for day guests be evaluated based on guest count and parking constraints?" }
+    ]
+  },
+  // ========== GUEST ISSUE PROTOCOLS ==========
+  {
+    tag: "Protocols", theme: "protocol", marker: "GP",
+    title: "Guest Issue Protocols",
+    questions: [
+      { id: "35", text: "How should communication be managed between guests and internal teams across maintenance, housekeeping, item requests, policy violations, and lost & found scenarios?" },
+      { id: "36", text: "What is the correct process for creating, prioritizing, and handling VIP work orders?" },
+      { id: "37", text: "How should guest communication be handled on booking platforms, including managing difficult guests, submitting resolution center claims, and handling auto-messaging or review removal processes?" },
+      { id: "38", text: "What are your general guest issue protocols?" }
+    ]
+  },
+  // ========== STANDARD QUERIES ==========
+  {
+    tag: "FAQ · Standard Queries", theme: "standard", marker: "SQ",
+    title: "Standard Queries",
+    questions: [
+      { id: "39", text: "Is there a temperature gauge in the fridge or freezer?" },
+      { id: "40", text: "The freezer is not working—what should we do?" },
+      { id: "41", text: "How do we get regular TV stations on the TV?" },
+      { id: "42", text: "How do we access local TV channels?" },
+      { id: "43", text: "Why is there no signal on the TV?" },
+      { id: "44", text: "The home was not clean upon arrival—what can be done?" },
+      { id: "45", text: "Is smoking allowed inside the house?" },
+      { id: "46", text: "Why are the rates showing differently than expected?" },
+      { id: "47", text: "The dishwasher is not turning on—how do we fix it?" },
+      { id: "48", text: "Where should we put the trash at the end of our stay?" },
+      { id: "49", text: "Is there a safe in the home for valuables?" },
+      { id: "50", text: "Can we visit or view the home before booking?" },
+      { id: "51", text: "Do you offer long-term rentals?" },
+      { id: "52", text: "What is the cleaning fee for?" },
+      { id: "53", text: "Is the cleaning fee mandatory?" },
+      { id: "54", text: "Are parties or small gatherings allowed?" },
+      { id: "55", text: "We found a cockroach—what should we do?" },
+      { id: "56", text: "Why do you need my email address?" },
+      { id: "57", text: "I forgot something at the property—how can I retrieve it?" },
+      { id: "58", text: "Is there anything we need to do before check-in?" },
+      { id: "59", text: "I'm getting an error when accepting a special offer—what should I do?" },
+      { id: "60", text: "Where should we put stripped sheets before checkout?" },
+      { id: "61", text: "How can I get another pre-approval?" },
+      { id: "62", text: "Can we leave our vehicle at the property while we go on a cruise?" },
+      { id: "63", text: "Do you have a liability insurance document available?" },
+      { id: "64", text: "Are there any hidden costs besides what is shown on the listing?" },
+      { id: "65", text: "How do I connect my laptop to the TV?" },
+      { id: "67", text: "Do you offer in-home services?" },
+      { id: "68", text: "What is the nearest airport?" },
+      { id: "69", text: "What is the pet fee?" }
+    ]
+  },
+  // ========== CAMERAS ==========
+  {
+    tag: "Security", theme: "cameras", marker: "CAM",
+    title: "Cameras",
+    questions: [
+      { id: "70", text: "Do you have a security camera system? If so how often do you check it, how do you use it, etc." }
+    ]
+  },
+  // ========== LOGINS ==========
+  {
+    tag: "Access", theme: "logins", marker: "LOG",
+    title: "Logins",
+    questions: [
+      { id: "71", text: "What systems or platforms do I need access to in order to manage or operate this property?" },
+      { id: "72", text: "How do you use them?" },
+      { id: "73", text: "What are all the logins needed?" }
+    ]
+  },
+  // ========== JOURNEYS ==========
+  {
+    tag: "Guest Journeys", theme: "journeys", marker: "JRN",
+    title: "Journeys",
+    questions: [
+      { id: "74", text: "Do you send a confirmation message when a new reservation is created? If yes, what should it say?" },
+      { id: "75", text: "What guest information do you collect after booking, such as email, guest count, adults, children, vehicles, IDs, pets, or required building/community details?" },
+      { id: "76", text: "Do you send guests a digital guidebook, guest portal, rental agreement, or other pre-arrival links? If yes, when should each be sent?" },
+      { id: "77", text: "Do you require a signed rental agreement, completed guest portal, full payment, or verified payment before releasing check-in details?" },
+      { id: "78", text: "Do you send reminders when required pre-arrival steps are incomplete? If yes, when should each reminder be sent and what should it say?" },
+      { id: "79", text: "Do you promote trip insurance, local partner offers, coupons, rentals, or other guest perks? If yes, when should each be sent?" },
+      { id: "80", text: "Do you send pre-arrival check-in instructions before the guest arrives? If yes, how many days before arrival should they be sent and what should they include?" },
+      { id: "81", text: "Do you send property-specific access instructions for lockboxes, smart locks, gates, elevators, front desks, key pickup, parking, WiFi, or community access?" },
+      { id: "82", text: "Do you send check-in day SMS messages? If yes, should they include a welcome message, contact number, address, access code, WiFi, or parking details?" },
+      { id: "83", text: "Do you send pre-approval or inquiry response messages before a reservation is confirmed? If yes, what information should be collected or confirmed?" },
+      { id: "84", text: "Do any properties require special access, parking, amenity, building, or community instructions that must be sent before arrival?" },
+      { id: "85", text: "What happens if required pre-arrival information is not provided before the deadline?" },
+      { id: "86", text: "Do you send a check-in follow-up after arrival? If yes, when should it be sent and what should it ask?" },
+      { id: "87", text: "Do you ask guests to rate the home shortly after arrival? If yes, what scale should be used?" },
+      { id: "88", text: "Do you tell guests to report issues immediately so they can be addressed during the stay?" },
+      { id: "89", text: "Do you send checkout reminders before departure? If yes, when should they be sent and what instructions should be included?" },
+      { id: "90", text: "Do any properties have special checkout instructions beyond the standard list?" },
+      { id: "91", text: "Do you require guests to return keys, remotes, passes, wristbands, or other physical items at checkout?" },
+      { id: "92", text: "Do you charge a fee if keys or access items are not returned?" }
+    ]
+  },
+  // ========== COMPENSATION / ESCALATION / COMPLIANCE ==========
+  {
+    tag: "Risk & Escalation", theme: "compliance", marker: "C/E",
+    title: "Compensation, Escalation, Compliance",
+    questions: [
+      { id: "98", text: "What evidence is required before offering compensation (photos, video, timestamps, vendor notes)?" },
+      { id: "99", text: "What compensation limits can agents approve without manager approval?" },
+      { id: "100", text: "What compensation types are allowed (refund, partial refund, credit, fee waiver), and by scenario?" },
+      { id: "101", text: "Which issues require creating a ticket/work order, and in which system?" },
+      { id: "102", text: "What required fields must be completed before a ticket can be closed?" },
+      { id: "103", text: "How many guest follow-ups are required before closing a case as unresponsive?" },
+      { id: "105", text: "What message templates are mandatory for legal/risk situations (injury, security, discrimination claims)?" },
+      { id: "106", text: "What words or promises are agents prohibited from using in guest communications?" },
+      { id: "107", text: "When must leadership be notified of a potential chargeback or platform dispute?" },
+      { id: "108", text: "What documentation package is required for chargeback defense?" },
+      { id: "109", text: "What documentation package is required for chargeback defense?" },
+      { id: "110", text: "When should platform support (Airbnb/VRBO/etc.) be contacted directly versus handled internally?" },
+      { id: "111", text: "What is the process when guest-reported details conflict with internal logs or camera timestamp?" },
+      { id: "112", text: "If repeat-offender history is tracked, what is the policy for guests with prior incidents across properties?" },
+      { id: "113", text: "What multilingual support rules apply when the guest's preferred language is not English?" },
+      { id: "114", text: "What accessibility-related requests require priority handling and specialized escalation?" }
+    ]
+  }
+];
+
+// State
+const state = {};
+sections.forEach(s => s.questions.forEach(q => {
+  state[q.id] = { checked: false, answer: "" };
+}));
+
+// Render
+const sectionsEl = document.getElementById('sections');
+sections.forEach((section, sIdx) => {
+  const card = document.createElement('div');
+  card.className = `section-card theme-${section.theme}`;
+  card.dataset.section = sIdx;
+
+  const questionsHTML = section.questions.map(q => `
+    <div class="question-row" data-qid="${q.id}">
+      <div class="checkbox-wrap">
+        <div class="checkbox" data-qid="${q.id}">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3 8 7 12 13 4"></polyline>
+          </svg>
+        </div>
+      </div>
+      <div class="question-content">
+        <div class="question-id">${q.id}</div>
+        <div class="question-text" data-original="${escapeHtml(q.text)}">${escapeHtml(q.text)}</div>
+        <textarea class="answer-input" data-qid="${q.id}" placeholder="Capture the decision, owner, or next step…" rows="1"></textarea>
+      </div>
+    </div>
+  `).join('');
+
+  card.innerHTML = `
+    <div class="section-header" data-section="${sIdx}">
+      <div class="section-marker">${section.marker}</div>
+      <div class="section-info">
+        <div class="section-tag">${section.tag}</div>
+        <h3 class="section-title">${section.title}</h3>
+        <div class="section-meta">
+          <span class="meta-pill"><span class="dot"></span><span class="count-text">0 / ${section.questions.length} resolved</span></span>
+        </div>
+      </div>
+      <div class="toggle-icon">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="4 6 8 10 12 6"></polyline>
+        </svg>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="section-body-inner">${questionsHTML}</div>
+    </div>
+  `;
+
+  sectionsEl.appendChild(card);
+});
+
+function escapeHtml(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// Expand first card by default
+document.querySelector('.section-card').classList.add('expanded');
+
+// Header click → toggle
+document.querySelectorAll('.section-header').forEach(header => {
+  header.addEventListener('click', (e) => {
+    if (e.target.closest('.checkbox') || e.target.closest('.answer-input')) return;
+    header.parentElement.classList.toggle('expanded');
+  });
+});
+
+// Checkbox toggle
+document.querySelectorAll('.checkbox').forEach(cb => {
+  cb.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const qid = cb.dataset.qid;
+    state[qid].checked = !state[qid].checked;
+    cb.classList.toggle('checked', state[qid].checked);
+    const row = cb.closest('.question-row');
+    row.classList.toggle('answered', state[qid].checked);
+    row.classList.toggle('show-input', state[qid].checked);
+    if (state[qid].checked) {
+      setTimeout(() => row.querySelector('.answer-input').focus(), 200);
+    }
+    updateProgress();
+  });
+});
+
+// Auto-grow textarea
+document.querySelectorAll('.answer-input').forEach(ta => {
+  ta.addEventListener('input', () => {
+    state[ta.dataset.qid].answer = ta.value;
+    ta.style.height = 'auto';
+    ta.style.height = ta.scrollHeight + 'px';
+  });
+});
+
+// Search
+const searchInput = document.getElementById('search');
+const searchWrap = document.getElementById('search-wrap');
+const searchClear = document.getElementById('search-clear');
+const emptyState = document.getElementById('empty-state');
+
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.trim();
+  searchWrap.classList.toggle('has-value', q.length > 0);
+  applyFilter(q);
+});
+searchClear.addEventListener('click', () => {
+  searchInput.value = '';
+  searchWrap.classList.remove('has-value');
+  applyFilter('');
+  searchInput.focus();
+});
+
+function applyFilter(query) {
+  const q = query.toLowerCase();
+  let visibleSections = 0;
+
+  document.querySelectorAll('.section-card').forEach((card, sIdx) => {
+    const section = sections[sIdx];
+    let visibleRows = 0;
+    const sectionMatch = !q ||
+      section.title.toLowerCase().includes(q) ||
+      section.tag.toLowerCase().includes(q);
+
+    card.querySelectorAll('.question-row').forEach(row => {
+      const qid = row.dataset.qid;
+      const question = section.questions.find(x => x.id === qid);
+      const textEl = row.querySelector('.question-text');
+      const original = textEl.dataset.original;
+
+      const matchText = !q ||
+        question.text.toLowerCase().includes(q) ||
+        question.id.toLowerCase().includes(q) ||
+        sectionMatch;
+
+      if (matchText) {
+        row.classList.remove('hidden');
+        visibleRows++;
+        // Highlight
+        if (q && question.text.toLowerCase().includes(q)) {
+          const re = new RegExp(`(${escapeRegex(q)})`, 'gi');
+          textEl.innerHTML = original.replace(re, '<mark>$1</mark>');
+        } else {
+          textEl.innerHTML = original;
+        }
+      } else {
+        row.classList.add('hidden');
+        textEl.innerHTML = original;
+      }
+    });
+
+    if (visibleRows > 0) {
+      card.classList.remove('hidden');
+      visibleSections++;
+      if (q) card.classList.add('expanded');
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+
+  emptyState.classList.toggle('show', visibleSections === 0);
+}
+
+function escapeRegex(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+function updateProgress() {
+  let answered = 0, total = 0;
+  sections.forEach((section, sIdx) => {
+    let sAnswered = 0;
+    section.questions.forEach(q => {
+      total++;
+      if (state[q.id].checked) { answered++; sAnswered++; }
+    });
+    const card = document.querySelector(`[data-section="${sIdx}"]`).closest('.section-card');
+    const countEl = card.querySelector('.count-text');
+    const pill = card.querySelector('.meta-pill');
+    countEl.textContent = `${sAnswered} / ${section.questions.length} resolved`;
+    pill.classList.toggle('complete', sAnswered === section.questions.length);
+  });
+
+  document.getElementById('answered-count').textContent = answered;
+  document.getElementById('total-count').textContent = total;
+  document.getElementById('stat-answered').textContent = answered;
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-sections').textContent = sections.length;
+  const pct = total ? Math.round((answered / total) * 100) : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('stat-percent').textContent = pct + '%';
+}
+
+function expandAll() {
+  document.querySelectorAll('.section-card').forEach(c => c.classList.add('expanded'));
+}
+function collapseAll() {
+  document.querySelectorAll('.section-card').forEach(c => c.classList.remove('expanded'));
+}
+
+function buildMarkdown() {
+  let md = `# Property Operations · Workbook\n\n_Generated ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}_\n\n`;
+  sections.forEach(section => {
+    md += `## ${section.title}\n_${section.tag}_\n\n`;
+    section.questions.forEach(q => {
+      const s = state[q.id];
+      md += `- **[${s.checked ? 'x' : ' '}] ${q.id}** — ${q.text}\n`;
+      if (s.answer.trim()) {
+        md += `  > ${s.answer.trim().replace(/\n/g, '\n  > ')}\n`;
+      }
+    });
+    md += '\n';
+  });
+  return md;
+}
+
+function buildJSON() {
+  return JSON.stringify({
+    generated: new Date().toISOString(),
+    sections: sections.map(s => ({
+      tag: s.tag,
+      title: s.title,
+      questions: s.questions.map(q => ({
+        id: q.id,
+        question: q.text,
+        resolved: state[q.id].checked,
+        answer: state[q.id].answer
+      }))
+    }))
+  }, null, 2);
+}
+
+function download(content, filename, type) {
+  const blob = new Blob([content], { type });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function exportMarkdown() { download(buildMarkdown(), 'operations-workbook.md', 'text/markdown'); showToast('Markdown downloaded'); }
+function exportJSON() { download(buildJSON(), 'operations-workbook.json', 'application/json'); showToast('JSON downloaded'); }
+async function copyToClipboard() {
+  try { await navigator.clipboard.writeText(buildMarkdown()); showToast('Copied to clipboard'); }
+  catch { showToast('Copy failed — try download'); }
+}
+function resetAll() {
+  if (!confirm('Clear all checks and answers?')) return;
+  Object.keys(state).forEach(k => { state[k] = { checked: false, answer: '' }; });
+  document.querySelectorAll('.checkbox').forEach(c => c.classList.remove('checked'));
+  document.querySelectorAll('.question-row').forEach(r => r.classList.remove('answered', 'show-input'));
+  document.querySelectorAll('.answer-input').forEach(ta => { ta.value = ''; ta.style.height = 'auto'; });
+  updateProgress();
+  showToast('Reset complete');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// Keyboard shortcut: / to focus search
+document.addEventListener('keydown', (e) => {
+  if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+    e.preventDefault();
+    searchInput.focus();
+  }
+  if (e.key === 'Escape' && document.activeElement === searchInput) {
+    searchInput.value = '';
+    searchWrap.classList.remove('has-value');
+    applyFilter('');
+    searchInput.blur();
+  }
+});
+
+updateProgress();
+</script>
+</body>
+</html>
