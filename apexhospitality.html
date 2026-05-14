@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Apex Properties — Operations SOP Discovery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f6f3ec;
+    --bg-card: #ffffff;
+    --ink: #1a2e35;
+    --ink-soft: #3d5560;
+    --ink-muted: #7a8a92;
+    --accent: #0d6e7c;
+    --accent-soft: #d8ebee;
+    --line: #d9d0c0;
+    --line-soft: #e8e1d3;
+    --highlight: #f0c75e;
+    --radius: 4px;
+    --shadow: 0 1px 2px rgba(26,46,53,0.04), 0 8px 24px rgba(26,46,53,0.06);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.55;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .header {
+    background: linear-gradient(180deg, #0d6e7c 0%, #0a5560 100%);
+    color: #fff;
+    padding: 56px 32px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 90% 20%, rgba(240,199,94,0.12), transparent 40%),
+      radial-gradient(circle at 10% 90%, rgba(216,235,238,0.08), transparent 50%);
+    pointer-events: none;
+  }
+  .header-inner { max-width: 920px; margin: 0 auto; position: relative; }
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--highlight);
+    font-weight: 500;
+    margin-bottom: 18px;
+  }
+  .header h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(34px, 5vw, 48px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 0 0 14px;
+  }
+  .header h1 em { font-style: italic; font-weight: 300; color: #d8ebee; }
+  .header .subtitle {
+    font-size: 15px;
+    color: rgba(255,255,255,0.78);
+    max-width: 700px;
+    margin: 0 0 28px;
+  }
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px 36px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(255,255,255,0.12);
+  }
+  .meta-item .meta-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 4px;
+  }
+  .meta-item .meta-value {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    color: #fff;
+  }
+  .container { max-width: 920px; margin: 0 auto; padding: 40px 32px 120px; }
+
+  .intro {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    margin-bottom: 32px;
+    box-shadow: var(--shadow);
+  }
+  .intro h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 22px;
+    margin: 0 0 10px;
+    letter-spacing: -0.01em;
+  }
+  .intro p {
+    color: var(--ink-soft);
+    margin: 0 0 10px;
+    font-size: 14.5px;
+  }
+  .intro p:last-child { margin-bottom: 0; }
+
+  .toc {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin-bottom: 40px;
+    box-shadow: var(--shadow);
+  }
+  .toc h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink-soft);
+    margin: 0 0 14px;
+  }
+  .toc ol {
+    list-style: none; padding: 0; margin: 0; counter-reset: toc;
+    columns: 2; column-gap: 32px;
+  }
+  .toc ol li {
+    counter-increment: toc;
+    padding: 5px 0;
+    border-bottom: 1px dotted var(--line-soft);
+    break-inside: avoid;
+  }
+  .toc ol li:last-child { border-bottom: none; }
+  .toc ol li::before {
+    content: counter(toc, decimal-leading-zero);
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--accent);
+    margin-right: 10px;
+    font-size: 13px;
+  }
+  .toc a { color: var(--ink); text-decoration: none; font-size: 13.5px; transition: color 0.15s; }
+  .toc a:hover { color: var(--accent); }
+
+  section.card {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 38px 42px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow);
+    scroll-margin-top: 20px;
+  }
+  .section-header {
+    display: flex; align-items: baseline; gap: 16px;
+    margin-bottom: 6px; padding-bottom: 16px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .section-number {
+    font-family: 'Fraunces', serif;
+    font-style: italic; font-weight: 300;
+    font-size: 36px; color: var(--accent); line-height: 1;
+  }
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 500; font-size: 24px;
+    letter-spacing: -0.01em; margin: 0;
+  }
+  .section-blurb { color: var(--ink-muted); font-size: 13.5px; margin: 12px 0 24px; font-style: italic; }
+
+  .question { margin: 22px 0; }
+  .question .q-num {
+    display: inline-block;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--accent);
+    font-size: 13px;
+    margin-right: 6px;
+  }
+  .question .q-label {
+    display: inline;
+    font-weight: 500;
+    color: var(--ink);
+    font-size: 14.5px;
+  }
+  .question .q-hint {
+    display: block;
+    font-size: 12.5px;
+    color: var(--ink-muted);
+    font-style: italic;
+    margin: 4px 0 8px;
+  }
+  .q-wrap { margin-bottom: 6px; }
+  textarea {
+    width: 100%; padding: 10px 12px;
+    font-family: inherit; font-size: 14px;
+    color: var(--ink); background: #fafaf6;
+    border: 1px solid var(--line); border-radius: var(--radius);
+    transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+    resize: vertical; min-height: 56px;
+    margin-top: 6px;
+  }
+  textarea:focus {
+    outline: none; border-color: var(--accent);
+    background: #fff;
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  .submit-bar {
+    margin-top: 36px; padding: 30px;
+    background: var(--ink); color: #fff;
+    border-radius: var(--radius); text-align: center;
+  }
+  .submit-bar h3 { font-family: 'Fraunces', serif; font-weight: 400; font-size: 22px; margin: 0 0 8px; }
+  .submit-bar p { color: rgba(255,255,255,0.7); margin: 0 0 20px; font-size: 13.5px; }
+  .btn {
+    display: inline-block; background: var(--highlight); color: var(--ink);
+    border: none; padding: 12px 30px;
+    font-family: inherit; font-size: 13.5px; font-weight: 600;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    border-radius: var(--radius); cursor: pointer;
+    transition: transform 0.12s, box-shadow 0.12s;
+    margin: 0 6px;
+  }
+  .btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(240,199,94,0.3); }
+  .btn.secondary { background: transparent; color: var(--highlight); border: 1px solid rgba(240,199,94,0.4); }
+  .back-to-top {
+    position: fixed; bottom: 24px; right: 24px;
+    background: var(--accent); color: #fff;
+    padding: 9px 15px; border-radius: 100px;
+    font-size: 12px; text-decoration: none;
+    box-shadow: 0 6px 16px rgba(13,110,124,0.3);
+    opacity: 0; transform: translateY(10px);
+    transition: all 0.2s; pointer-events: none; z-index: 100;
+  }
+  .back-to-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  @media (max-width: 700px) {
+    .header { padding: 40px 22px 36px; }
+    .container { padding: 28px 18px 80px; }
+    section.card { padding: 26px 22px; }
+    .intro { padding: 22px 22px; }
+    .toc ol { columns: 1; }
+    .section-header { flex-direction: column; gap: 4px; align-items: flex-start; }
+    .section-number { font-size: 26px; }
+    .section-title { font-size: 20px; }
+  }
+  @media print {
+    body { background: #fff; }
+    .back-to-top, .toc, .submit-bar { display: none; }
+    section.card, .intro { box-shadow: none; page-break-inside: avoid; }
+    textarea { min-height: 50px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="eyebrow">Apex Properties · Operations Discovery</div>
+    <h1>Operations SOP<br><em>Discovery Questionnaire</em></h1>
+    <p class="subtitle">A complete walk-through of how your operation runs today — controls, systems, guest journeys, escalations, and governance. Your answers become the source-of-truth playbook our team operates from.</p>
+
+    <div class="meta-row">
+      <div class="meta-item"><div class="meta-label">Prepared for</div><div class="meta-value">Apex Properties</div></div>
+      <div class="meta-item"><div class="meta-label">Sections</div><div class="meta-value">15</div></div>
+      <div class="meta-item"><div class="meta-label">Format</div><div class="meta-value">Short-answer · written</div></div>
+      <div class="meta-item"><div class="meta-label">Owner</div><div class="meta-value">Ops Leadership</div></div>
+    </div>
+  </div>
+</header>
+
+<form id="sopForm">
+<div class="container">
+
+  <div class="intro">
+    <h2>Before you start</h2>
+    <p>This questionnaire is organized into 15 categories covering the full operational surface area — from day-to-day guest issues through governance and reporting. Answer what you can in the moment; come back to anything that needs a stakeholder check.</p>
+    <p>Brief answers are fine. Where a question doesn't apply, write "N/A." When you're done, use the buttons at the bottom to download your responses or print to PDF.</p>
+  </div>
+
+  <nav class="toc">
+    <h2>Sections</h2>
+    <ol>
+      <li><a href="#s1">Operational Controls</a></li>
+      <li><a href="#s2">Systems &amp; Monitoring</a></li>
+      <li><a href="#s3">MRG — Current Stay</a></li>
+      <li><a href="#s4">MRG — Post Stay</a></li>
+      <li><a href="#s5">MRG — Pre Stay</a></li>
+      <li><a href="#s6">Guest Issue Protocols</a></li>
+      <li><a href="#s7">Standard Queries (FAQ Library)</a></li>
+      <li><a href="#s8">Cameras &amp; Security</a></li>
+      <li><a href="#s9">Logins &amp; Access</a></li>
+      <li><a href="#s10">Guest Journeys &amp; Messaging</a></li>
+      <li><a href="#s11">Compensation, Risk &amp; Disputes</a></li>
+      <li><a href="#s12">Revenue, Direct Booking &amp; Upsells</a></li>
+      <li><a href="#s13">Housekeeping &amp; Turnover Operations</a></li>
+      <li><a href="#s14">Maintenance &amp; Vendor Management</a></li>
+      <li><a href="#s15">Reporting &amp; Governance</a></li>
+    </ol>
+  </nav>
+
+  <!-- 1. Operational Controls -->
+  <section class="card" id="s1">
+    <div class="section-header"><div class="section-number">01</div><h2 class="section-title">Operational Controls</h2></div>
+    <p class="section-blurb">When properties get blocked, how disruptions are handled, and where trip insurance fits in.</p>
+
+    <div class="question"><div class="q-wrap"><span class="q-num">1.1</span><span class="q-label">When should properties be blocked from booking?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">1.2</span><span class="q-label">Who can approve blocks?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">1.3</span><span class="q-label">How are blocks recorded and communicated?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">1.4</span><span class="q-label">How should bookings be handled during external disruptions (storms, outages, city events)?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">1.5</span><span class="q-label">What guest communication should be sent during disruptions?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">1.6</span><span class="q-label">What actions are allowed during disruptions (reschedule, refund, relocate)?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">1.7</span><span class="q-label">Do you offer or recommend trip insurance?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">1.8</span><span class="q-label">If yes, when should trip insurance be mentioned?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">1.9</span><span class="q-label">If yes, how is trip insurance provided to guests?</span></div><textarea></textarea></div>
+  </section>
+
+  <!-- 2. Systems & Monitoring -->
+  <section class="card" id="s2">
+    <div class="section-header"><div class="section-number">02</div><h2 class="section-title">Systems &amp; Monitoring</h2></div>
+    <p class="section-blurb">The platforms running your operation, what triggers a check, and what happens when something breaks.</p>
+
+    <div class="question"><div class="q-wrap"><span class="q-num">2.1</span><span class="q-label">What systems/platforms do you use to run operations?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">2.2</span><span class="q-label">For each system, what is it used for?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">2.3</span><span class="q-label">For each system, what events/changes should trigger a check?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">2.4</span><span class="q-label">For each system, what issues require immediate action?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">2.5</span><span class="q-label">Are any systems monitored continuously or checked frequently?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">2.6</span><span class="q-label">If yes, which systems and why?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">2.7</span><span class="q-label">Who owns each system internally?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">2.8</span><span class="q-label">What is the fallback plan if a system is down?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">2.9</span><span class="q-label">What integrations are mission-critical (Guesty, PriceLabs, Zapier, Turno, etc.)?</span></div><textarea></textarea></div>
+  </section>
+
+  <!-- 3. MRG Current Stay -->
+  <section class="card" id="s3">
+    <div class="section-header"><div class="section-number">03</div><h2 class="section-title">MRG — Current Stay</h2></div>
+    <p class="section-blurb">In-stay incident playbooks: injuries, cleaning gaps, A/C, appliances, pests, access, amenities, pool, trash, TV, Wi-Fi.</p>
+
+    <div class="question"><div class="q-wrap"><span class="q-num">3.1</span><span class="q-label">If a guest reports an injury, how do you assess severity, decide on emergency services, and document?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">3.2</span><span class="q-label">If cleaners are delayed or the unit isn't ready, how do you communicate, recover, compensate, or relocate?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">3.3</span><span class="q-label">How do you verify and resolve housekeeping issues (missing towels/items)?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">3.4</span><span class="q-label">What are full A/C troubleshooting steps and escalation criteria?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">3.5</span><span class="q-label">What are appliance troubleshooting steps (fridge, disposal, dishwasher, etc.)?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">3.6</span><span class="q-label">How are pest/critter complaints handled and escalated?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">3.7</span><span class="q-label">How are general maintenance issues handled (elevator, power, water)?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">3.8</span><span class="q-label">How are access issues handled (locks, keys, lockbox, smart lock failures)?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">3.9</span><span class="q-label">How are structural/operational issues handled and documented?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">3.10</span><span class="q-label">How are missing/broken amenity complaints verified and resolved?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">3.11</span><span class="q-label">How are pool-related issues assessed, routed, and escalated?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">3.12</span><span class="q-label">How are trash issues handled by property-specific rules?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">3.13</span><span class="q-label">How are TV issues handled (remote, signal, streaming, PIN)?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">3.14</span><span class="q-label">How are Wi-Fi issues diagnosed and escalated?</span></div><textarea></textarea></div>
+  </section>
+
+  <!-- 4. MRG Post Stay -->
+  <section class="card" id="s4">
+    <div class="section-header"><div class="section-number">04</div><h2 class="section-title">MRG — Post Stay</h2></div>
+    <p class="section-blurb">Feedback, lost &amp; found, discount asks, damage claims, evidence, and timelines.</p>
+
+    <div class="question"><div class="q-wrap"><span class="q-num">4.1</span><span class="q-label">How are post-stay issues handled (feedback vs. refund request)?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">4.2</span><span class="q-label">What is the lost-and-found process end-to-end?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">4.3</span><span class="q-label">How should future-stay discount requests be handled?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">4.4</span><span class="q-label">How are damage claims processed after checkout?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">4.5</span><span class="q-label">What evidence is required before charging incidentals/damages?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">4.6</span><span class="q-label">What timeline is used for post-stay claim submission?</span></div><textarea></textarea></div>
+  </section>
+
+  <!-- 5. MRG Pre Stay -->
+  <section class="card" id="s5">
+    <div class="section-header"><div class="section-number">05</div><h2 class="section-title">MRG — Pre Stay</h2></div>
+    <p class="section-blurb">Rate asks, address-sharing rules, early/late requests, parking, day guests, pre-arrival requirements.</p>
+
+    <div class="question"><div class="q-wrap"><span class="q-num">5.1</span><span class="q-label">How are rate negotiation requests handled?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">5.2</span><span class="q-label">When should rate negotiations be escalated?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">5.3</span><span class="q-label">What are the rules for sharing property address pre/post booking per platform?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">5.4</span><span class="q-label">How are early check-in requests handled by timing (before day-of, morning-of, day-of)?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">5.5</span><span class="q-label">How are late checkout requests handled with same-day turnovers?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">5.6</span><span class="q-label">Can guests access the property or drop items before check-in?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">5.7</span><span class="q-label">How are parking questions handled (capacity, vehicle type, timing)?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">5.8</span><span class="q-label">How is paid parking communicated for eligible properties?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">5.9</span><span class="q-label">How are day-guest requests evaluated?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">5.10</span><span class="q-label">What pre-arrival steps are required before access instructions are released?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">5.11</span><span class="q-label">What happens if required pre-arrival info is missing by deadline?</span></div><textarea></textarea></div>
+  </section>
+
+  <!-- 6. Guest Issue Protocols -->
+  <section class="card" id="s6">
+    <div class="section-header"><div class="section-number">06</div><h2 class="section-title">Guest Issue Protocols</h2></div>
+    <p class="section-blurb">Communication flow, VIPs, difficult guests, claims, severity levels, on-call, and leadership escalation.</p>
+
+    <div class="question"><div class="q-wrap"><span class="q-num">6.1</span><span class="q-label">How should communication flow between guests and internal teams across issue types?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">6.2</span><span class="q-label">What is the VIP work order process?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">6.3</span><span class="q-label">How are difficult guests handled on booking platforms?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">6.4</span><span class="q-label">How are resolution center claims handled?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">6.5</span><span class="q-label">How are auto-messaging and review-removal requests handled?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">6.6</span><span class="q-label">What are your general guest issue protocols?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">6.7</span><span class="q-label">What severity levels are used (P0/P1/P2), and what are the SLAs per level?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">6.8</span><span class="q-label">Who is on-call for after-hours emergencies?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">6.9</span><span class="q-label">What incidents require immediate leadership notification?</span></div><textarea></textarea></div>
+  </section>
+
+  <!-- 7. Standard Queries (FAQ Library) -->
+  <section class="card" id="s7">
+    <div class="section-header"><div class="section-number">07</div><h2 class="section-title">Standard Queries (FAQ Library)</h2></div>
+    <p class="section-blurb">The questions guests ask over and over. Brief, canonical answers become saved-reply templates.</p>
+
+    <div class="question"><div class="q-wrap"><span class="q-num">7.1</span><span class="q-label">Is there a temperature gauge in the fridge/freezer?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">7.2</span><span class="q-label">The freezer is not working — what should we do?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">7.3</span><span class="q-label">How do we get regular TV stations?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">7.4</span><span class="q-label">How do we access local TV channels?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">7.5</span><span class="q-label">Why is there no signal on the TV?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">7.6</span><span class="q-label">The home was not clean upon arrival — what can be done?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">7.7</span><span class="q-label">Is smoking allowed inside?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">7.8</span><span class="q-label">Why are rates different than expected?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">7.9</span><span class="q-label">Dishwasher not turning on — how do we fix it?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">7.10</span><span class="q-label">Where should trash go at end of stay?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">7.11</span><span class="q-label">Is there a safe for valuables?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">7.12</span><span class="q-label">Can we view the home before booking?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">7.13</span><span class="q-label">Do you offer long-term rentals?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">7.14</span><span class="q-label">What is the cleaning fee for?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">7.15</span><span class="q-label">Is the cleaning fee mandatory?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">7.16</span><span class="q-label">Are parties or small gatherings allowed?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">7.17</span><span class="q-label">We found a cockroach — what should we do?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">7.18</span><span class="q-label">Why do you need my email address?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">7.19</span><span class="q-label">I forgot something — how can I retrieve it?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">7.20</span><span class="q-label">Anything needed before check-in?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">7.21</span><span class="q-label">Error accepting special offer — what should I do?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">7.22</span><span class="q-label">Where should stripped sheets go before checkout?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">7.23</span><span class="q-label">How can I get another pre-approval?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">7.24</span><span class="q-label">Can we leave a vehicle while going on a cruise?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">7.25</span><span class="q-label">Do you have a liability insurance document?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">7.26</span><span class="q-label">Any hidden costs besides listing total?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">7.27</span><span class="q-label">How do I connect a laptop to the TV?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">7.28</span><span class="q-label">Do you offer a military discount?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">7.29</span><span class="q-label">Do you offer in-home services?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">7.30</span><span class="q-label">What is the nearest airport?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">7.31</span><span class="q-label">What is the pet fee?</span></div><textarea></textarea></div>
+  </section>
+
+  <!-- 8. Cameras & Security -->
+  <section class="card" id="s8">
+    <div class="section-header"><div class="section-number">08</div><h2 class="section-title">Cameras &amp; Security</h2></div>
+    <p class="section-blurb">Camera locations, review cadence, access, retention, disclosure, triggers, and escalations.</p>
+
+    <div class="question"><div class="q-wrap"><span class="q-num">8.1</span><span class="q-label">Do you have security cameras?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">8.2</span><span class="q-label">Where are cameras located?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">8.3</span><span class="q-label">How often are they reviewed?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">8.4</span><span class="q-label">For what purposes are they used?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">8.5</span><span class="q-label">Who can access camera feeds?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">8.6</span><span class="q-label">How long are recordings retained?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">8.7</span><span class="q-label">What is disclosed to guests and where?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">8.8</span><span class="q-label">What events trigger camera review?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">8.9</span><span class="q-label">What is the escalation process for suspicious activity?</span></div><textarea></textarea></div>
+  </section>
+
+  <!-- 9. Logins & Access -->
+  <section class="card" id="s9">
+    <div class="section-header"><div class="section-number">09</div><h2 class="section-title">Logins &amp; Access</h2></div>
+    <p class="section-blurb">Required systems, ownership, credential hygiene, 2FA, offboarding, and least-privilege.</p>
+
+    <div class="question"><div class="q-wrap"><span class="q-num">9.1</span><span class="q-label">What systems/platforms are required to operate properties?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">9.2</span><span class="q-label">How is each system used day-to-day?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">9.3</span><span class="q-label">What are all required logins?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">9.4</span><span class="q-label">Who owns each login/account?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">9.5</span><span class="q-label">Are credentials shared vault-only or personal accounts?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">9.6</span><span class="q-label">What 2FA methods are used and who controls them?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">9.7</span><span class="q-label">What is the offboarding/revocation process?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">9.8</span><span class="q-label">What minimum permissions should each role have?</span></div><textarea></textarea></div>
+  </section>
+
+  <!-- 10. Guest Journeys & Messaging -->
+  <section class="card" id="s10">
+    <div class="section-header"><div class="section-number">10</div><h2 class="section-title">Guest Journeys &amp; Messaging</h2></div>
+    <p class="section-blurb">End-to-end messaging: booking confirmation through post-stay rebook offer.</p>
+
+    <div class="question"><div class="q-wrap"><span class="q-num">10.1</span><span class="q-label">Do you send a confirmation message when a reservation is created? What should it say?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">10.2</span><span class="q-label">What post-booking guest info is collected (email, guest count, vehicles, IDs, pets, building details)?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">10.3</span><span class="q-label">Do you send guidebook/portal/rental agreement links? When?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">10.4</span><span class="q-label">Do you require signed agreement, completed portal, full payment, verified payment before check-in details?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">10.5</span><span class="q-label">Do you send reminders for incomplete pre-arrival steps? When and what text?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">10.6</span><span class="q-label">Do you promote trip insurance, partner offers, coupons, rentals? When?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">10.7</span><span class="q-label">Do you send pre-arrival check-in instructions? How many days before and what's included?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">10.8</span><span class="q-label">Do you send property-specific access instructions (locks, gates, elevators, desk, key pickup, parking, Wi-Fi)?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">10.9</span><span class="q-label">Do you send a check-in day SMS? What's included?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">10.10</span><span class="q-label">Do you send pre-approval/inquiry response messages pre-booking? What must be confirmed?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">10.11</span><span class="q-label">Any properties requiring special pre-arrival instructions?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">10.12</span><span class="q-label">What if required pre-arrival info is missing?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">10.13</span><span class="q-label">Do you send a post-arrival check-in follow-up? When and what do you ask?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">10.14</span><span class="q-label">Do you ask guests to rate the home shortly after arrival? What scale?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">10.15</span><span class="q-label">Do you tell guests to report issues immediately?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">10.16</span><span class="q-label">Do you send checkout reminders? When and with what instructions?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">10.17</span><span class="q-label">Any property-specific checkout instructions beyond standard?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">10.18</span><span class="q-label">Must guests return physical items (keys/remotes/passes/wristbands)?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">10.19</span><span class="q-label">Is there a fee for non-returned access items?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">10.20</span><span class="q-label">Do you send a post-checkout thank-you/review request? When and by channel?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">10.21</span><span class="q-label">Do you send a direct-booking rebook offer after checkout? Timing and offer rules?</span></div><textarea></textarea></div>
+  </section>
+
+  <!-- 11. Compensation, Risk & Disputes -->
+  <section class="card" id="s11">
+    <div class="section-header"><div class="section-number">11</div><h2 class="section-title">Compensation, Risk &amp; Disputes</h2></div>
+    <p class="section-blurb">Approval ceilings, evidence rules, ticket hygiene, legal templates, chargebacks, and the do-not-offer list.</p>
+
+    <div class="question"><div class="q-wrap"><span class="q-num">11.1</span><span class="q-label">What evidence is required before compensation (photos, video, timestamps, vendor notes)?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">11.2</span><span class="q-label">What compensation can agents approve without manager approval?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">11.3</span><span class="q-label">What compensation types are allowed by scenario (refund, partial refund, credit, fee waiver)?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">11.4</span><span class="q-label">Which issues require a ticket/work order, and in which system?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">11.5</span><span class="q-label">What required fields must be completed before closing a ticket?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">11.6</span><span class="q-label">How many follow-ups before closing as unresponsive?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">11.7</span><span class="q-label">What legal/risk templates are mandatory (injury, security, discrimination claims)?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">11.8</span><span class="q-label">What words/promises are prohibited in guest communication?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">11.9</span><span class="q-label">When must leadership be notified about a potential chargeback/platform dispute?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">11.10</span><span class="q-label">What documentation package is required for chargeback defense?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">11.11</span><span class="q-label">When should platform support (Airbnb/VRBO/etc.) be contacted directly?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">11.12</span><span class="q-label">What is the process when a guest claim conflicts with internal logs/camera timestamps?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">11.13</span><span class="q-label">Is repeat-offender history tracked across properties? If yes, what policy applies?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">11.14</span><span class="q-label">What multilingual support rules apply if the guest's preferred language is not English?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">11.15</span><span class="q-label">What accessibility requests require priority handling and specialized escalation?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">11.16</span><span class="q-label">What is the approval matrix for goodwill gestures by severity and channel?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">11.17</span><span class="q-label">What is the do-not-offer list (refunds or promises agents cannot make)?</span></div><textarea></textarea></div>
+  </section>
+
+  <!-- 12. Revenue, Direct Booking & Upsells -->
+  <section class="card" id="s12">
+    <div class="section-header"><div class="section-number">12</div><h2 class="section-title">Revenue, Direct Booking &amp; Upsells</h2></div>
+    <p class="section-blurb">Discount rules, channel constraints, ECI/LCO pricing, upsells, remarketing, repeat-guest, and KPIs.</p>
+
+    <div class="question"><div class="q-wrap"><span class="q-num">12.1</span><span class="q-label">Which discounts are allowed on direct bookings (military, healthcare, retirees, newsletter)?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">12.2</span><span class="q-label">Which discounts are prohibited on OTA channels?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">12.3</span><span class="q-label">What is the default discount % and max stack rules?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">12.4</span><span class="q-label">Who approves exceptions to discount policy?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">12.5</span><span class="q-label">What are early check-in/late checkout pricing rules by property and season?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">12.6</span><span class="q-label">What same-day constraints block upsells?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">12.7</span><span class="q-label">What upsells are active (HostCo/services/add-ons) and who fulfills them?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">12.8</span><span class="q-label">What abandoned-inquiry / abandoned-booking remarketing flows should run?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">12.9</span><span class="q-label">What repeat-guest campaigns should run and at what cadence?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">12.10</span><span class="q-label">What KPIs define success for the direct booking shift?</span></div><textarea></textarea></div>
+  </section>
+
+  <!-- 13. Housekeeping & Turnover -->
+  <section class="card" id="s13">
+    <div class="section-header"><div class="section-number">13</div><h2 class="section-title">Housekeeping &amp; Turnover Operations</h2></div>
+    <p class="section-blurb">Cleaning windows, same-day cutoffs, QC, par levels, photo requirements, escalations, and emergency dispatch.</p>
+
+    <div class="question"><div class="q-wrap"><span class="q-num">13.1</span><span class="q-label">What is the standard cleaning window by property?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">13.2</span><span class="q-label">What is the same-day turnover cutoff for accepting bookings?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">13.3</span><span class="q-label">How are cleaner delays communicated internally and to guests?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">13.4</span><span class="q-label">What quality-control checklist is required before marking "guest-ready"?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">13.5</span><span class="q-label">What supplies must always be stocked and at what min par levels?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">13.6</span><span class="q-label">What photos are required from cleaners post-turnover?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">13.7</span><span class="q-label">What are the escalation rules for missed/failed cleans?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">13.8</span><span class="q-label">Who can approve emergency cleaner dispatch and costs?</span></div><textarea></textarea></div>
+  </section>
+
+  <!-- 14. Maintenance & Vendors -->
+  <section class="card" id="s14">
+    <div class="section-header"><div class="section-number">14</div><h2 class="section-title">Maintenance &amp; Vendor Management</h2></div>
+    <p class="section-blurb">Vendor roster, SLAs, troubleshooting gates, spending limits, invoice reconciliation, and per-property maintenance history.</p>
+
+    <div class="question"><div class="q-wrap"><span class="q-num">14.1</span><span class="q-label">Who are the primary vendors by trade and region?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">14.2</span><span class="q-label">What are vendor SLAs and response expectations by priority?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">14.3</span><span class="q-label">What troubleshooting must happen before dispatch?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">14.4</span><span class="q-label">What spending limits can ops approve before owner approval?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">14.5</span><span class="q-label">How are invoices validated and reconciled?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">14.6</span><span class="q-label">What after-hours emergency vendor coverage exists?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">14.7</span><span class="q-label">What maintenance history must be logged per property?</span></div><textarea></textarea></div>
+  </section>
+
+  <!-- 15. Reporting & Governance -->
+  <section class="card" id="s15">
+    <div class="section-header"><div class="section-number">15</div><h2 class="section-title">Reporting &amp; Governance</h2></div>
+    <p class="section-blurb">Required reports, KPIs, distribution, audits, SOP change management, incident reviews, and quarterly experiments.</p>
+
+    <div class="question"><div class="q-wrap"><span class="q-num">15.1</span><span class="q-label">What daily/weekly/monthly reports are required?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">15.2</span><span class="q-label">Which KPIs are tracked (occupancy, ADR, RevPAR, response time, issue resolution, refunds, review score)?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">15.3</span><span class="q-label">Who receives each report and when?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">15.4</span><span class="q-label">What audit process checks policy compliance?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">15.5</span><span class="q-label">How are SOP changes approved and communicated?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">15.6</span><span class="q-label">What is the monthly incident review format?</span></div><textarea></textarea></div>
+    <div class="question"><div class="q-wrap"><span class="q-num">15.7</span><span class="q-label">What are the quarterly optimization experiments (pricing, upsells, messaging)?</span></div><textarea></textarea></div>
+  </section>
+
+  <div class="submit-bar">
+    <h3>That's the full questionnaire.</h3>
+    <p>Download your answers as a JSON file, or print to PDF and email it back.</p>
+    <button type="button" class="btn" onclick="downloadResponses()">Download Responses</button>
+    <button type="button" class="btn secondary" onclick="window.print()">Print to PDF</button>
+  </div>
+
+</div>
+</form>
+
+<a href="#" class="back-to-top" id="backToTop">↑ Top</a>
+
+<script>
+  const backToTop = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 600) backToTop.classList.add('visible');
+    else backToTop.classList.remove('visible');
+  });
+
+  function downloadResponses() {
+    const form = document.getElementById('sopForm');
+    const responses = [];
+    const sections = form.querySelectorAll('section.card');
+    sections.forEach(section => {
+      const sectionTitle = section.querySelector('.section-title')?.textContent.trim() || 'Untitled';
+      const sectionData = { section: sectionTitle, items: [] };
+      const items = section.querySelectorAll('.question');
+      items.forEach(q => {
+        const num = q.querySelector('.q-num')?.textContent.trim() || '';
+        const label = q.querySelector('.q-label')?.textContent.trim() || '';
+        const answer = q.querySelector('textarea')?.value.trim() || '';
+        if (answer) {
+          sectionData.items.push({ number: num, question: label, answer: answer });
+        }
+      });
+      if (sectionData.items.length) responses.push(sectionData);
+    });
+    const payload = {
+      title: 'Apex Properties — Operations SOP Discovery',
+      submitted: new Date().toISOString(),
+      sections: responses
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'apex_sop_discovery.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+</script>
+
+</body>
+</html>
