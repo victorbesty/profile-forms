@@ -1,0 +1,2467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Big Fish Rentals — Operations Intake</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Coastal-modern palette: deep Atlantic, sand, coral sunset */
+    --bg: #f4efe6;
+    --bg-soft: #ebe3d4;
+    --bg-card: #fbf8f2;
+    --ink: #0a2230;
+    --ink-2: #1a3a4a;
+    --ink-soft: #3d5560;
+    --ink-muted: #8a958d;
+    --navy: #0a2230;
+    --deep: #143447;
+    --sea: #1f6b7a;
+    --sea-soft: #d5e4e3;
+    --sand: #e8dcc4;
+    --sand-deep: #c9b896;
+    --coral: #d8693a;
+    --coral-soft: #f4dccd;
+    --confirm: #2d6a4f;
+    --confirm-soft: #d8e8df;
+    --line: #d4c9b3;
+    --line-soft: #e6ddc9;
+    --radius: 3px;
+    --shadow: 0 1px 2px rgba(10,34,48,0.03), 0 12px 32px rgba(10,34,48,0.06);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.55;
+    font-size: 15px;
+    font-feature-settings: "ss01", "ss02";
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(ellipse at 0% 0%, rgba(31,107,122,0.04) 0%, transparent 50%),
+      radial-gradient(ellipse at 100% 100%, rgba(216,105,58,0.03) 0%, transparent 50%);
+    background-attachment: fixed;
+  }
+ 
+  /* ===================== HEADER ===================== */
+  .header {
+    background: linear-gradient(165deg, var(--navy) 0%, var(--deep) 55%, #0d2c3d 100%);
+    color: #fff;
+    padding: 72px 32px 56px;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 4px solid var(--coral);
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 88% 18%, rgba(216,105,58,0.18), transparent 38%),
+      radial-gradient(circle at 8% 85%, rgba(31,107,122,0.22), transparent 45%);
+    pointer-events: none;
+  }
+  /* Decorative wave */
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    height: 24px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 24' preserveAspectRatio='none'><path d='M0,12 C150,24 300,0 450,12 C600,24 750,0 900,12 C1050,24 1150,0 1200,12 L1200,24 L0,24 Z' fill='%23d8693a' opacity='0.0'/></svg>");
+  }
+  .header-inner { max-width: 980px; margin: 0 auto; position: relative; z-index: 1; }
+  .brand-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 38px;
+  }
+  .brand-mark {
+    width: 38px; height: 38px;
+    border: 1.5px solid var(--coral);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(216,105,58,0.08);
+  }
+  .brand-mark svg { width: 22px; height: 22px; }
+  .brand-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 19px;
+    letter-spacing: 0.04em;
+    color: #fff;
+  }
+  .brand-text em {
+    font-style: italic;
+    color: var(--coral);
+    font-weight: 500;
+  }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--coral);
+    font-weight: 500;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .eyebrow::before {
+    content: '';
+    width: 28px; height: 1px;
+    background: var(--coral);
+  }
+  .header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: clamp(40px, 6vw, 64px);
+    line-height: 1;
+    letter-spacing: -0.015em;
+    margin: 0 0 18px;
+  }
+  .header h1 em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--sand);
+  }
+  .header .subtitle {
+    font-size: 16px;
+    color: rgba(255,255,255,0.72);
+    max-width: 680px;
+    margin: 0 0 36px;
+    line-height: 1.55;
+  }
+  .meta-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px 28px;
+    padding-top: 28px;
+    border-top: 1px solid rgba(255,255,255,0.12);
+  }
+  .meta-item .meta-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 6px;
+  }
+  .meta-item .meta-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    color: #fff;
+    font-weight: 500;
+  }
+  .meta-item input.meta-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px dashed rgba(255,255,255,0.25);
+    color: #fff;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-weight: 500;
+    padding: 2px 0;
+    width: 100%;
+    outline: none;
+  }
+  .meta-item input.meta-input::placeholder { color: rgba(255,255,255,0.35); font-style: italic; }
+  .meta-item input.meta-input:focus { border-bottom-color: var(--coral); }
+ 
+  /* ===================== CONTAINER ===================== */
+  .container {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 48px 32px 140px;
+  }
+ 
+  /* ===================== INTRO PANEL ===================== */
+  .intro {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 36px 40px;
+    margin-bottom: 36px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .intro::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--coral) 0%, var(--sea) 100%);
+  }
+  .intro-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--sea);
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+  .intro h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 30px;
+    letter-spacing: -0.01em;
+    margin: 0 0 14px;
+    line-height: 1.15;
+  }
+  .intro p {
+    color: var(--ink-soft);
+    margin: 0 0 12px;
+    font-size: 14.5px;
+  }
+  .intro p:last-child { margin-bottom: 0; }
+  .intro-tips {
+    margin-top: 22px;
+    padding-top: 22px;
+    border-top: 1px dotted var(--line);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .intro-tip {
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .intro-tip strong {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--coral);
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+ 
+  /* ===================== TOC ===================== */
+  .toc {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 30px 36px;
+    margin-bottom: 48px;
+    box-shadow: var(--shadow);
+  }
+  .toc-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--ink-soft);
+    margin: 0 0 4px;
+  }
+  .toc-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--ink);
+    margin: 0 0 22px;
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px 32px;
+  }
+  .toc-group {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .toc-group:last-child,
+  .toc-grid > .toc-group:nth-last-child(-n+2) {
+    border-bottom: none;
+  }
+  .toc-group-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  .toc-group ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .toc-group li {
+    padding: 4px 0;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .toc-group li .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--sea);
+    font-weight: 500;
+    min-width: 24px;
+  }
+  .toc-group li a {
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 13.5px;
+    transition: color 0.15s;
+  }
+  .toc-group li a:hover { color: var(--coral); }
+ 
+  /* ===================== SECTIONS ===================== */
+  section.card {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 44px 48px;
+    margin-bottom: 28px;
+    box-shadow: var(--shadow);
+    scroll-margin-top: 24px;
+    position: relative;
+  }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 22px;
+    margin-bottom: 8px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--ink);
+    position: relative;
+  }
+  .section-header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: var(--coral);
+  }
+  .section-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 44px;
+    color: var(--sea);
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 28px;
+    letter-spacing: -0.01em;
+    margin: 0;
+    line-height: 1.1;
+  }
+  .section-title em {
+    font-style: italic;
+    color: var(--sea);
+    font-weight: 400;
+  }
+  .section-blurb {
+    color: var(--ink-muted);
+    font-size: 13.5px;
+    margin: 16px 0 30px;
+    font-style: italic;
+    max-width: 680px;
+    line-height: 1.6;
+  }
+ 
+  /* Subsections */
+  .subsection {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px dotted var(--line);
+  }
+  .subsection:first-of-type {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+  .subsection-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--deep);
+    margin: 0 0 6px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .subsection-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--coral);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  .subsection-desc {
+    font-size: 13px;
+    color: var(--ink-muted);
+    margin: 0 0 18px;
+    font-style: italic;
+  }
+ 
+  /* Questions */
+  .question { margin: 20px 0; }
+  .question .q-label {
+    display: block;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 6px;
+    font-size: 14.5px;
+    line-height: 1.45;
+  }
+  .question .q-hint {
+    display: block;
+    font-size: 12.5px;
+    color: var(--ink-muted);
+    font-style: italic;
+    margin-bottom: 8px;
+    margin-top: -2px;
+    line-height: 1.5;
+  }
+  .question .q-context {
+    display: block;
+    font-size: 12.5px;
+    color: var(--sea);
+    font-style: italic;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    background: var(--sea-soft);
+    border-radius: 2px;
+    border-left: 2px solid var(--sea);
+    line-height: 1.5;
+  }
+  .q-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    color: var(--coral);
+    background: var(--coral-soft);
+    padding: 1px 6px;
+    border-radius: 2px;
+    margin-left: 8px;
+    vertical-align: middle;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+ 
+  /* Inputs */
+  input[type="text"], input[type="email"], input[type="number"],
+  input[type="date"], input[type="time"], textarea {
+    width: 100%;
+    padding: 11px 13px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--ink);
+    background: #fffdf9;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+  }
+  input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--sea);
+    background: #fff;
+    box-shadow: 0 0 0 3px var(--sea-soft);
+  }
+  textarea {
+    resize: vertical;
+    min-height: 68px;
+    font-family: inherit;
+    line-height: 1.55;
+  }
+ 
+  /* Option pills */
+  .options { display: flex; flex-wrap: wrap; gap: 6px 8px; margin-top: 6px; }
+  .options.vertical { flex-direction: column; gap: 6px; }
+  .options label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 13px;
+    background: #fffdf9;
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    cursor: pointer;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    transition: all 0.12s;
+    user-select: none;
+  }
+  .options label:hover {
+    border-color: var(--sea);
+    background: var(--sea-soft);
+    color: var(--ink);
+  }
+  .options label:has(input:checked) {
+    background: var(--sea);
+    color: #fff;
+    border-color: var(--sea);
+  }
+  .options input {
+    accent-color: var(--coral);
+    cursor: pointer;
+    margin: 0;
+  }
+  .options input[type="checkbox"]:checked + span,
+  .options input[type="radio"]:checked + span { font-weight: 500; }
+ 
+  /* Two-column grid for compact questions */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 24px;
+  }
+  @media (max-width: 700px) { .grid-2 { grid-template-columns: 1fr; } }
+ 
+  /* Repeating-item blocks (e.g. system inventory, FAQ tracker) */
+  .repeat-block {
+    margin: 16px 0;
+    padding: 18px 20px;
+    background: var(--bg-soft);
+    border: 1px dashed var(--line);
+    border-radius: var(--radius);
+  }
+  .repeat-block + .repeat-block { margin-top: 12px; }
+  .repeat-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--deep);
+    margin: 0 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .repeat-title .pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    color: var(--coral);
+    background: var(--coral-soft);
+    padding: 2px 7px;
+    border-radius: 100px;
+    letter-spacing: 0.04em;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+  .add-row-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 1px dashed var(--sea);
+    color: var(--sea);
+    padding: 8px 16px;
+    border-radius: 100px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-top: 8px;
+  }
+  .add-row-btn:hover {
+    background: var(--sea-soft);
+    border-style: solid;
+  }
+ 
+  /* FAQ matrix table */
+  .faq-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 12px;
+    font-size: 13px;
+  }
+  .faq-table thead th {
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    font-weight: 500;
+    padding: 10px 10px 10px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .faq-table tbody td {
+    padding: 8px 8px 8px 0;
+    border-bottom: 1px dotted var(--line-soft);
+    vertical-align: middle;
+  }
+  .faq-table tbody tr:hover td { background: rgba(31,107,122,0.03); }
+  .faq-topic {
+    font-size: 13.5px;
+    color: var(--ink);
+    line-height: 1.4;
+    padding-right: 12px !important;
+  }
+  .faq-table input[type="text"] {
+    padding: 6px 8px;
+    font-size: 12.5px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-bottom: 1px dotted var(--line);
+    border-radius: 0;
+  }
+  .faq-table input[type="text"]:focus {
+    background: #fff;
+    border: 1px solid var(--sea);
+    box-shadow: none;
+    border-radius: 2px;
+  }
+  .faq-status {
+    display: inline-flex;
+    gap: 4px;
+  }
+  .faq-status label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 600;
+    background: #fffdf9;
+    color: var(--ink-muted);
+    transition: all 0.12s;
+  }
+  .faq-status label:hover { border-color: var(--sea); }
+  .faq-status input { display: none; }
+  .faq-status label:has(input:checked) {
+    background: var(--confirm);
+    color: #fff;
+    border-color: var(--confirm);
+  }
+  .faq-status .partial:has(input:checked) {
+    background: var(--coral);
+    border-color: var(--coral);
+  }
+  .faq-status .missing:has(input:checked) {
+    background: #b03a2e;
+    border-color: #b03a2e;
+  }
+ 
+  /* MRG/playbook compact blocks */
+  .playbook-block {
+    margin: 14px 0;
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .playbook-head {
+    padding: 12px 18px;
+    background: var(--deep);
+    color: #fff;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+  }
+  .playbook-head::after {
+    content: '+';
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    color: var(--coral);
+    transition: transform 0.2s;
+  }
+  .playbook-block.open .playbook-head::after { content: '−'; }
+  .playbook-body {
+    display: none;
+    padding: 18px 22px;
+  }
+  .playbook-block.open .playbook-body { display: block; }
+  .playbook-body .grid-2 { gap: 14px 20px; }
+  .playbook-body textarea { min-height: 52px; }
+  .playbook-body .q-label { font-size: 13px; }
+ 
+  /* Sign-off */
+  .signoff {
+    background: var(--navy);
+    color: #fff;
+    border-radius: var(--radius);
+    padding: 40px 44px;
+    margin-top: 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .signoff::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--coral);
+  }
+  .signoff h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 26px;
+    margin: 0 0 6px;
+  }
+  .signoff p {
+    color: rgba(255,255,255,0.65);
+    font-size: 13.5px;
+    margin: 0 0 28px;
+  }
+  .signoff .grid-2 { gap: 18px 28px; }
+  .signoff .q-label { color: rgba(255,255,255,0.85); }
+  .signoff input[type="text"],
+  .signoff input[type="date"] {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #fff;
+  }
+  .signoff input:focus {
+    border-color: var(--coral);
+    background: rgba(255,255,255,0.08);
+    box-shadow: 0 0 0 3px rgba(216,105,58,0.2);
+  }
+  .signoff input::placeholder { color: rgba(255,255,255,0.3); }
+ 
+  /* Submit bar */
+  .submit-bar {
+    margin-top: 28px;
+    padding: 32px;
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    text-align: center;
+  }
+  .submit-bar h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 22px;
+    margin: 0 0 8px;
+    color: var(--ink);
+  }
+  .submit-bar p {
+    color: var(--ink-muted);
+    margin: 0 0 22px;
+    font-size: 13.5px;
+  }
+  .btn {
+    display: inline-block;
+    background: var(--coral);
+    color: #fff;
+    border: none;
+    padding: 13px 30px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: transform 0.12s, box-shadow 0.12s, background 0.15s;
+    margin: 0 5px;
+  }
+  .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(216,105,58,0.25);
+    background: #c5582d;
+  }
+  .btn.secondary {
+    background: transparent;
+    color: var(--deep);
+    border: 1px solid var(--line);
+  }
+  .btn.secondary:hover {
+    background: var(--bg-soft);
+    border-color: var(--deep);
+    box-shadow: none;
+  }
+ 
+  /* Back to top */
+  .back-to-top {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--deep);
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 500;
+    text-decoration: none;
+    box-shadow: 0 8px 20px rgba(10,34,48,0.3);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.2s;
+    pointer-events: none;
+    z-index: 100;
+    border: 1px solid var(--coral);
+  }
+  .back-to-top.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .back-to-top:hover { background: var(--coral); }
+ 
+  /* Progress indicator (fixed top) */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: rgba(10,34,48,0.08);
+    z-index: 200;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--coral);
+    width: 0%;
+    transition: width 0.1s linear;
+  }
+ 
+  /* Responsive */
+  @media (max-width: 760px) {
+    .header { padding: 48px 22px 40px; }
+    .container { padding: 32px 18px 100px; }
+    section.card { padding: 30px 24px; }
+    .intro { padding: 26px 24px; }
+    .meta-row { grid-template-columns: 1fr 1fr; gap: 18px 22px; }
+    .toc-grid { grid-template-columns: 1fr; }
+    .toc { padding: 22px 22px; }
+    .intro-tips { grid-template-columns: 1fr; gap: 14px; }
+    .section-header { flex-direction: column; gap: 4px; align-items: flex-start; }
+    .section-number { font-size: 32px; }
+    .section-title { font-size: 22px; }
+    .signoff { padding: 28px 24px; }
+    .signoff .grid-2 { grid-template-columns: 1fr; }
+  }
+ 
+  /* Print */
+  @media print {
+    body { background: #fff; }
+    .back-to-top, .toc, .submit-bar, .progress-bar { display: none; }
+    section.card, .intro, .signoff {
+      box-shadow: none;
+      page-break-inside: avoid;
+      border: 1px solid #ccc;
+    }
+    .header { background: #0a2230 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .playbook-block { page-break-inside: avoid; }
+    .playbook-body { display: block !important; }
+    .playbook-head::after { display: none; }
+  }
+</style>
+</head>
+<body>
+ 
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+ 
+<!-- ===================== HEADER ===================== -->
+<header class="header">
+  <div class="header-inner">
+    <div class="brand-row">
+      <div class="brand-mark">
+        <!-- minimal fish/wave mark -->
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 12c2-3 5-4 8-4s6 1 8 4-3 4-8 4-6-1-8-4z" stroke="#d8693a" stroke-width="1.4" stroke-linejoin="round"/>
+          <circle cx="15" cy="11" r="0.8" fill="#d8693a"/>
+          <path d="M19.5 12l2-1.5v3L19.5 12z" fill="#d8693a"/>
+        </svg>
+      </div>
+      <div class="brand-text">Big Fish Rentals <em>· Operations</em></div>
+    </div>
+ 
+    <div class="eyebrow">Owner / Manager Intake · v1</div>
+    <h1>Operations &amp; Policy<br><em>Onboarding Intake</em></h1>
+    <p class="subtitle">One source of truth for how we run your property — screening, pricing, messaging, escalation, and edge cases. Skip anything that doesn't apply, save your progress, and bring it to our next call.</p>
+ 
+    <div class="meta-row">
+      <div class="meta-item">
+        <div class="meta-label">Owner / Operator</div>
+        <input class="meta-input" type="text" placeholder="Your name" />
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Entity / LLC</div>
+        <input class="meta-input" type="text" placeholder="Legal entity name" />
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Properties Onboarding</div>
+        <input class="meta-input" type="text" placeholder="# of units" />
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Target Go-Live</div>
+        <input class="meta-input" type="date" />
+      </div>
+    </div>
+  </div>
+</header>
+ 
+<form id="intakeForm">
+<div class="container">
+ 
+  <!-- INTRO -->
+  <div class="intro">
+    <div class="intro-eyebrow">Before you begin</div>
+    <h2>How to fill this out</h2>
+    <p>This form captures the operational decisions that drive every guest interaction — from first inquiry to post-stay. Some sections are short; others (playbooks, FAQs) are deeper. You don't have to do it in one sitting.</p>
+    <p>Where we have a sensible default, we've noted it. Where there's a recommendation based on what works for premium oceanfront, we say so. Everything's editable.</p>
+    <div class="intro-tips">
+      <div class="intro-tip"><strong>One policy per question</strong>Not one per agent's preference. We're documenting how the property is run, not how individuals work.</div>
+      <div class="intro-tip"><strong>Property-specific exceptions</strong>If a rule changes for one unit, call it out in the notes box at the end of each section.</div>
+      <div class="intro-tip"><strong>"TBD" is fine</strong>If you don't know yet, write "TBD" — we'd rather flag the gap than fill it with guesses.</div>
+    </div>
+  </div>
+ 
+  <!-- TOC -->
+  <nav class="toc">
+    <div class="toc-title">Contents</div>
+    <div class="toc-sub">Nineteen sections, grouped four ways</div>
+    <div class="toc-grid">
+ 
+      <div class="toc-group">
+        <div class="toc-group-label">Booking &amp; Pricing</div>
+        <ol>
+          <li><span class="num">01</span><a href="#s1">Pre-Booking &amp; Guest Screening</a></li>
+          <li><span class="num">02</span><a href="#s2">Special Booking Types</a></li>
+          <li><span class="num">03</span><a href="#s3">Booking Rules &amp; Constraints</a></li>
+          <li><span class="num">04</span><a href="#s4">Reservation Changes &amp; Policies</a></li>
+          <li><span class="num">05</span><a href="#s5">Check-In / Check-Out</a></li>
+          <li><span class="num">06</span><a href="#s6">Edge Cases &amp; Exceptions</a></li>
+          <li><span class="num">07</span><a href="#s7">Discounts &amp; Pricing Exceptions</a></li>
+        </ol>
+      </div>
+ 
+      <div class="toc-group">
+        <div class="toc-group-label">Operations &amp; Risk</div>
+        <ol>
+          <li><span class="num">08</span><a href="#s8">Operational Controls</a></li>
+          <li><span class="num">09</span><a href="#s9">Systems &amp; Monitoring</a></li>
+          <li><span class="num">10</span><a href="#s10">MRG · Current Stay</a></li>
+          <li><span class="num">11</span><a href="#s11">MRG · Post Stay</a></li>
+          <li><span class="num">12</span><a href="#s12">MRG · Pre Stay</a></li>
+          <li><span class="num">13</span><a href="#s13">Guest Issue Protocols</a></li>
+        </ol>
+      </div>
+ 
+      <div class="toc-group">
+        <div class="toc-group-label">Knowledge &amp; Access</div>
+        <ol>
+          <li><span class="num">14</span><a href="#s14">FAQ Knowledge Base</a></li>
+          <li><span class="num">15</span><a href="#s15">Cameras, Access &amp; Security</a></li>
+          <li><span class="num">16</span><a href="#s16">Logins, Tools &amp; Permissions</a></li>
+        </ol>
+      </div>
+ 
+      <div class="toc-group">
+        <div class="toc-group-label">Messaging &amp; Compliance</div>
+        <ol>
+          <li><span class="num">17</span><a href="#s17">Guest Journey Messaging</a></li>
+          <li><span class="num">18</span><a href="#s18">Compensation, Risk &amp; Disputes</a></li>
+          <li><span class="num">19</span><a href="#s19">Priority Controls (Finalize First)</a></li>
+        </ol>
+      </div>
+ 
+    </div>
+  </nav>
+ 
+  <!-- ===================== SECTION 1: PRE-BOOKING & SCREENING ===================== -->
+  <section class="card" id="s1">
+    <div class="section-header">
+      <div class="section-number">01</div>
+      <h2 class="section-title">Pre-Booking <em>& Guest Screening</em></h2>
+    </div>
+    <p class="section-blurb">How we vet who's coming, what we collect, and what triggers a hold or escalation.</p>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">1.1</span> Screening essentials</h3>
+ 
+      <div class="question">
+        <label class="q-label">Do you screen guests before confirming or shortly after booking? <span class="q-tag">Y/N</span></label>
+        <div class="options">
+          <label><input type="radio" name="screen_yn"><span>Yes</span></label>
+          <label><input type="radio" name="screen_yn"><span>No</span></label>
+        </div>
+      </div>
+ 
+      <div class="question">
+        <label class="q-label">When does screening happen?</label>
+        <div class="options vertical">
+          <label><input type="radio" name="screen_when"><span>Immediately after booking</span></label>
+          <label><input type="radio" name="screen_when"><span>Before approval (request-to-book reservations)</span></label>
+          <label><input type="radio" name="screen_when"><span>Only for certain reservations (define trigger below)</span></label>
+        </div>
+      </div>
+ 
+      <div class="question">
+        <label class="q-label">Screening trigger rules (if conditional)</label>
+        <textarea placeholder="e.g., 'Any booking under 21 days notice, group size 6+, or local guests within 50 miles'"></textarea>
+      </div>
+ 
+      <div class="question">
+        <label class="q-label">Required guest information <span class="q-tag">multi</span></label>
+        <div class="options">
+          <label><input type="checkbox"><span>Full guest count</span></label>
+          <label><input type="checkbox"><span>Adult / child split</span></label>
+          <label><input type="checkbox"><span>Vehicle count &amp; details</span></label>
+          <label><input type="checkbox"><span>Purpose of stay</span></label>
+          <label><input type="checkbox"><span>Arrival window</span></label>
+          <label><input type="checkbox"><span>Primary guest ID</span></label>
+          <label><input type="checkbox"><span>Pet details</span></label>
+        </div>
+        <input type="text" placeholder="Other..." style="margin-top: 8px;" />
+      </div>
+ 
+      <div class="question">
+        <label class="q-label">Required items that must be complete before check-in release</label>
+        <div class="options">
+          <label><input type="checkbox"><span>Signed rental agreement</span></label>
+          <label><input type="checkbox"><span>Completed guest portal</span></label>
+          <label><input type="checkbox"><span>Full payment</span></label>
+          <label><input type="checkbox"><span>Verified payment method</span></label>
+          <label><input type="checkbox"><span>Verified ID</span></label>
+        </div>
+        <input type="text" placeholder="Other..." style="margin-top: 8px;" />
+      </div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">1.2</span> Non-response &amp; enforcement</h3>
+ 
+      <div class="question">
+        <label class="q-label">Follow-up sequence for missing screening info</label>
+        <span class="q-hint">Cadence + channels (e.g., "Day 1 platform msg, Day 3 SMS, Day 5 call").</span>
+        <textarea></textarea>
+      </div>
+ 
+      <div class="grid-2">
+        <div class="question">
+          <label class="q-label">How many follow-ups before escalation? <span class="q-tag">num</span></label>
+          <input type="number" placeholder="e.g., 3" min="0" />
+        </div>
+        <div class="question">
+          <label class="q-label">Final action if guest remains unresponsive</label>
+          <div class="options vertical">
+            <label><input type="radio" name="final_action"><span>Hold check-in details</span></label>
+            <label><input type="radio" name="final_action"><span>Escalate to manager</span></label>
+            <label><input type="radio" name="final_action"><span>Cancel / decline where policy allows</span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">1.3</span> Risk rules &amp; actions</h3>
+ 
+      <div class="question">
+        <label class="q-label">Do you flag risky guests?</label>
+        <div class="options">
+          <label><input type="radio" name="flag_risky"><span>Yes</span></label>
+          <label><input type="radio" name="flag_risky"><span>No</span></label>
+        </div>
+      </div>
+ 
+      <div class="question">
+        <label class="q-label">Risk signals used <span class="q-tag">core signals only</span></label>
+        <div class="options">
+          <label><input type="checkbox"><span>Last-minute booking</span></label>
+          <label><input type="checkbox"><span>Large group vs. unit size</span></label>
+          <label><input type="checkbox"><span>Local booking pattern</span></label>
+          <label><input type="checkbox"><span>Vague / inconsistent answers</span></label>
+          <label><input type="checkbox"><span>Refusal to complete screening</span></label>
+          <label><input type="checkbox"><span>Event language (party / prom / etc.)</span></label>
+          <label><input type="checkbox"><span>Prior incident history</span></label>
+        </div>
+      </div>
+ 
+      <div class="question">
+        <label class="q-label">Primary actions for risky reservations</label>
+        <div class="options">
+          <label><input type="checkbox"><span>Ask additional questions</span></label>
+          <label><input type="checkbox"><span>Require written rule acknowledgment</span></label>
+          <label><input type="checkbox"><span>Escalate internally</span></label>
+          <label><input type="checkbox"><span>Decline / cancel where policy allows</span></label>
+          <label><input type="checkbox"><span>Monitor only</span></label>
+        </div>
+      </div>
+ 
+      <div class="grid-2">
+        <div class="question">
+          <label class="q-label">Escalation owner + handoff details</label>
+          <textarea placeholder="Who gets the alert, in what channel, with what info?"></textarea>
+        </div>
+        <div class="question">
+          <label class="q-label">Track flagged guests for future bookings?</label>
+          <div class="options">
+            <label><input type="radio" name="track_flagged"><span>Yes</span></label>
+            <label><input type="radio" name="track_flagged"><span>No</span></label>
+          </div>
+          <input type="text" placeholder="If yes — where / how tracked?" style="margin-top: 8px;" />
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- ===================== SECTION 2: SPECIAL BOOKING TYPES ===================== -->
+  <section class="card" id="s2">
+    <div class="section-header">
+      <div class="section-number">02</div>
+      <h2 class="section-title">Special <em>Booking Types</em></h2>
+    </div>
+    <p class="section-blurb">Events, prom/youth groups, and pets — the bookings most likely to cause problems if policy isn't crystal clear.</p>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">2.1</span> Events (weddings, parties, gatherings)</h3>
+      <div class="question">
+        <label class="q-label">Are events allowed?</label>
+        <div class="options">
+          <label><input type="radio" name="events"><span>Yes</span></label>
+          <label><input type="radio" name="events"><span>No</span></label>
+          <label><input type="radio" name="events"><span>Sometimes</span></label>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="question">
+          <label class="q-label">Approval conditions (one policy statement)</label>
+          <textarea placeholder="e.g., '≤15 guests, no amplified music, $500 event fee, signed addendum.'"></textarea>
+        </div>
+        <div class="question">
+          <label class="q-label">Event approval owner</label>
+          <input type="text" placeholder="Name / role" />
+        </div>
+      </div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">2.2</span> Prom / youth groups</h3>
+      <div class="question">
+        <label class="q-label">Prom &amp; youth-group bookings</label>
+        <div class="options">
+          <label><input type="radio" name="prom"><span>Allowed</span></label>
+          <label><input type="radio" name="prom"><span>Not allowed</span></label>
+          <label><input type="radio" name="prom"><span>Conditional</span></label>
+        </div>
+      </div>
+      <div class="question">
+        <label class="q-label">If conditional — minimum required info + non-negotiable rules</label>
+        <textarea placeholder="e.g., 'Chaperone present 24/7, additional $1k deposit, no balcony access after 10 PM.'"></textarea>
+      </div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">2.3</span> Pets</h3>
+      <div class="grid-2">
+        <div class="question">
+          <label class="q-label">Are pets allowed?</label>
+          <div class="options">
+            <label><input type="radio" name="pets"><span>Yes</span></label>
+            <label><input type="radio" name="pets"><span>No</span></label>
+            <label><input type="radio" name="pets"><span>Property-by-property</span></label>
+          </div>
+        </div>
+        <div class="question">
+          <label class="q-label">Pet fee rule</label>
+          <input type="text" placeholder="e.g., '$150 per pet, max 2 pets, under 40 lbs.'" />
+        </div>
+      </div>
+      <div class="question">
+        <label class="q-label">Pet limits, exclusions, and property-specific exceptions</label>
+        <textarea placeholder="Weight, breed, count limits. Which units are no-pet regardless of policy?"></textarea>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- ===================== SECTION 3: BOOKING RULES ===================== -->
+  <section class="card" id="s3">
+    <div class="section-header">
+      <div class="section-number">03</div>
+      <h2 class="section-title">Booking Rules <em>& Constraints</em></h2>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">3.1</span> Minimum stay</h3>
+      <div class="grid-2">
+        <div class="question">
+          <label class="q-label">Enforce a minimum night stay?</label>
+          <div class="options">
+            <label><input type="radio" name="min_stay"><span>Yes</span></label>
+            <label><input type="radio" name="min_stay"><span>No</span></label>
+          </div>
+        </div>
+        <div class="question">
+          <label class="q-label">Prevent split weekends?</label>
+          <div class="options">
+            <label><input type="radio" name="split_wknd"><span>Yes</span></label>
+            <label><input type="radio" name="split_wknd"><span>No</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="question">
+        <label class="q-label">Rules by season / day-of-week / property</label>
+        <span class="q-hint">e.g., "Summer: 4 nights. Shoulder: 2 nights. Bike Week: 5-night Wed–Sun lock."</span>
+        <textarea></textarea>
+      </div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">3.2</span> OTA → direct conversion</h3>
+      <div class="question">
+        <label class="q-label">Attempt to convert OTA bookings to direct on repeat stays?</label>
+        <div class="options">
+          <label><input type="radio" name="ota_convert"><span>Yes</span></label>
+          <label><input type="radio" name="ota_convert"><span>No</span></label>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="question">
+          <label class="q-label">Conversion triggers</label>
+          <textarea placeholder="e.g., 'After 2nd stay, at checkout follow-up, repeat guest from same household.'"></textarea>
+        </div>
+        <div class="question">
+          <label class="q-label">Approved channels</label>
+          <div class="options">
+            <label><input type="checkbox"><span>Phone</span></label>
+            <label><input type="checkbox"><span>Email</span></label>
+            <label><input type="checkbox"><span>SMS</span></label>
+            <label><input type="checkbox"><span>Platform message</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="question">
+          <label class="q-label">Compliance restrictions</label>
+          <textarea placeholder="OTAs prohibit poaching while booking is live — when can outreach start?"></textarea>
+        </div>
+        <div class="question">
+          <label class="q-label">Profiles that must NOT be converted</label>
+          <textarea placeholder="e.g., 'Anyone with an open dispute, sub-4.5 review, or fee chargeback.'"></textarea>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- ===================== SECTION 4: RESERVATION CHANGES ===================== -->
+  <section class="card" id="s4">
+    <div class="section-header">
+      <div class="section-number">04</div>
+      <h2 class="section-title">Reservation Changes <em>& Policies</em></h2>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">4.1</span> Cancellations</h3>
+      <div class="question">
+        <label class="q-label">Cancellation policy by platform</label>
+        <span class="q-hint">Airbnb: Flexible / Moderate / Strict / Firm. Vrbo: tiered. Direct: your call.</span>
+        <textarea placeholder="Airbnb: ___ | Vrbo: ___ | Booking.com: ___ | Direct: ___"></textarea>
+      </div>
+      <div class="grid-2">
+        <div class="question">
+          <label class="q-label">Exception criteria</label>
+          <textarea placeholder="Medical, military deployment, named-storm, death in family..."></textarea>
+        </div>
+        <div class="question">
+          <label class="q-label">Who approves exceptions?</label>
+          <input type="text" placeholder="Name / role" />
+        </div>
+      </div>
+      <div class="question">
+        <label class="q-label">Required guest-facing cancellation language</label>
+        <textarea placeholder="Template / approved phrasing"></textarea>
+      </div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">4.2</span> Mid-stay cancellations</h3>
+      <div class="grid-2">
+        <div class="question">
+          <label class="q-label">Required messaging steps</label>
+          <textarea></textarea>
+        </div>
+        <div class="question">
+          <label class="q-label">Calendar / system update requirements</label>
+          <textarea></textarea>
+        </div>
+      </div>
+      <div class="question">
+        <label class="q-label">Internal cleanup checklist</label>
+        <textarea placeholder="Refund processing, cleaner reassign, calendar reopen, deposit handling..."></textarea>
+      </div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">4.3</span> Date / property change requests</h3>
+      <div class="grid-2">
+        <div class="question">
+          <label class="q-label">Date change decision logic</label>
+          <textarea placeholder="Auto-approve within X days of booking? Same season only? Rate diff applies?"></textarea>
+        </div>
+        <div class="question">
+          <label class="q-label">Property change decision logic</label>
+          <textarea placeholder="Allowed at all? Rate-difference rule? Inventory check first?"></textarea>
+        </div>
+      </div>
+      <div class="question">
+        <label class="q-label">Required approver(s)</label>
+        <input type="text" placeholder="Auto / agent / manager — and at what threshold" />
+      </div>
+    </div>
+  </section>
+ 
+  <!-- ===================== SECTION 5: CHECK-IN / OUT ===================== -->
+  <section class="card" id="s5">
+    <div class="section-header">
+      <div class="section-number">05</div>
+      <h2 class="section-title">Check-In <em>/ Check-Out</em></h2>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">5.1</span> Standard times</h3>
+      <div class="grid-2">
+        <div class="question">
+          <label class="q-label">Standard check-in</label>
+          <input type="time" />
+        </div>
+        <div class="question">
+          <label class="q-label">Standard check-out</label>
+          <input type="time" />
+        </div>
+      </div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">5.2</span> Early / late rules</h3>
+      <div class="grid-2">
+        <div class="question">
+          <label class="q-label">Early check-in allowed?</label>
+          <div class="options">
+            <label><input type="radio" name="early_ci"><span>Yes</span></label>
+            <label><input type="radio" name="early_ci"><span>No</span></label>
+            <label><input type="radio" name="early_ci"><span>Conditional</span></label>
+          </div>
+        </div>
+        <div class="question">
+          <label class="q-label">Late check-out allowed?</label>
+          <div class="options">
+            <label><input type="radio" name="late_co"><span>Yes</span></label>
+            <label><input type="radio" name="late_co"><span>No</span></label>
+            <label><input type="radio" name="late_co"><span>Conditional</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="question">
+        <label class="q-label">Availability criteria, time limits, approval rules</label>
+        <textarea placeholder="e.g., 'Only if no same-day turn. Max 2 hours early / 1 hour late. Agent can approve, no manager needed.'"></textarea>
+      </div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">5.3</span> Paid early CI / late CO</h3>
+      <div class="grid-2">
+        <div class="question">
+          <label class="q-label">Offer paid early check-in?</label>
+          <div class="options">
+            <label><input type="radio" name="paid_ci"><span>Yes</span></label>
+            <label><input type="radio" name="paid_ci"><span>No</span></label>
+          </div>
+        </div>
+        <div class="question">
+          <label class="q-label">Offer paid late check-out?</label>
+          <div class="options">
+            <label><input type="radio" name="paid_co"><span>Yes</span></label>
+            <label><input type="radio" name="paid_co"><span>No</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="question">
+          <label class="q-label">When offers are sent</label>
+          <textarea placeholder="e.g., '48h before arrival once cleaner schedule confirmed.'"></textarea>
+        </div>
+        <div class="question">
+          <label class="q-label">Pricing calculation</label>
+          <textarea placeholder="Flat fee / hourly / % of nightly?"></textarea>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="question">
+          <label class="q-label">Post-acceptance workflow</label>
+          <textarea placeholder="Confirm with cleaner, lock code timing, update guest, log payment..."></textarea>
+        </div>
+        <div class="question">
+          <label class="q-label">Tracking / payment reconciliation</label>
+          <textarea></textarea>
+        </div>
+      </div>
+      <div class="question">
+        <label class="q-label">Required internal notifications / follow-up</label>
+        <textarea></textarea>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- ===================== SECTION 6: EDGE CASES ===================== -->
+  <section class="card" id="s6">
+    <div class="section-header">
+      <div class="section-number">06</div>
+      <h2 class="section-title">Edge Cases <em>& Exceptions</em></h2>
+    </div>
+    <p class="section-blurb">Same-day bookings are the most common edge case in Myrtle Beach — pin the rules now.</p>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">6.1</span> Last-minute / same-day bookings</h3>
+      <div class="question">
+        <label class="q-label">Same-day booking handling rules</label>
+        <textarea placeholder="Cutoff time? Auto-accept or manual? Higher rate? Skip pre-arrival messages?"></textarea>
+      </div>
+      <div class="grid-2">
+        <div class="question">
+          <label class="q-label">Required notifications</label>
+          <textarea placeholder="Cleaner alert, HOA, building security..."></textarea>
+        </div>
+        <div class="question">
+          <label class="q-label">Operational adjustments</label>
+          <textarea placeholder="Inspection, access provisioning, restocking..."></textarea>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- ===================== SECTION 7: DISCOUNTS ===================== -->
+  <section class="card" id="s7">
+    <div class="section-header">
+      <div class="section-number">07</div>
+      <h2 class="section-title">Discounts, Credits <em>& Pricing Exceptions</em></h2>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">7.1</span> Discount types &amp; rules</h3>
+      <div class="question">
+        <label class="q-label">Discount types used</label>
+        <div class="options">
+          <label><input type="checkbox"><span>Promo code</span></label>
+          <label><input type="checkbox"><span>Gift card</span></label>
+          <label><input type="checkbox"><span>Internal credit</span></label>
+          <label><input type="checkbox"><span>Loyalty / return guest</span></label>
+          <label><input type="checkbox"><span>Military</span></label>
+        </div>
+        <input type="text" placeholder="Other..." style="margin-top: 8px;" />
+      </div>
+      <div class="question">
+        <label class="q-label">Rules / restrictions by discount type</label>
+        <textarea placeholder="Stackable? Min nights? Excluded dates? Direct only?"></textarea>
+      </div>
+      <div class="grid-2">
+        <div class="question">
+          <label class="q-label">Max agent-approved discount (no manager) <span class="q-tag">$ or %</span></label>
+          <input type="text" placeholder="e.g., '$100 or 10% of nightly'" />
+        </div>
+        <div class="question">
+          <label class="q-label">Scenarios where discounting is prohibited</label>
+          <textarea placeholder="Peak weeks, last-minute, OTA bookings..."></textarea>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- ===================== SECTION 8: OPERATIONAL CONTROLS ===================== -->
+  <section class="card" id="s8">
+    <div class="section-header">
+      <div class="section-number">08</div>
+      <h2 class="section-title">Operational <em>Controls</em></h2>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">8.1</span> House blocking</h3>
+      <div class="grid-2">
+        <div class="question">
+          <label class="q-label">When should a property be blocked?</label>
+          <textarea placeholder="Maintenance, deep clean, owner stay, code violation..."></textarea>
+        </div>
+        <div class="question">
+          <label class="q-label">Who can approve blocks?</label>
+          <input type="text" />
+        </div>
+      </div>
+      <div class="question">
+        <label class="q-label">How blocks are recorded and communicated</label>
+        <textarea placeholder="PMS notes, internal channel, owner notification..."></textarea>
+      </div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">8.2</span> External disruptions (weather, utility)</h3>
+      <div class="question">
+        <label class="q-label">Booking handling during disruptions</label>
+        <span class="q-context">Myrtle Beach hurricane season is June–November. This needs to be airtight before summer.</span>
+        <textarea placeholder="NHC trigger thresholds, who decides, when guest is notified..."></textarea>
+      </div>
+      <div class="grid-2">
+        <div class="question">
+          <label class="q-label">Required proactive guest communication</label>
+          <textarea></textarea>
+        </div>
+        <div class="question">
+          <label class="q-label">Permitted remediation options</label>
+          <div class="options">
+            <label><input type="checkbox"><span>Reschedule</span></label>
+            <label><input type="checkbox"><span>Relocation</span></label>
+            <label><input type="checkbox"><span>Partial refund</span></label>
+            <label><input type="checkbox"><span>Full refund</span></label>
+            <label><input type="checkbox"><span>Credit</span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">8.3</span> Trip insurance</h3>
+      <div class="grid-2">
+        <div class="question">
+          <label class="q-label">Offer / recommend trip insurance?</label>
+          <div class="options">
+            <label><input type="radio" name="trip_ins"><span>Yes</span></label>
+            <label><input type="radio" name="trip_ins"><span>No</span></label>
+          </div>
+        </div>
+        <div class="question">
+          <label class="q-label">How offer is delivered</label>
+          <input type="text" placeholder="Booking page, confirmation email, post-confirmation SMS..." />
+        </div>
+      </div>
+      <div class="question">
+        <label class="q-label">When to mention it in the journey</label>
+        <textarea></textarea>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- ===================== SECTION 9: SYSTEMS & MONITORING ===================== -->
+  <section class="card" id="s9">
+    <div class="section-header">
+      <div class="section-number">09</div>
+      <h2 class="section-title">Systems <em>& Monitoring</em></h2>
+    </div>
+    <p class="section-blurb">Add a row for each system in use. We'll fold these into ops dashboards and on-call rotations.</p>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">9.1</span> System inventory</h3>
+ 
+      <div id="systemList">
+        <div class="repeat-block">
+          <div class="repeat-title">System <span class="pill">#1</span></div>
+          <div class="grid-2">
+            <div class="question"><label class="q-label">System name</label><input type="text" placeholder="e.g., Hostfully, NoiseAware, Schlage Home" /></div>
+            <div class="question"><label class="q-label">Purpose</label><input type="text" /></div>
+          </div>
+          <div class="grid-2">
+            <div class="question"><label class="q-label">Trigger events requiring check-in</label><input type="text" placeholder="e.g., 'alarm, low battery, missed event'" /></div>
+            <div class="question"><label class="q-label">Issues requiring immediate action</label><input type="text" /></div>
+          </div>
+          <div class="question"><label class="q-label">Owner / team responsible</label><input type="text" /></div>
+        </div>
+      </div>
+      <button type="button" class="add-row-btn" onclick="addRow('systemList','System')">+ Add system</button>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">9.2</span> Monitoring cadence</h3>
+      <div class="question">
+        <label class="q-label">Any systems needing continuous or high-frequency monitoring?</label>
+        <div class="options">
+          <label><input type="radio" name="hifreq"><span>Yes</span></label>
+          <label><input type="radio" name="hifreq"><span>No</span></label>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="question">
+          <label class="q-label">Which systems &amp; why</label>
+          <textarea></textarea>
+        </div>
+        <div class="question">
+          <label class="q-label">Required check cadence</label>
+          <textarea placeholder="e.g., 'Noise monitor: real-time alerts. Smart lock log: daily review.'"></textarea>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- ===================== SECTION 10: MRG CURRENT STAY ===================== -->
+  <section class="card" id="s10">
+    <div class="section-header">
+      <div class="section-number">10</div>
+      <h2 class="section-title">MRG · <em>Current Stay Playbooks</em></h2>
+    </div>
+    <p class="section-blurb">For each issue, define triage, comms template, evidence, escalation trigger, SLA, and closure. Click to expand each playbook.</p>
+ 
+    <!-- Playbook accordion items -->
+    <div class="playbook-block">
+      <div class="playbook-head" onclick="togglePB(this)">Guest injury / emergency<span></span></div>
+      <div class="playbook-body">
+        <div class="grid-2">
+          <div class="question"><label class="q-label">Triage steps</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Guest communication template</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Evidence required</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Escalation trigger</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">SLA / response target</label><input type="text" placeholder="e.g., 'Acknowledge in 5 min'" /></div>
+          <div class="question"><label class="q-label">Closure checklist</label><textarea></textarea></div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="playbook-block">
+      <div class="playbook-head" onclick="togglePB(this)">Delayed / not-clean-on-arrival<span></span></div>
+      <div class="playbook-body">
+        <div class="grid-2">
+          <div class="question"><label class="q-label">Triage steps</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Guest comms template</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Evidence required</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Escalation trigger</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">SLA</label><input type="text" /></div>
+          <div class="question"><label class="q-label">Closure checklist</label><textarea></textarea></div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="playbook-block">
+      <div class="playbook-head" onclick="togglePB(this)">Housekeeping shortages (towels, missing items)<span></span></div>
+      <div class="playbook-body">
+        <div class="grid-2">
+          <div class="question"><label class="q-label">Triage steps</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Guest comms template</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Evidence required</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Escalation trigger</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">SLA</label><input type="text" /></div>
+          <div class="question"><label class="q-label">Closure checklist</label><textarea></textarea></div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="playbook-block">
+      <div class="playbook-head" onclick="togglePB(this)">A/C troubleshooting + escalation<span></span></div>
+      <div class="playbook-body">
+        <div class="grid-2">
+          <div class="question"><label class="q-label">Triage steps</label><textarea placeholder="Thermostat check, breaker reset, filter inspection..."></textarea></div>
+          <div class="question"><label class="q-label">Guest comms template</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Evidence required</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Escalation trigger</label><textarea placeholder="e.g., '>30 min unresolved or temp >78°F'"></textarea></div>
+          <div class="question"><label class="q-label">SLA</label><input type="text" /></div>
+          <div class="question"><label class="q-label">Closure checklist</label><textarea></textarea></div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="playbook-block">
+      <div class="playbook-head" onclick="togglePB(this)">Appliance troubleshooting (fridge, disposal, etc.)<span></span></div>
+      <div class="playbook-body">
+        <div class="grid-2">
+          <div class="question"><label class="q-label">Triage steps</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Guest comms template</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Evidence required</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Escalation trigger</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">SLA</label><input type="text" /></div>
+          <div class="question"><label class="q-label">Closure checklist</label><textarea></textarea></div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="playbook-block">
+      <div class="playbook-head" onclick="togglePB(this)">Pest / critter complaints<span></span></div>
+      <div class="playbook-body">
+        <div class="grid-2">
+          <div class="question"><label class="q-label">Triage steps</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Guest comms template</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Evidence required</label><textarea placeholder="Photo / video of pest"></textarea></div>
+          <div class="question"><label class="q-label">Escalation trigger</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">SLA</label><input type="text" /></div>
+          <div class="question"><label class="q-label">Closure checklist</label><textarea></textarea></div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="playbook-block">
+      <div class="playbook-head" onclick="togglePB(this)">General maintenance (elevator, power, water outages)<span></span></div>
+      <div class="playbook-body">
+        <div class="grid-2">
+          <div class="question"><label class="q-label">Triage steps</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Guest comms template</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Evidence required</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Escalation trigger</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">SLA</label><input type="text" /></div>
+          <div class="question"><label class="q-label">Closure checklist</label><textarea></textarea></div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="playbook-block">
+      <div class="playbook-head" onclick="togglePB(this)">Access issues (keys, lockbox, smart lock)<span></span></div>
+      <div class="playbook-body">
+        <div class="grid-2">
+          <div class="question"><label class="q-label">Triage steps</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Guest comms template</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Evidence required</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Escalation trigger</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">SLA</label><input type="text" /></div>
+          <div class="question"><label class="q-label">Closure checklist</label><textarea></textarea></div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="playbook-block">
+      <div class="playbook-head" onclick="togglePB(this)">Structural / operational damage reports<span></span></div>
+      <div class="playbook-body">
+        <div class="grid-2">
+          <div class="question"><label class="q-label">Triage steps</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Guest comms template</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Evidence required</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Escalation trigger</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">SLA</label><input type="text" /></div>
+          <div class="question"><label class="q-label">Closure checklist</label><textarea></textarea></div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="playbook-block">
+      <div class="playbook-head" onclick="togglePB(this)">Missing / broken amenities mid-stay<span></span></div>
+      <div class="playbook-body">
+        <div class="grid-2">
+          <div class="question"><label class="q-label">Triage steps</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Guest comms template</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Evidence required</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Escalation trigger</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">SLA</label><input type="text" /></div>
+          <div class="question"><label class="q-label">Closure checklist</label><textarea></textarea></div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="playbook-block">
+      <div class="playbook-head" onclick="togglePB(this)">Pool-related issues<span></span></div>
+      <div class="playbook-body">
+        <div class="grid-2">
+          <div class="question"><label class="q-label">Triage steps</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Guest comms template</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Evidence required</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Escalation trigger</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">SLA</label><input type="text" /></div>
+          <div class="question"><label class="q-label">Closure checklist</label><textarea></textarea></div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="playbook-block">
+      <div class="playbook-head" onclick="togglePB(this)">Trash handling &amp; property-specific rules<span></span></div>
+      <div class="playbook-body">
+        <div class="grid-2">
+          <div class="question"><label class="q-label">Triage steps</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Guest comms template</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Evidence required</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Escalation trigger</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">SLA</label><input type="text" /></div>
+          <div class="question"><label class="q-label">Closure checklist</label><textarea></textarea></div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="playbook-block">
+      <div class="playbook-head" onclick="togglePB(this)">TV troubleshooting (remotes, channels, PIN)<span></span></div>
+      <div class="playbook-body">
+        <div class="grid-2">
+          <div class="question"><label class="q-label">Triage steps</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Guest comms template</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Evidence required</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Escalation trigger</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">SLA</label><input type="text" /></div>
+          <div class="question"><label class="q-label">Closure checklist</label><textarea></textarea></div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="playbook-block">
+      <div class="playbook-head" onclick="togglePB(this)">Wi-Fi troubleshooting + escalation<span></span></div>
+      <div class="playbook-body">
+        <div class="grid-2">
+          <div class="question"><label class="q-label">Triage steps</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Guest comms template</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Evidence required</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Escalation trigger</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">SLA</label><input type="text" /></div>
+          <div class="question"><label class="q-label">Closure checklist</label><textarea></textarea></div>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- ===================== SECTION 11: MRG POST STAY ===================== -->
+  <section class="card" id="s11">
+    <div class="section-header">
+      <div class="section-number">11</div>
+      <h2 class="section-title">MRG · <em>Post Stay</em></h2>
+    </div>
+ 
+    <div class="playbook-block">
+      <div class="playbook-head" onclick="togglePB(this)">Post-stay complaints (feedback vs. refund claims)<span></span></div>
+      <div class="playbook-body">
+        <div class="grid-2">
+          <div class="question"><label class="q-label">Decision tree</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Documentation required</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Messaging template</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Approval thresholds</label><textarea></textarea></div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="playbook-block">
+      <div class="playbook-head" onclick="togglePB(this)">Lost &amp; found process<span></span></div>
+      <div class="playbook-body">
+        <div class="grid-2">
+          <div class="question"><label class="q-label">Decision tree</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Documentation required</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Messaging template</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Approval thresholds</label><textarea placeholder="Hold period, shipping fee, handling charge..."></textarea></div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="playbook-block">
+      <div class="playbook-head" onclick="togglePB(this)">Requests for future-stay discounts<span></span></div>
+      <div class="playbook-body">
+        <div class="grid-2">
+          <div class="question"><label class="q-label">Decision tree</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Documentation required</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Messaging template</label><textarea></textarea></div>
+          <div class="question"><label class="q-label">Approval thresholds</label><textarea></textarea></div>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- ===================== SECTION 12: MRG PRE STAY ===================== -->
+  <section class="card" id="s12">
+    <div class="section-header">
+      <div class="section-number">12</div>
+      <h2 class="section-title">MRG · <em>Pre Stay</em></h2>
+    </div>
+ 
+    <div class="grid-2">
+      <div class="question"><label class="q-label">Rate negotiation requests</label><textarea placeholder="Auto-decline, counter, escalate?"></textarea></div>
+      <div class="question"><label class="q-label">Address-sharing rules</label><textarea placeholder="Pre-booking, post-booking, by platform"></textarea></div>
+      <div class="question"><label class="q-label">Early check-in by window (before / morning / day-of)</label><textarea></textarea></div>
+      <div class="question"><label class="q-label">Late check-out with same-day turn</label><textarea></textarea></div>
+      <div class="question"><label class="q-label">Access / drop-off before check-in (incl. pets)</label><textarea></textarea></div>
+      <div class="question"><label class="q-label">Parking inquiries &amp; limits</label><textarea></textarea></div>
+      <div class="question"><label class="q-label">Paid parking communication</label><textarea></textarea></div>
+      <div class="question"><label class="q-label">Day-guest requests (occupancy / parking)</label><textarea></textarea></div>
+    </div>
+  </section>
+ 
+  <!-- ===================== SECTION 13: GUEST ISSUE PROTOCOLS ===================== -->
+  <section class="card" id="s13">
+    <div class="section-header">
+      <div class="section-number">13</div>
+      <h2 class="section-title">Guest Issue <em>Protocols</em></h2>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">13.1</span> Cross-team communication</h3>
+      <div class="question">
+        <label class="q-label">How guest comms are coordinated across maintenance / housekeeping / policy / lost-found</label>
+        <textarea placeholder="Single channel, ticket system, escalation chain..."></textarea>
+      </div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">13.2</span> VIP work orders</h3>
+      <div class="grid-2">
+        <div class="question"><label class="q-label">VIP criteria</label><textarea placeholder="Repeat 3+ stays, $X+ lifetime, owner referrals..."></textarea></div>
+        <div class="question"><label class="q-label">Priority handling steps</label><textarea></textarea></div>
+      </div>
+      <div class="question"><label class="q-label">Required SLA</label><input type="text" /></div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">13.3</span> Platform communication protocols</h3>
+      <div class="grid-2">
+        <div class="question"><label class="q-label">Rules for difficult guests</label><textarea></textarea></div>
+        <div class="question"><label class="q-label">Resolution Center claim process</label><textarea></textarea></div>
+        <div class="question"><label class="q-label">Auto-message controls</label><textarea placeholder="When to pause automations"></textarea></div>
+        <div class="question"><label class="q-label">Review dispute / removal process</label><textarea></textarea></div>
+      </div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">13.4</span> Universal protocol</h3>
+      <div class="question">
+        <label class="q-label">The single protocol every agent must follow on any guest issue</label>
+        <span class="q-hint">Think: acknowledge → document → triage → escalate or resolve → close-out message.</span>
+        <textarea></textarea>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- ===================== SECTION 14: FAQ COVERAGE ===================== -->
+  <section class="card" id="s14">
+    <div class="section-header">
+      <div class="section-number">14</div>
+      <h2 class="section-title">FAQ <em>Knowledge Base</em></h2>
+    </div>
+    <p class="section-blurb">Mark each topic as ready (✓), partial (◐), or missing (✕). For ready ones, paste a template link and last review date.</p>
+ 
+    <table class="faq-table">
+      <thead>
+        <tr>
+          <th style="width: 32%;">Topic</th>
+          <th style="width: 18%;">Status</th>
+          <th style="width: 30%;">Template ID / link</th>
+          <th style="width: 12%;">Owner</th>
+          <th style="width: 14%;">Last reviewed</th>
+        </tr>
+      </thead>
+      <tbody id="faqBody">
+        <!-- Rows generated by JS below for compactness -->
+      </tbody>
+    </table>
+  </section>
+ 
+  <!-- ===================== SECTION 15: CAMERAS / SECURITY ===================== -->
+  <section class="card" id="s15">
+    <div class="section-header">
+      <div class="section-number">15</div>
+      <h2 class="section-title">Cameras, Access <em>& Security</em></h2>
+    </div>
+ 
+    <div class="question">
+      <label class="q-label">Do properties use security cameras?</label>
+      <div class="options">
+        <label><input type="radio" name="cameras"><span>Yes</span></label>
+        <label><input type="radio" name="cameras"><span>No</span></label>
+        <label><input type="radio" name="cameras"><span>Property-by-property</span></label>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="question"><label class="q-label">Camera locations &amp; disclosure rules</label><textarea placeholder="Exterior only — Airbnb/Vrbo require listing disclosure."></textarea></div>
+      <div class="question"><label class="q-label">Review / access policy</label><textarea placeholder="Who can view, when, for what reason"></textarea></div>
+      <div class="question"><label class="q-label">Retention policy</label><textarea placeholder="e.g., '30 days, then auto-purge'"></textarea></div>
+      <div class="question"><label class="q-label">Prohibited uses</label><textarea placeholder="No interior, no audio, no marketing use..."></textarea></div>
+    </div>
+  </section>
+ 
+  <!-- ===================== SECTION 16: LOGINS / TOOLS ===================== -->
+  <section class="card" id="s16">
+    <div class="section-header">
+      <div class="section-number">16</div>
+      <h2 class="section-title">Logins, Tools <em>& Permissions</em></h2>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">16.1</span> Required systems access</h3>
+      <div class="question">
+        <label class="q-label">All systems / platforms needed to operate properties</label>
+        <textarea placeholder="PMS, channel manager, smart lock app, NoiseAware, Stripe, accounting..."></textarea>
+      </div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">16.2</span> Role-based access</h3>
+ 
+      <div id="roleList">
+        <div class="repeat-block">
+          <div class="repeat-title">Role <span class="pill">#1</span></div>
+          <div class="grid-2">
+            <div class="question"><label class="q-label">Role name</label><input type="text" placeholder="e.g., Reservations Agent" /></div>
+            <div class="question"><label class="q-label">Systems needed</label><input type="text" /></div>
+          </div>
+          <div class="grid-2">
+            <div class="question"><label class="q-label">Permission level</label><input type="text" placeholder="Read / write / admin" /></div>
+            <div class="question"><label class="q-label">Approval chain</label><input type="text" /></div>
+          </div>
+          <div class="question"><label class="q-label">Offboarding steps</label><input type="text" placeholder="Revoke order, password reset, MFA removal" /></div>
+        </div>
+      </div>
+      <button type="button" class="add-row-btn" onclick="addRow('roleList','Role')">+ Add role</button>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">16.3</span> Login inventory control</h3>
+      <div class="grid-2">
+        <div class="question"><label class="q-label">Where credentials are stored</label><input type="text" placeholder="1Password / Bitwarden / shared vault" /></div>
+        <div class="question"><label class="q-label">MFA requirements</label><input type="text" placeholder="App-based required on what systems?" /></div>
+      </div>
+      <div class="question"><label class="q-label">Break-glass / emergency access process</label><textarea></textarea></div>
+    </div>
+  </section>
+ 
+  <!-- ===================== SECTION 17: GUEST JOURNEY MESSAGING ===================== -->
+  <section class="card" id="s17">
+    <div class="section-header">
+      <div class="section-number">17</div>
+      <h2 class="section-title">Guest Journey <em>Messaging</em></h2>
+    </div>
+    <p class="section-blurb">Every touchpoint from booking to checkout. Flip what you want different from defaults.</p>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">17.1</span> Confirmation</h3>
+      <div class="grid-2">
+        <div class="question">
+          <label class="q-label">Send confirmation after new reservation?</label>
+          <div class="options"><label><input type="radio" name="conf_send"><span>Yes</span></label><label><input type="radio" name="conf_send"><span>No</span></label></div>
+        </div>
+        <div class="question"><label class="q-label">Approved template content / link</label><input type="text" /></div>
+      </div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">17.2</span> Post-booking data collection</h3>
+      <div class="question">
+        <label class="q-label">Data fields collected after booking</label>
+        <div class="options">
+          <label><input type="checkbox"><span>Email</span></label>
+          <label><input type="checkbox"><span>Adult / child count</span></label>
+          <label><input type="checkbox"><span>Vehicle info</span></label>
+          <label><input type="checkbox"><span>ID verification</span></label>
+          <label><input type="checkbox"><span>Pet details</span></label>
+          <label><input type="checkbox"><span>Building / community details</span></label>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">17.3</span> Pre-arrival links &amp; documents</h3>
+      <div class="grid-2">
+        <div class="question">
+          <label class="q-label">Send digital guidebook / portal / rental agreement?</label>
+          <div class="options"><label><input type="radio" name="prearr_docs"><span>Yes</span></label><label><input type="radio" name="prearr_docs"><span>No</span></label></div>
+        </div>
+        <div class="question"><label class="q-label">Timing for each send</label><textarea placeholder="e.g., 'Guidebook: at booking. Agreement: within 24h. Portal: 7 days out.'"></textarea></div>
+      </div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">17.4</span> Check-in release gates</h3>
+      <div class="question">
+        <label class="q-label">Must be complete before access codes release</label>
+        <div class="options">
+          <label><input type="checkbox"><span>Signed rental agreement</span></label>
+          <label><input type="checkbox"><span>Guest portal complete</span></label>
+          <label><input type="checkbox"><span>Full payment</span></label>
+          <label><input type="checkbox"><span>Verified payment method</span></label>
+          <label><input type="checkbox"><span>Verified ID</span></label>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">17.5</span> Incomplete-step reminders</h3>
+      <div class="grid-2">
+        <div class="question">
+          <label class="q-label">Send reminders?</label>
+          <div class="options"><label><input type="radio" name="remind"><span>Yes</span></label><label><input type="radio" name="remind"><span>No</span></label></div>
+        </div>
+        <div class="question"><label class="q-label">Schedule &amp; template per step</label><textarea></textarea></div>
+      </div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">17.6</span> Promotional / add-on messaging</h3>
+      <div class="grid-2">
+        <div class="question">
+          <label class="q-label">Promote trip insurance / partners / perks?</label>
+          <div class="options"><label><input type="radio" name="promo"><span>Yes</span></label><label><input type="radio" name="promo"><span>No</span></label></div>
+        </div>
+        <div class="question"><label class="q-label">Timing &amp; rules</label><textarea></textarea></div>
+      </div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">17.7</span> Pre-arrival instructions</h3>
+      <div class="grid-2">
+        <div class="question">
+          <label class="q-label">Send pre-arrival instructions?</label>
+          <div class="options"><label><input type="radio" name="prearr"><span>Yes</span></label><label><input type="radio" name="prearr"><span>No</span></label></div>
+        </div>
+        <div class="question"><label class="q-label">Days before arrival</label><input type="number" placeholder="e.g., 1, 3, 7" /></div>
+      </div>
+      <div class="question">
+        <label class="q-label">Required contents</label>
+        <div class="options">
+          <label><input type="checkbox"><span>Address (if policy allows)</span></label>
+          <label><input type="checkbox"><span>Access method / code timing</span></label>
+          <label><input type="checkbox"><span>Parking</span></label>
+          <label><input type="checkbox"><span>Wi-Fi</span></label>
+          <label><input type="checkbox"><span>Building entry details</span></label>
+          <label><input type="checkbox"><span>Emergency contact</span></label>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">17.8</span> Property-specific access instructions</h3>
+      <div class="grid-2">
+        <div class="question">
+          <label class="q-label">Send lockbox / smart lock / gate / elevator / front desk / parking details?</label>
+          <div class="options"><label><input type="radio" name="propaccess"><span>Yes</span></label><label><input type="radio" name="propaccess"><span>No</span></label></div>
+        </div>
+        <div class="question"><label class="q-label">Trigger logic by property</label><textarea></textarea></div>
+      </div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">17.9</span> Check-in day SMS</h3>
+      <div class="question">
+        <label class="q-label">Send SMS on check-in day?</label>
+        <div class="options"><label><input type="radio" name="cisms"><span>Yes</span></label><label><input type="radio" name="cisms"><span>No</span></label></div>
+      </div>
+      <div class="question">
+        <label class="q-label">SMS content</label>
+        <div class="options">
+          <label><input type="checkbox"><span>Welcome note</span></label>
+          <label><input type="checkbox"><span>Contact number</span></label>
+          <label><input type="checkbox"><span>Address</span></label>
+          <label><input type="checkbox"><span>Access code</span></label>
+          <label><input type="checkbox"><span>Wi-Fi</span></label>
+          <label><input type="checkbox"><span>Parking</span></label>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">17.10</span> Inquiry / pre-approval messaging</h3>
+      <div class="grid-2">
+        <div class="question">
+          <label class="q-label">Send inquiry response messages before confirmation?</label>
+          <div class="options"><label><input type="radio" name="inq"><span>Yes</span></label><label><input type="radio" name="inq"><span>No</span></label></div>
+        </div>
+        <div class="question"><label class="q-label">Required collection / verification items</label><textarea></textarea></div>
+      </div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">17.11</span> Missing pre-arrival info exception handling</h3>
+      <div class="question">
+        <label class="q-label">What happens if required info isn't in by deadline?</label>
+        <textarea placeholder="Auto-hold access, escalate, manual call sequence..."></textarea>
+      </div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">17.12</span> During-stay follow-up</h3>
+      <div class="grid-2">
+        <div class="question">
+          <label class="q-label">Send check-in follow-up after arrival?</label>
+          <div class="options"><label><input type="radio" name="ciFup"><span>Yes</span></label><label><input type="radio" name="ciFup"><span>No</span></label></div>
+        </div>
+        <div class="question"><label class="q-label">Timing &amp; prompt questions</label><textarea></textarea></div>
+      </div>
+      <div class="grid-2">
+        <div class="question">
+          <label class="q-label">Ask guest to rate the home shortly after arrival?</label>
+          <div class="options"><label><input type="radio" name="rate"><span>Yes</span></label><label><input type="radio" name="rate"><span>No</span></label></div>
+          <input type="text" placeholder="Rating scale (1–5, NPS, etc.)" style="margin-top: 8px;" />
+        </div>
+        <div class="question">
+          <label class="q-label">Explicitly instruct guests to report issues immediately?</label>
+          <div class="options"><label><input type="radio" name="reportNow"><span>Yes</span></label><label><input type="radio" name="reportNow"><span>No</span></label></div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">17.13</span> Checkout messaging</h3>
+      <div class="grid-2">
+        <div class="question">
+          <label class="q-label">Send checkout reminders?</label>
+          <div class="options"><label><input type="radio" name="coRem"><span>Yes</span></label><label><input type="radio" name="coRem"><span>No</span></label></div>
+        </div>
+        <div class="question"><label class="q-label">Timing</label><input type="text" placeholder="e.g., 'Night before + 1h before checkout'" /></div>
+      </div>
+      <div class="question"><label class="q-label">Required instructions</label><textarea placeholder="Trash, linens, dishwasher, AC, parking pass return..."></textarea></div>
+      <div class="grid-2">
+        <div class="question"><label class="q-label">Property-specific checkout exceptions</label><textarea></textarea></div>
+        <div class="question"><label class="q-label">Required return items + fee if not returned</label><textarea placeholder="Keys, remotes, passes, wristbands. Fee per item if missing."></textarea></div>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- ===================== SECTION 18: COMPENSATION & DISPUTES ===================== -->
+  <section class="card" id="s18">
+    <div class="section-header">
+      <div class="section-number">18</div>
+      <h2 class="section-title">Compensation, Risk <em>& Disputes</em></h2>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">18.1</span> Compensation controls</h3>
+      <div class="question">
+        <label class="q-label">Evidence required before issuing compensation</label>
+        <div class="options">
+          <label><input type="checkbox"><span>Photos</span></label>
+          <label><input type="checkbox"><span>Video</span></label>
+          <label><input type="checkbox"><span>Timestamps</span></label>
+          <label><input type="checkbox"><span>Vendor notes</span></label>
+        </div>
+        <input type="text" placeholder="Other..." style="margin-top: 8px;" />
+      </div>
+      <div class="grid-2">
+        <div class="question"><label class="q-label">Max agent-approved compensation (no manager)</label><input type="text" placeholder="e.g., '$150 or 10% of nightly'" /></div>
+        <div class="question"><label class="q-label">Allowed comp types by scenario</label><textarea placeholder="Partial refund / future credit / gift card / amenity comp"></textarea></div>
+      </div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">18.2</span> Ticketing / work orders</h3>
+      <div class="grid-2">
+        <div class="question"><label class="q-label">Issues that require a ticket</label><textarea></textarea></div>
+        <div class="question"><label class="q-label">Required fields before closure</label><textarea></textarea></div>
+      </div>
+      <div class="question"><label class="q-label">Follow-ups before unresponsive-case closure</label><input type="number" placeholder="e.g., 3" /></div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">18.3</span> Legal / risk communications</h3>
+      <div class="grid-2">
+        <div class="question"><label class="q-label">Mandatory templates for legal / risk scenarios</label><textarea></textarea></div>
+        <div class="question"><label class="q-label">Prohibited words / promises in guest comms</label><textarea placeholder="e.g., 'guarantee', 'fault', 'liability admission'"></textarea></div>
+      </div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">18.4</span> Chargebacks / platform disputes</h3>
+      <div class="grid-2">
+        <div class="question"><label class="q-label">Leadership notification trigger</label><textarea></textarea></div>
+        <div class="question"><label class="q-label">Chargeback defense documentation package</label><textarea></textarea></div>
+      </div>
+      <div class="question"><label class="q-label">When to contact platform support vs. handle internally</label><textarea></textarea></div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">18.5</span> Conflicting evidence</h3>
+      <div class="question">
+        <label class="q-label">Process when guest report conflicts with logs / camera timestamps</label>
+        <textarea></textarea>
+      </div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">18.6</span> Repeat offenders</h3>
+      <div class="grid-2">
+        <div class="question">
+          <label class="q-label">Track repeat-incident history across properties?</label>
+          <div class="options"><label><input type="radio" name="repeat"><span>Yes</span></label><label><input type="radio" name="repeat"><span>No</span></label></div>
+        </div>
+        <div class="question"><label class="q-label">Policy for repeat offenders</label><textarea></textarea></div>
+      </div>
+    </div>
+ 
+    <div class="subsection">
+      <h3 class="subsection-title"><span class="subsection-num">18.7</span> Language &amp; accessibility</h3>
+      <div class="grid-2">
+        <div class="question"><label class="q-label">Multilingual support requirements</label><textarea placeholder="Translator service, preferred language list..."></textarea></div>
+        <div class="question"><label class="q-label">Accessibility requests requiring priority</label><textarea></textarea></div>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- ===================== SECTION 19: PRIORITY CONTROLS ===================== -->
+  <section class="card" id="s19">
+    <div class="section-header">
+      <div class="section-number">19</div>
+      <h2 class="section-title">Priority Controls <em>· Finalize First</em></h2>
+    </div>
+    <p class="section-blurb">These were the recurring friction points in conversation logs. Lock them down before anything else.</p>
+ 
+    <div id="priorityList">
+      <!-- generated from JS for brevity -->
+    </div>
+  </section>
+ 
+  <!-- ===================== SIGN-OFF ===================== -->
+  <div class="signoff">
+    <h3>Sign-off</h3>
+    <p>Once policies are reviewed and approved across teams, lock the version below.</p>
+    <div class="grid-2">
+      <div class="question"><label class="q-label">Operations Lead</label><input type="text" /></div>
+      <div class="question"><label class="q-label">Revenue / Reservations Lead</label><input type="text" /></div>
+      <div class="question"><label class="q-label">Guest Experience Lead</label><input type="text" /></div>
+      <div class="question"><label class="q-label">Legal / Risk Reviewer</label><input type="text" /></div>
+      <div class="question"><label class="q-label">Effective date</label><input type="date" /></div>
+      <div class="question"><label class="q-label">Version</label><input type="text" placeholder="e.g., v1.0" /></div>
+    </div>
+  </div>
+ 
+  <div class="submit-bar">
+    <h4>You're done.</h4>
+    <p>Download your responses as JSON for the team, or print to PDF for the wall.</p>
+    <button type="button" class="btn" onclick="downloadResponses()">Download Responses</button>
+    <button type="button" class="btn secondary" onclick="window.print()">Print to PDF</button>
+  </div>
+ 
+</div>
+</form>
+ 
+<a href="#" class="back-to-top" id="backToTop">↑ Top</a>
+ 
+<script>
+  // ============ FAQ TABLE GENERATION ============
+  const faqTopics = [
+    "Fridge / freezer temperature & troubleshooting",
+    "TV: local channels / no signal / remotes",
+    "Cleanliness complaints on arrival",
+    "Smoking rules",
+    "Rate discrepancies / altered totals",
+    "Dishwasher troubleshooting",
+    "End-of-stay trash instructions",
+    "Safe availability",
+    "Property tours before booking",
+    "Long-term rental inquiries",
+    "Cleaning fee explanation / mandatory fee policy",
+    "Parties / gatherings policy",
+    "Pest complaint starter response",
+    "Why email is collected",
+    "Lost item retrieval",
+    "Pre-check-in guest to-do list",
+    "Special offer acceptance errors",
+    "Checkout linen / towel handling steps",
+    "New pre-approval requests",
+    "Leaving vehicle while on cruise",
+    "Liability insurance document requests",
+    "Hidden costs / transparency requests",
+    "Connecting personal devices to TV",
+    "Military discount policy",
+    "In-home services policy",
+    "Nearest airport inquiry",
+    "Pet fee details"
+  ];
+  const faqBody = document.getElementById('faqBody');
+  faqTopics.forEach((topic, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="faq-topic">${topic}</td>
+      <td>
+        <div class="faq-status">
+          <label class="ready" title="Ready"><input type="radio" name="faq-${i}" value="ready">✓</label>
+          <label class="partial" title="Partial"><input type="radio" name="faq-${i}" value="partial">◐</label>
+          <label class="missing" title="Missing"><input type="radio" name="faq-${i}" value="missing">✕</label>
+        </div>
+      </td>
+      <td><input type="text" placeholder="link or template ID" /></td>
+      <td><input type="text" placeholder="owner" /></td>
+      <td><input type="text" placeholder="YYYY-MM-DD" /></td>
+    `;
+    faqBody.appendChild(tr);
+  });
+ 
+  // ============ PRIORITY CONTROLS (SECTION 19) ============
+  const priorityItems = [
+    "Parking cap rules by property + overflow guidance",
+    "Check-in link completion troubleshooting (portal resend process)",
+    "Early check-in / late checkout pricing matrix & cutoff times",
+    "Extension requests (extra night) approval process & templates",
+    "Day guest and amenity usage rules (pool/gym/visitors)",
+    "Access code release timing & fallback access support",
+    "Post-checkout use of parking / pool after checkout time",
+    "Housekeeping expectations at checkout (trash, towels, linens)"
+  ];
+  const priorityList = document.getElementById('priorityList');
+  priorityItems.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'repeat-block';
+    div.innerHTML = `
+      <div class="repeat-title">${item} <span class="pill">P${i+1}</span></div>
+      <div class="grid-2">
+        <div class="question"><label class="q-label">Final policy</label><textarea></textarea></div>
+        <div class="question"><label class="q-label">Message template ID</label><input type="text" /></div>
+      </div>
+      <div class="question"><label class="q-label">Escalation owner</label><input type="text" /></div>
+    `;
+    priorityList.appendChild(div);
+  });
+ 
+  // ============ ACCORDION ============
+  function togglePB(el) {
+    el.parentElement.classList.toggle('open');
+  }
+ 
+  // ============ ADD ROW ============
+  function addRow(listId, label) {
+    const list = document.getElementById(listId);
+    const count = list.querySelectorAll('.repeat-block').length + 1;
+    const template = list.querySelector('.repeat-block').cloneNode(true);
+    template.querySelector('.repeat-title').innerHTML = `${label} <span class="pill">#${count}</span>`;
+    template.querySelectorAll('input, textarea').forEach(el => {
+      if (el.type === 'radio' || el.type === 'checkbox') el.checked = false;
+      else el.value = '';
+    });
+    list.appendChild(template);
+  }
+ 
+  // ============ BACK TO TOP ============
+  const backToTop = document.getElementById('backToTop');
+  const progressFill = document.getElementById('progressFill');
+  window.addEventListener('scroll', () => {
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrolled = (window.scrollY / docHeight) * 100;
+    progressFill.style.width = scrolled + '%';
+    if (window.scrollY > 600) backToTop.classList.add('visible');
+    else backToTop.classList.remove('visible');
+  });
+ 
+  // ============ DOWNLOAD ============
+  function downloadResponses() {
+    const form = document.getElementById('intakeForm');
+    const responses = [];
+    const sections = form.querySelectorAll('section.card, .signoff, .intro');
+    sections.forEach(section => {
+      const sectionTitle = section.querySelector('.section-title, h2, h3')?.textContent.trim() || 'Untitled';
+      const sectionData = { section: sectionTitle, items: [] };
+      const subsections = section.querySelectorAll('.subsection');
+      const blocks = subsections.length ? subsections : [section];
+      blocks.forEach(block => {
+        const subTitle = block.querySelector('.subsection-title')?.textContent.trim();
+        const items = block.querySelectorAll('.question, .repeat-block, tr');
+        items.forEach(q => {
+          const label = q.querySelector('.q-label, .repeat-title, .faq-topic')?.textContent.trim() || '';
+          const checkboxes = [...q.querySelectorAll('input[type="checkbox"]:checked')].map(c => c.parentElement.textContent.trim());
+          const radios = [...q.querySelectorAll('input[type="radio"]:checked')].map(c => c.parentElement.textContent.trim() || c.value);
+          const texts = [...q.querySelectorAll('input[type="text"], input[type="number"], input[type="date"], input[type="time"], input.meta-input, textarea')]
+            .map(t => t.value).filter(v => v.trim());
+          if (label || checkboxes.length || radios.length || texts.length) {
+            sectionData.items.push({
+              subsection: subTitle || null,
+              q: label,
+              selected: [...checkboxes, ...radios],
+              notes: texts
+            });
+          }
+        });
+      });
+      if (sectionData.items.length) responses.push(sectionData);
+    });
+    // Header meta
+    const meta = [...document.querySelectorAll('.meta-input')].map(i => ({ label: i.previousElementSibling?.textContent.trim(), value: i.value }));
+    const out = { meta, sections: responses, generated: new Date().toISOString() };
+    const blob = new Blob([JSON.stringify(out, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'big_fish_operations_intake.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+</script>
+ 
+</body>
+</html>
